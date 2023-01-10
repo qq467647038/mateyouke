@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信授权登录</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+<script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js"></script>
+<script>
+
+    login();
+    
+    function getParams(name){
+        var url = location.href;
+        url = url.replace("?","?&").split("&");
+        var res = "";
+        for (let i = 0; i < url.length; i++) {
+            if(url[i].indexOf(name+"=") == 0){
+                res = url[i].replace(name+"=","");
+            }
+        }
+        return res;
+    }
+
+    function login(){
+        var code = getParams("code");
+        if(code){
+            oauthTo(code)
+        }else{
+            oauth()
+        }
+    }
+
+    function oauth(){
+        $.ajax({
+            url:'https://store.cxy365.com/apicloud/Login/comWxLogin',
+            // url:'http://app.com/apicloud/Test/wxtest',
+            type:'POST',
+            data:{
+                code:''
+            },
+            dataType:'json',
+            success:function(data){		
+                if(data.status == 201){
+                    // console.log(data.data);
+                    window.location.href = data.data
+                }
+            },
+            error:function(){
+                
+            }
+        });
+    }
+
+    function oauthTo(code){
+        $.ajax({
+            url:'https://store.cxy365.com/apicloud/Login/comWxLogin',
+            // url:'http://app.com/apicloud/Test/wxtest',
+            type:'POST',
+            data:{
+                code:code
+            },
+            dataType:'json',
+            success:function(res){
+                if(res.status == 200){
+                    alert("登录成功")
+                    uni.setStorageSync('user_id', res.data.id);
+                    uni.setStorageSync('token', res.data.token);
+                    // uni.setStorageSync('identity', res.data.identity);
+                    uni.setStorageSync('role', res.data.role);
+                    uni.setStorageSync('role_id', res.data.shop_id);
+                    uni.setStorageSync('pid', res.data.shop_id);
+                    uni.setStorageSync('serviceShopId', res.data.serviceShopId);
+                    uni.switchTab({
+                        url: '/pages/tabBar/Home'
+                    })
+                    // window.location.href="https://store.cxy365.com/h5/"
+                    // alert("注册成功");
+                }else{
+                    alert(data.mess)
+                }
+            },
+            error:function(){
+                
+            }
+        });
+    }
+</script>

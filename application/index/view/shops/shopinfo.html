@@ -1,0 +1,1109 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>孝笑好多用户商城系统 - {$shops.shop_name}</title>
+  <meta name="author" content="孝笑好">
+  <meta name="copyright" content="孝笑好 Inc. All Rights Reserved">
+  <meta name="renderer" content="webkit">
+  <meta name="renderer" content="ie-stand">
+  <meta name="keywords" content="孝笑好,孝笑好多用户商城系统," />
+  <meta name="description" content="孝笑好,孝笑好多用户商城系统," />
+  <link href="__STATIC__/pc/css/common.css" rel="stylesheet" type="text/css">
+  <link href="__STATIC__/pc/css/store_header.css" rel="stylesheet" type="text/css">
+  <link href="__STATIC__/pc/css/font-awesome.min.css" rel="stylesheet" />
+
+  <script>
+    var PRICE_FORMAT = '&yen;%s';
+    var COOKIE_PRE = 'B87D_';
+    var _CHARSET = 'utf-8';
+    var LOGIN_SITE_URL = 'https://wosmart.s1107.com/home';
+    var MEMBER_SITE_URL = 'https://wosmart.s1107.com/home';
+    var SITEURL = 'https://wosmart.s1107.com';
+    var BASE_SITE_URL = 'https://wosmart.s1107.com';
+    var STATIC_SITE_URL = 'https://wosmart.s1107.com/system/static';
+    var STATIC_SITE_URL = 'https://wosmart.s1107.com/system/static';
+    var SHOP_TEMPLATES_URL = 'https://wosmart.s1107.com/templets/WoSmart';
+  </script>
+  <script src="__STATIC__/pc/js/jquery.min.js"></script>
+  <script src="__STATIC__/pc/js/common.js" charset="utf-8"></script>
+  <script src="__STATIC__/pc/js/jquery.ui.js"></script>
+  <script src="__STATIC__/pc/js/jquery.validation.min.js"></script>
+  <script src="__STATIC__/pc/js/jquery.masonry.js"></script>
+  <script src="__STATIC__/pc/js/dialog.js" id="wt_dialog" charset="utf-8"></script>
+  <script src="__STATIC__/pc/js/jquery.scrollLoading-min.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <div id="append_parent"></div>
+  <div id="ajaxwaitid"></div>
+  <div id="vToolbar" class="wt-appbar">
+    <div class="wt-appbar-tabs" id="siteslidebar">
+      <div class="user ta_delay" wttype="a-barLoginBox">
+        <div class="avatar"><img src="__STATIC__/pc/images/loading.gif"
+            data-url="__STATIC__/pc/images/default_user_portrait.gif" rel="lazy" /></div>
+        <p>请登录</p>
+      </div>
+      <div class="user-login-box" wttype="barLoginBox" style="display:none;"> <i class="arrow"></i> <a
+          href="javascript:void(0);" class="close-a" wttype="close-barLoginBox" title="关闭">X</a>
+        <form id="login_form" method="post" action="https://wosmart.s1107.com/home/index.php?w=login&t=login"
+          onsubmit="ajaxpost('login_form', '', '', 'onerror')">
+          <input type='hidden' name='formhash' value='JPXlL7LhUiOiFRz8p_wKPXmLRIjQCx4' /> <input type="hidden"
+            name="form_submit" value="ok" />
+          <input name="wthash" type="hidden" value="4d91088c" />
+          <dl>
+            <dt>用户名</dt>
+            <dd>
+              <input type="text" class="text" tabindex="1" autocomplete="off" name="user_name" autofocus>
+              <label></label>
+            </dd>
+          </dl>
+          <dl>
+            <dt>密&nbsp;&nbsp;&nbsp;&nbsp;码</dt>
+            <dd>
+              <input tabindex="2" type="password" class="text" name="password" autocomplete="off">
+              <label></label>
+            </dd>
+          </dl>
+          <dl>
+            <dt>验证码</dt>
+            <dd>
+              <input tabindex="3" type="text" name="captcha" autocomplete="off" class="text w130" id="captcha2"
+                maxlength="4" size="10" />
+              <img src="" name="codeimage" border="0" id="codeimage" title="更换验证码"
+                onclick="javascript:document.getElementById('codeimage').src='https://wosmart.s1107.com/index.php?w=vercode&type=30x92&c=' + Math.random();"
+                class="vt">
+              <label></label>
+            </dd>
+          </dl>
+          <div class="bottom">
+            <input type="submit" class="submit" value="确认">
+            <input type="hidden" value="" name="ref_url">
+            <span class="enter">
+              <a class="wx" href="javascript:void(0);"
+                onclick="ajax_form('weixin_form', '微信账号登录', 'https://wosmart.s1107.com/home/index.php?w=connect_wx&t=index', 360);"
+                title="微信账号登录"><i></i></a>
+              <a class="sina" href="https://wosmart.s1107.com/home/index.php?w=connect_sina" title="新浪微博账号登录"><i></i></a>
+              <a class="qq" href="https://wosmart.s1107.com/home/index.php?w=connect_qq" title="QQ账号登录"><i></i></a>
+            </span>
+            <h4></h4>
+          </div>
+        </form>
+      </div>
+      <ul class="tools">
+        <li><a href="javascript:void(0);" id="chat_show_user" class="chat ta_delay">
+            <div class="tools_img"></div><span>聊天</span><i id="new_msg" class="new_msg" style="display:none;"></i>
+          </a></li>
+        <li><a href="javascript:void(0);" id="rtoolbar_cart" class="cart ta_delay">
+            <div class="tools_img"></div><span>购物车</span><i id="rtoobar_cart_count" class="new_msg"
+              style="display:none;"></i>
+          </a></li>
+        <li><a href="javascript:void(0);" id="compare" class="compare ta_delay">
+            <div class="tools_img"></div><span>对比</span>
+          </a></li>
+        <li><a href="https://wosmart.s1107.com/index.php?w=member_goodsbrowse&t=list" class="track ta_delay">
+            <div class="tools_img"></div><span>我的足迹</span>
+          </a></li>
+      </ul>
+      <div class="content-box" id="content-compare">
+        <div class="top">
+          <h3>商品对比</h3>
+          <a href="javascript:void(0);" class="close" title="隐藏"></a>
+        </div>
+        <div id="comparelist"></div>
+      </div>
+      <div class="content-box" id="content-cart">
+        <div class="top">
+          <h3>我的购物车</h3>
+          <a href="javascript:void(0);" class="close" title="隐藏"></a>
+        </div>
+        <div id="rtoolbar_cartlist"></div>
+      </div>
+      <a id="activator" href="javascript:void(0);" class="wt-appbar-hide"></a>
+      <a id="gotop" href="javascript:void(0);" class="wt-appbar-gotop"></a>
+    </div>
+    <div class="wt-hidebar" id="wtHideBar">
+      <div class="wt-hidebar-bg">
+        <div class="user-avatar"><img src="__STATIC__/pc/images/loading.gif"
+            data-url="__STATIC__/pc/images/loading.gif"
+            data-url="__STATIC__/pc/images/default_user_portrait.gif" rel="lazy" /></div>
+        <div class="frame"></div>
+        <div class="show"></div>
+      </div>
+    </div>
+  </div>
+  <div class="wt-topbar w">
+    <div class="topbar wrapper">
+      <div class="service fl">
+        <div class="home"><a href="https://wosmart.s1107.com" title="WoSmart多用户商城系统" target="_self">商城首页</a></div>
+        <div class="tel">服务热线：<b>400-000-0000</b></div>
+        <div class="m-mx"> <span><i></i><a href="https://wosmart.s1107.com/mobile">手机逛商城</a></span>
+          <div>
+            <dl class="down_app">
+              <dd>
+                <div class="qrcode"><img src="__STATIC__/pc/images/loading.gif"
+                    data-url="__STATIC__/pc/images/mb_app.png" width="120" height="120"
+                    rel="lazy" /></div>
+                <div class="hint">
+                  <h4>手机扫一扫下载</h4>
+                </div>
+                <div class="addurl">
+                  <a href="http://app.33hao.com/down/2094" target="_blank"><i class="icon-android"></i>Android</a>
+                  <a href="http://app.33hao.com/down/2094" target="_blank"><i class="icon-apple"></i>iPhone</a>
+                </div>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="left">
+          <div id="TopCity"></div>
+        </div>
+      </div>
+      <div class="right-menu">
+        <dl>
+          <dt>客户服务<i></i></dt>
+          <dd>
+            <ul>
+              <li><a href="https://wosmart.s1107.com/help-cate-2.html">帮助中心</a></li>
+              <li><a href="https://wosmart.s1107.com/help-cate-5.html">售后服务</a></li>
+              <li><a href="https://wosmart.s1107.com/help-cate-6.html">客服中心</a></li>
+            </ul>
+          </dd>
+        </dl>
+        <dl>
+          <dt><a href="https://wosmart.s1107.com/index.php?w=show_joinin&t=index" title="商家管理">商家管理</a><i></i></dt>
+          <dd>
+            <ul>
+              <li><a href="https://wosmart.s1107.com/index.php?w=show_joinin&t=index" title="招商入驻">招商入驻</a></li>
+              <li><a href="https://wosmart.s1107.com/index.php?w=seller_login&t=show_login" target="_blank"
+                  title="商家登录">商家登录</a></li>
+            </ul>
+          </dd>
+        </dl>
+      </div>
+      <div class="head-user-mall">
+        <dl class="my-mall">
+          <dt>
+              <span class="ico"></span>
+              <a href="{:url('member/index')}" title="我的商城">我的商城</a>
+              <i class="arrow"></i>
+          </dt>
+          <dd>
+            <div class="my-top-menu">
+              <ul>
+                <li><a href="https://wosmart.s1107.com/home/index.php?w=member_message&t=message">站内消息(<span>0</span>)</a>
+                </li>
+                <li><a href="{:url('member_order/index')}" class="arrow">我的订单<i></i></a></li>
+                <li><a href="https://wosmart.s1107.com/index.php?w=member_consult&t=my_consult">咨询回复(<span
+                      id="member_consult">0</span>)</a></li>
+                <li><a href="https://wosmart.s1107.com/index.php?w=member_favorite_goods&t=fglist"
+                    class="arrow">我的收藏<i></i></a></li>
+                <li><a href="https://wosmart.s1107.com/home/index.php?w=member_voucher&t=index">代金券(<span
+                      id="member_voucher">0</span>)</a></li>
+                <li><a href="https://wosmart.s1107.com/home/index.php?w=member_points&t=index"
+                    class="arrow">我的积分<i></i></a></li>
+              </ul>
+            </div>
+            <div class="my-history">
+              <div class="part-title">
+                <h4>最近浏览的商品</h4>
+                <span style="float:right;"><a
+                    href="https://wosmart.s1107.com/index.php?w=member_goodsbrowse&t=list">全部浏览历史</a></span>
+              </div>
+              <ul>
+                <li class="no-goods"><img class="loading"
+                    src="__STATIC__/pc/images/loading.gif" /></li>
+              </ul>
+            </div>
+          </dd>
+        </dl>
+      </div>
+      <div class="user-entry">
+        您好, <span class="wr"><a class="login" href="https://wosmart.s1107.com/home/index.php?w=login&t=index">请登录</a> <a
+            href="https://wosmart.s1107.com/home/index.php?w=login&t=register">注册</a></span>
+        <span><a href="https://wosmart.s1107.com/index.php?w=invite">邀请返利</a></span>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var getcity = '全国';
+    //登录开关
+    var connect_qq = "1";
+    var connect_sn = "1";
+    var connect_wx = "1";
+    var connect_wx_appid = "1";
+
+    $(function () {
+      if (($.cookie("wt0"))) {
+        tCity = $.cookie("wt0").split(',');
+        $("#tbarea").html(tCity[2]);
+      } else {
+        $("#tbarea").html(getcity);
+      }
+      $('#gotop').click(function () {
+        $('html, body').animate({
+          scrollTop: 0
+        }, 500);
+      });
+      var wtkey = getCookie('wtkey');
+      if (wtkey) {
+        $("#top-banner").hide();
+      } else {
+        $("#top-banner").slideDown(800);
+      }
+      $("#top-banner .close").click(function () {
+        setCookie('wtkey', 'yes', 1);
+        $("#top-banner").hide();
+      });
+      $(".head-user-mall dl").hover(function () {
+          $(this).addClass("hover");
+        },
+        function () {
+          $(this).removeClass("hover");
+        });
+      $('.head-user-mall .my-mall').mouseover(function () {
+        load_history_information();
+        $(this).unbind('mouseover');
+      });
+
+      $('#activator').click(function () {
+        $('#content-cart').animate({
+          'right': '-250px'
+        });
+        $('#content-compare').animate({
+          'right': '-250px'
+        });
+        $('#vToolbar').animate({
+            'right': '-60px'
+          }, 300,
+          function () {
+            $('#wtHideBar').animate({
+              'right': '59px'
+            }, 300);
+          });
+        $('div[wttype^="bar"]').hide();
+      });
+      $('#wtHideBar').click(function () {
+        $('#wtHideBar').animate({
+            'right': '-86px'
+          },
+          300,
+          function () {
+            $('#content-cart').animate({
+              'right': '-250px'
+            });
+            $('#content-compare').animate({
+              'right': '-250px'
+            });
+            $('#vToolbar').animate({
+              'right': '6px'
+            }, 300);
+          });
+      });
+      $("#compare").click(function () {
+        if ($("#content-compare").css('right') == '-250px') {
+          loadCompare(false);
+          $('#content-cart').animate({
+            'right': '-250px'
+          });
+          $("#content-compare").animate({
+            right: '0px'
+          });
+        } else {
+          $(".close").click();
+          $(".chat-list").css("display", 'none');
+        }
+      });
+      $("#rtoolbar_cart").click(function () {
+        if ($("#content-cart").css('right') == '-250px') {
+          $('#content-compare').animate({
+            'right': '-250px'
+          });
+          $("#content-cart").animate({
+            right: '0px'
+          });
+          if (!$("#rtoolbar_cartlist").html()) {
+            $("#rtoolbar_cartlist").load('https://wosmart.s1107.com/index.php?w=cart&t=ajax_load&type=html');
+          }
+        } else {
+          $(".close").click();
+          $(".chat-list").css("display", 'none');
+        }
+      });
+      $(".close").click(function () {
+        $(".content-box").animate({
+          right: '-250px'
+        });
+      });
+
+      $(".right-menu dl").hover(function () {
+          $(this).addClass("hover");
+        },
+        function () {
+          $(this).removeClass("hover");
+        });
+
+      // 右侧bar用户信息
+      $('div[wttype="a-barUserInfo"]').click(function () {
+        $('div[wttype="barUserInfo"]').toggle();
+      });
+      // 右侧bar登录
+      $('div[wttype="a-barLoginBox"]').click(function () {
+        $('div[wttype="barLoginBox"]').toggle();
+        document.getElementById('codeimage').src = 'https://wosmart.s1107.com/index.php?w=vercode&type=30x92&c=' +
+          Math.random();
+      });
+      $('a[wttype="close-barLoginBox"]').click(function () {
+        $('div[wttype="barLoginBox"]').toggle();
+      });
+    });
+
+    (function () {
+      var ReplaceTpl = function (str, o, regexp) {
+        return str.replace(regexp || /\\?\{([^{}]+)\}/g, function (match, name) {
+          return (o[name] === undefined) ? '' : o[name];
+        });
+      };
+      $.ReplaceTpl = ReplaceTpl;
+      String.prototype.wtReplaceTpl = function (option) {
+        return ReplaceTpl(this, option);
+      };
+    })();
+    window.WoSmart = {},
+      ["Array", "Object", "Function", "String", "Number", "Date", "Boolean", "regexp"].forEach(function (e) {
+        WoSmart["is" + e] = function (t) {
+          return jQuery.type(t) === e.toLowerCase()
+        }
+      }),
+      jQuery.extend(WoSmart, {
+        isEmpty: function (e) {
+          return WoSmart.isBoolean(e) ? !e : null == e ? !0 : WoSmart.isNumber(e) ? 0 >= e : WoSmart.isArray(e) ||
+            WoSmart.isString(e) || e instanceof jQuery ? 0 === e.length : 0 === Object.keys(e).length
+        },
+      });
+    var topMyCity = function ($) {
+      "use strict";
+      var areaUrl = SITEURL + '/index.php?w=index&t=area_list&area_id=0';
+      var $element = {};
+      var tmpl =
+        '<a href="javascript:;" class="area"><span class="icon-map-marker"></span><span id="shortCutAreaName" title="{areaName}" data-id="{areaId}">{areaName}</span> <i></i></a>'
+
+      function _init() {
+        $element.TopCity = $("#TopCity");
+        _getAreaList();
+        "MjJTaG9wTkMySW5jMjIy";
+      }
+
+      function _getAreaIdByCookie() {
+        return $.cookie("wt0");
+      }
+
+      function _setAreaIdByCookie(value) {
+        return $.cookie("wt0", value, {
+          expires: 30,
+          path: '/'
+        });
+      }
+
+      function _getAreaList() {
+        $.getJSON(areaUrl, function (data) {
+          if (data.code == "200") {
+            _buildElement(data.data.areaList)
+          }
+        })
+      }
+
+      function _buildElement(data) {
+        var myCookie = _getAreaIdByCookie(),
+          myCity = !WoSmart.isEmpty(myCookie) ? myCookie.split(",") : "";
+        var a = $.map(data, function (n, index) {
+          //5.3	
+          if (WoSmart.isEmpty($.cookie("wt0"))) {
+            $.each(data, function (i) {
+              if (getcity == this.areaName) {
+                $.cookie("wt0", [this.areaId, this.areaDeep, this.areaName].join(","), {
+                  expires: 30,
+                  path: '/'
+                });
+              }
+            });
+          }
+          return '<div class="item"><a href="javascript:;" data-deep="' + n.areaDeep + '" data-id="' + n.areaId +
+            '" class="' +
+            ((myCity.length && n.areaId == myCity[0]) ? "selected" : "") + '">' + n.areaName + '</a></div>';
+        });
+        if (a.length) {
+          a.splice(0, 0, '<div class="item"><a href="javascript:;" data-deep="1" data-id="0" class="">全国</a></div>');
+        }
+        $element.TopCity
+          .append(tmpl.wtReplaceTpl(myCity ? {
+            areaId: myCity[0],
+            areaName: myCity[2]
+          } : {
+            areaId: 0,
+            areaName: getcity
+          }))
+          .append(
+            a.length ? '<div id="shortCutAreaList" class="area-list">' + a.join('') + '</div>' : '');
+      }
+
+      //更换当前URL
+      function changeURLPar(destiny, par, par_value) {
+        var pattern = par + '=([^&]*)';
+        var replaceText = par + '=' + par_value;
+        if (destiny.match(pattern)) {
+          var tmp = '/\\' + par + '=[^&]*/';
+          tmp = destiny.replace(eval(tmp), replaceText);
+          return (tmp);
+        } else {
+          if (destiny.match('[\?]')) {
+            return destiny + '&' + replaceText;
+          } else {
+            return destiny + '?' + replaceText;
+          }
+        }
+        return destiny + '\n' + par + '\n' + par_value;
+      }
+
+      function bindEvents() {
+        $element.TopCity.on("click", "a[data-id]", function () {
+          var $this = $(this);
+          $("#shortCutAreaList a").removeClass("selected");
+          $this.addClass("selected");
+          $("#shortCutAreaName")
+            .html($this.html())
+            .attr({
+              title: $this.html(),
+              "data-id": $this.data("id") ? $this.data("id") : 0
+            });
+          //修改cookie
+          _setAreaIdByCookie([$this.data("id"), $this.data("deep"), $this.html()].join(","));
+          $('.region').html("请选择地区");
+          $.cookie('dregion', '', {
+            expires: -1
+          });
+          var geturl = changeURLPar(window.location.href, 'area_id', $this.data("id"));
+          location.replace(geturl);
+          //location.reload(geturl);
+        })
+      }
+
+      return {
+        init: function () {
+          _init();
+          bindEvents();
+        },
+        getAreaIdByCookie: _getAreaIdByCookie
+      };
+    }(jQuery);
+    $(function () {
+      topMyCity.init();
+
+    });
+  </script>
+  <div class="header-box">
+    <header class="wt-head wrapper">
+      <h1 class="site-logo"><a href="https://wosmart.s1107.com"><img
+            src="__STATIC__/pc/images/logo.png" class="pngFix"></a></h1>
+      <div class="heade_store_info">
+        <div class="slogo">
+          <a href="https://wosmart.s1107.com/shop-3.html" title="孝笑好多用户商城系统" class="store_name">{$shops.shop_name}</a> <img
+            src="__STATIC__/pc/images/store_grade/0.png" class="pngFix">
+          <br>
+          <span class="all-rate">
+            <span member_id="144"></span>
+          </span>
+        </div>
+        <div class="pj_info">
+          <div class="shopdsr_item">
+            <div class="shopdsr_title">描述相符</div>
+            <div class="shopdsr_score">5.0</div>
+          </div>
+          <div class="shopdsr_item">
+            <div class="shopdsr_title">服务态度</div>
+            <div class="shopdsr_score">5.0</div>
+          </div>
+          <div class="shopdsr_item">
+            <div class="shopdsr_title">物流速度</div>
+            <div class="shopdsr_score">5.0</div>
+          </div>
+        </div>
+        <div class="sub">
+          <style type="text/css">
+            .wts-info .btns .chat_online,
+            .wts-info .btns .chat_offline {
+              padding-left: 10px;
+              width: 73px;
+              line-height: 21px !important;
+              background: url("__STATIC__/pc/images/chat_ico.png") no-repeat;
+            }
+
+            .wts-info .btns .chat_online {
+              background-position: 8px 2px;
+            }
+
+            .wts-info .btns .chat_offline {
+              background-position: 8px -19px;
+            }
+
+            .wts-info .btns span a:hover {
+              background: url("__STATIC__/pc/images/chat_ico.png") no-repeat 8px 2px;
+              ;
+            }
+          </style>
+          <!--店铺基本信息 S-->
+          <div class="wts-info wts-infobox">
+            <div class="content">
+              <div class="store-logo"><a title="{$shops.shop_name}" target="_blank"
+                  href="https://wosmart.s1107.com/shop-3.html"><img
+                    src="__STATIC__/pc/images/default_store_logo.gif" alt="{$shops.shop_name}"></a>
+              </div>
+              <div class="title">
+                <h4><a class="name" title="{$shops.shop_name}" target="_blank"
+                    href="https://wosmart.s1107.com/shop-3.html">{$shops.shop_name}</a><em>自营</em></h4>
+              </div>
+
+
+              <div class="btns clearfix"><a href="https://wosmart.s1107.com/shop-3.html" class="goto">进店逛逛</a><a
+                  href="javascript:collect_store('3','count','store_collect')">收藏店铺<span>(<em
+                      wttype="store_collect">2</em>)</span></a>
+                <span member_id="144"></span>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            $(function () {
+              var store_id = "3";
+              var goods_id = "";
+              var w = "show_store";
+              var t = "index";
+              $.getJSON("index.php?w=show_store&t=ajax_flowstat_record", {
+                store_id: store_id,
+                goods_id: goods_id,
+                w_param: w,
+                t_param: t
+              });
+            });
+          </script>
+        </div>
+      </div>
+      <div class="heade_service_info">
+        <div class="displayed">
+          <div>手机逛</div>
+          <i></i>
+          <div class="sub">
+            <img src="https://wosmart.s1107.com/system/upfiles/shop/store/default_qrcode.png" title="店铺二维码，使用手机扫一扫逛起吧">
+            <p>扫一扫，手机逛起来</p>
+          </div>
+        </div>
+      </div>
+      <div class="search-m" id="search">
+        <form class="search-form" method="get" action="https://wosmart.s1107.com/index.php" name="formSearch"
+          id="formSearch">
+          <input name="w" id="search_wt" value="search" type="hidden" />
+          <input type="hidden" name="keyword" value="" />
+          <input name="inkeyword" id="inkeyword" type="text" class="input-text" value="" x-webkit-speech lang="zh-CN"
+            onwebkitspeechchange="foo()" x-webkit-grammar="builtin:search" placeholder="想找什么商品？" />
+          <a href="javascript:void(0)" class="search-btn-all" wttype="search_in_shop"><span>搜全站</span></a><a
+            href="javascript:void(0)" class="search-btn-store" wttype="search_in_store"><span>搜本店</span></a>
+        </form>
+      </div>
+    </header>
+  </div>
+  <!-- PublicHeadLayout End -->
+  <div id="store_decoration_content" class="background" style="">
+    <div class="wtsl-nav">
+      <div class="banner"><a href="https://wosmart.s1107.com/shop-3.html" class="img">
+          <div class="wts-default-banner"></div>
+        </a></div>
+      <div id="nav" class="wts-nav">
+        <ul>
+          <li id="store_nav_class_button" class="normal wts-nav-classes">
+            <a href="javascript:;"><span>站内所有分类<i></i></span></a>
+            
+            <!-- 分类 -->
+            <ul id="store_nav_class_menu" class="classes-menu" style="display:none;">
+                {foreach name='$shopcate.cateres' item='cateres'}
+                <li class="store-nav-class-sub-menu"><a href="javascrpit:void(0);" title="{$cateres.cate_name}"><i></i>{$cateres.cate_name}</a>
+                  <ul class="store-nav-class-menu-item" style="display:none;">
+                    {foreach name='$cateres.twocate' item='twocate'}
+                    <li><a href="javascrpit:void(0);" title="{$twocate.cate_name}"><i></i>{$twocate.cate_name}</a></li>
+                    {/foreach}
+                  </ul>
+                </li>
+                {/foreach}
+            </ul>
+            
+          </li>
+          <li class="active"><a href="shopinfo.html?shop_id={$shops.id}"><span>店铺首页<i></i></span></a></li>
+          <li class="normal"><a href="https://wosmart.s1107.com/store_snshome-index-sid-3.html"><span>店铺动态<i></i></span></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    $(function () {
+      $("img[rel='lazy']").scrollLoading();
+      $('a[wttype="search_in_store"]').click(function () {
+        if ($('#inkeyword').val() == '') {
+          return false;
+        }
+        $('#search_wt').val('show_store');
+        $('<input type="hidden" value="3" name="store_id" /> <input type="hidden" name="t" value="goods_all" />')
+          .appendTo("#formSearch");
+        $('#formSearch').submit();
+      });
+      $('a[wttype="search_in_shop"]').click(function () {
+        document.formSearch.keyword.value = document.formSearch.inkeyword.value;
+        if ($('#inkeyword').val() == '') {
+          return false;
+        }
+        $('#formSearch').submit();
+      });
+      $("#formSearch").keydown(function (e) {
+        if (e.keyCode == 13) {
+          document.formSearch.keyword.value = document.formSearch.inkeyword.value;
+        }
+      });
+      $('#inkeyword').css("color", "#999999");
+      $('#store_nav_class_button').on('mouseover', function () {
+        $('#store_nav_class_menu').show();
+      });
+      $('#store_nav_class_button').on('mouseout', function () {
+        $('#store_nav_class_menu').hide();
+      });
+      $('.store-nav-class-sub-menu').on('mouseover', function () {
+        $('.store-nav-class-menu-item').hide();
+        $(this).children('.store-nav-class-menu-item').show();
+      });
+      $('.store-nav-class-sub-menu').on('mouseout', function () {
+        $('.store-nav-class-menu-item').hide();
+      });
+    });
+  </script>
+  <link href="__STATIC__/pc/css/shop.css" rel="stylesheet" type="text/css">
+  <link href="__STATIC__/pc/css/store_decoration.css" rel="stylesheet" type="text/css">
+  <link href="__STATIC__/pc/css/style.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/pc/js/member.js" charset="utf-8"></script>
+  <script type="text/javascript" src="__STATIC__/pc/js/shop.js" charset="utf-8"></script>
+  <div id="store_decoration_content" class="background" style="">
+    <div class="wrapper" style="width:100%; margin:0 auto; text-align:center">
+      <div class="flexslider">
+        <ul class="slides">
+          <li><a style="background:url(__STATIC__/pc/images/f01.jpg) no-repeat center center;" href="javascript:;"></a></li>
+          <li><a style="background: url(__STATIC__/pc/images/f02.jpg) no-repeat center center;" href="javascript:;"></a></li>
+          <li><a style="background: url(__STATIC__/pc/images/f03.jpg) no-repeat center center;" href="javascript:;"></a></li>
+          <li><a style="background: url(__STATIC__/pc/images/f04.jpg) no-repeat center center;" href="javascript:;"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrapper mt10">
+      <div class="wts-main">
+        <div class="wts-main-container">
+          <div class="title"> <span><a href="https://wosmart.s1107.com/shop-view-3-0-0-0-0.html" class="more">更多</a></span>
+            <h4>推荐商品</h4>
+          </div>
+          <div class="content wts-goods-list">
+            <ul>
+                {foreach name='cxgoodres' item='goods'}
+                <li>
+                  <dl>
+                    <dt>
+                        <a href="{:url('goods/goodsinfo', array('goods_id' => $goods.id))}" class="goods-thumb" target="_blank">
+                            <img src="{$goods.thumb_url}" rel="lazy" data-url="{$goods.thumb_url}" alt="{$goods.goods_name}" />
+                        </a>
+                        <ul class="goods-thumb-scroll-show">
+                          <li class="selected">
+                            <a href="javascript:void(0)">
+                                <img src="{$goods.thumb_url}" rel="lazy" ata-url="{$goods.thumb_url}">
+                            </a>
+                          </li>
+                        </ul>
+                    </dt>
+                    <dd class="goods-name">
+                        <a href="{:url('goods/goodsinfo', array('goods_id' => $goods.id))}" title="{$goods.goods_name}" target="_blank">{$goods.goods_name}</a>
+                    </dd>
+                    <dd class="goods-content">
+                        <span class="price"><i>&yen;</i> {$goods.zs_price} </span> 
+                        <span class="goods-sold">已售：<strong>{$goods.sale_num}</strong> 件</span>
+                    </dd>
+                  </dl>
+                </li>
+                {/foreach}
+            </ul>
+          </div>
+        </div>
+        <div class="wts-main-container">
+          <div class="title"><span><a href="javascript:void(0);" class="more">更多</a></span>
+            <h4>新品</h4>
+          </div>
+          <div class="content wts-goods-list">
+              <p style="padding: 5px;text-align: center;">暂无新品</p>
+            
+<!--            <ul>
+              <li>
+                <dl>
+                  <dt><a href="https://wosmart.s1107.com/goods-186.html" class="goods-thumb" target="_blank"><img
+                        src="__STATIC__/pc/images/loading.gif" rel="lazy"
+                        data-url="https://wosmart.s1107.com/system/upfiles/shop/store/goods/3/3_495a7599f64e7b5c23fc446d7b535eb6_240.jpg"
+                        alt="K汐-巴汐 微喇裤七分裤/九分裤立体裁剪2018年秋季百搭中腰裤子时尚休闲 KXBX2707" /></a>
+                    <ul class="goods-thumb-scroll-show">
+                      <li class="selected"><a href="javascript:void(0)"><img
+                            src="__STATIC__/pc/images/loading.gif" rel="lazy"
+                            data-url="https://wosmart.s1107.com/system/upfiles/shop/store/goods/3/3_495a7599f64e7b5c23fc446d7b535eb6_60.jpg"></a>
+                      </li>
+                    </ul>
+                  </dt>
+                  <dd class="goods-name"><a href="https://wosmart.s1107.com/goods-186.html"
+                      title="K汐-巴汐 微喇裤七分裤/九分裤立体裁剪2018年秋季百搭中腰裤子时尚休闲 KXBX2707" target="_blank">K汐-巴汐
+                      微喇裤七分裤/九分裤立体裁剪2018年秋季百搭中腰裤子时尚休闲 KXBX2707</a></dd>
+                  <dd class="goods-content"><span class="price"><i>&yen;</i> 500.00 </span> <span
+                      class="goods-sold">已售：<strong>2</strong> 件</span></dd>
+                </dl>
+              </li>
+            </ul>-->
+            
+          </div>
+        </div>
+      </div>
+      <div class="wts-sidebar">
+
+        <div class="wts-sidebar-container wts-class-bar">
+          <div class="title">
+            <h4>商品分类</h4>
+          </div>
+          <div class="content">
+            <p>
+                <span><a href="https://wosmart.s1107.com/shop-view-3-0-1-2-0.html">按新品</a></span>
+                <span><a href="https://wosmart.s1107.com/shop-view-3-0-2-2-0.html">按价格</a></span>
+                <span><a href="https://wosmart.s1107.com/shop-view-3-0-3-2-0.html">按销量</a></span><span><a
+                  href="https://wosmart.s1107.com/shop-view-3-0-5-2-0.html">按人气</a></span></p>
+                  
+            <ul class="wts-submenu">
+              <li><span class="ico-none"><em>-</em></span><a href="https://wosmart.s1107.com/shop-view-3-0-0-0-0.html">全部商品</a></li>
+              
+              {foreach name='$shopcate.cateres' item='cateres'}
+                <li>
+                  <span class="ico-none" onclick="class_list(this);" span_id="{$cateres.id}" style="cursor: pointer;"><em>-</em></span>
+                  <a href="https://wosmart.s1107.com/shop-view-3-5-0-0-0.html">{$cateres.cate_name}</a>
+                  <ul id="stc_{$cateres.id}">
+                      {foreach name='$cateres.twocate' item='twocate'}
+                      <li><span class="ico-sub">&nbsp;</span><a href="https://wosmart.s1107.com/shop-view-3-6-0-0-0.html">{$twocate.cate_name}</a></li>
+                      {/foreach}
+                  </ul>
+                </li>
+              {/foreach}
+              
+            </ul>
+
+          </div>
+        </div>
+
+
+        <div class="wts-sidebar-container wts-top-bar">
+          <div class="title">
+            <h4>商品排行</h4>
+          </div>
+          <div class="content">
+            <ul class="wts-top-tab pngFix">
+              <li id="hot_sales_tab" class="current"><a
+                  href="https://wosmart.s1107.com/shop-view-3-0-3-2-0.html">热销TOP5</a></li>
+              <li id="hot_collect_tab"><a href="https://wosmart.s1107.com/shop-view-3-0-4-2-0.html">人气TOP5</a></li>
+            </ul>
+            <div id="hot_sales_list" class="wts-top-panel">
+              <ol>
+                {foreach name='sale_top5' item='sale'}
+                    <li>
+                      <dl>
+                        <dt><a title="{$sale.goods_name}" href="{:url('goods/goodsinfo', array('goods_id' => $sale.id))}">{$sale.goods_name}</a></dt>
+                        <dd class="goods-pic"><a title="{$sale.goods_name}" href="{:url('goods/goodsinfo', array('goods_id' => $sale.id))}">
+                            <span class="thumb size60"><i></i><img src="{$sale.thumb_url}" rel="lazy" data-url="{$sale.thumb_url}" onload="javascript:DrawImage(this,60,60);"></span></a>
+                            <p>
+                                <span class="thumb size100"><i></i>
+                                <img src="{$sale.thumb_url}" rel="lazy" data-url="{$sale.thumb_url}" onload="javascript:DrawImage(this,100,100);" title="{$sale.goods_name}"><big></big><small></small></span>
+                          </p>
+                        </dd>
+                        <dd class="price pngFix">{$sale.zs_price}</dd>
+                        <dd class="selled pngFix">售出：<strong>{$sale.sale_num}</strong>笔</dd>
+                      </dl>
+                    </li>
+                {/foreach}
+              </ol>
+            </div>
+            
+            <div id="hot_collect_list" class="wts-top-panel hide">
+              <ol>
+                {foreach name='coll_top5' item='coll'}
+                    <li>
+                      <dl>
+                        <dt><a href="{:url('goods/goodsinfo', array('goods_id' => $coll.id))}">{$coll.goods_name}</a></dt>
+                        <dd class="goods-pic"><a title="{$coll.goods_name}" href="{:url('goods/goodsinfo', array('goods_id' => $coll.id))}">
+                            <span class="thumb size60"><i></i><img src="__STATIC__/pc/images/loading.gif" rel="lazy" data-url="{$coll.thumb_url}" onload="javascript:DrawImage(this,60,60);"></span></a>
+                          <p>
+                            <span class="thumb size100"><i></i>
+                            <img src="__STATIC__/pc/images/loading.gif" rel="lazy" data-url="{$coll.thumb_url}" onload="javascript:DrawImage(this,100,100);"
+                                title="{$coll.goods_name}"><big></big><small></small></span></p>
+                        </dd>
+                        <dd class="price pngFix">{$coll.zs_price}</dd>
+                        <dd class="collection pngFix">收藏人气：<strong>{$coll.coll_num}</strong></dd>
+                      </dl>
+                    </li>
+                {/foreach}
+              </ol>
+            </div>
+            <p><a href="https://wosmart.s1107.com/shop-view-3-0-0-0-0.html">查看本店其他商品</a></p>
+          </div>
+        </div>
+        <script type="text/javascript">
+          $(document).ready(function () {
+            //热销排行切换
+            $('#hot_sales_tab').on('mouseenter', function () {
+              $(this).addClass('current');
+              $('#hot_collect_tab').removeClass('current');
+              $('#hot_sales_list').removeClass('hide');
+              $('#hot_collect_list').addClass('hide');
+            });
+            $('#hot_collect_tab').on('mouseenter', function () {
+              $(this).addClass('current');
+              $('#hot_sales_tab').removeClass('current');
+              $('#hot_sales_list').addClass('hide');
+              $('#hot_collect_list').removeClass('hide');
+            });
+          });
+          /** left.php **/
+          // 商品分类
+          function class_list(obj) {
+            var stc_id = $(obj).attr('span_id');
+            var span_class = $(obj).attr('class');
+            if (span_class == 'ico-block') {
+              $("#stc_" + stc_id).show();
+              $(obj).html('<em>-</em>');
+              $(obj).attr('class', 'ico-none');
+            } else {
+              $("#stc_" + stc_id).hide();
+              $(obj).html('<em>+</em>');
+              $(obj).attr('class', 'ico-block');
+            }
+          }
+        </script>
+      </div>
+    </div>
+
+    <!-- 引入幻灯片JS -->
+    <script type="text/javascript" src="__STATIC__/pc/js/jquery.flexslider.min.js"></script>
+    <!-- 绑定幻灯片事件 -->
+    <script type="text/javascript">
+      $(window).load(function () {
+        $('.flexslider').flexslider();
+
+
+        // 图片切换效果
+        $('.goods-thumb-scroll-show').find('a').mouseover(function () {
+          $(this).parents('li:first').addClass('selected').siblings().removeClass('selected');
+          var _src = $(this).find('img').attr('src');
+          _src = _src.replace('_60.', '_240.');
+          _src = _src.replace('-60', '-240');
+          $(this).parents('dt').find('.goods-thumb').find('img').attr('src', _src);
+        });
+      });
+    </script>
+    <div class="clear">&nbsp;</div>
+  </div>
+  <link href="__STATIC__/pc/css/chat.css" rel="stylesheet" type="text/css">
+  <div style="clear: both;"></div>
+  <div id="web_chat_dialog" style="display: none;float:right;">
+  </div>
+  <a id="chat_login" href="javascript:void(0)" style="display: none;"></a>
+  <script type="text/javascript">
+    var LOGIN_SITE_URL = 'https://wosmart.s1107.com/home';
+    var CHAT_SITE_URL = 'https://wosmart.s1107.com/api/im';
+    var BASE_SITE_URL = 'https://wosmart.s1107.com';
+    var connect_url = "http://211.149.249.207:33";
+
+    var layout = "layout/store_layout.php";
+    var w_t = "show_store_index";
+    var chat_goods_id = "0";
+    var user = {};
+
+    user['u_id'] = "";
+    user['u_name'] = "";
+    user['s_id'] = "";
+    user['s_name'] = "";
+    user['s_avatar'] = "__STATIC__/pc/images/default_store_avatar.png";
+    user['avatar'] = "__STATIC__/pc/images/default_user_portrait.gif";
+
+    $("#chat_login").wt_login({
+      wthash: '0ad3b60b',
+      formhash: 'BKLtUtJa2E3pX1DqzzCKLuUdO3GJS36'
+    });
+  </script>
+  <script type="text/javascript" src="__STATIC__/pc/js/jquery.charCount.js" charset="utf-8">
+  </script>
+  <script type="text/javascript" src="__STATIC__/pc/js/jquery.smilies.js" charset="utf-8">
+  </script>
+  <script type="text/javascript" src="__STATIC__/pc/js/user.js" charset="utf-8"></script>
+  <div class="slogen">
+    <div class="wrapper">
+      <ul>
+        <li><span class="line"></span> <span class="icon"> <img style="width: 60px;"
+              src="__STATIC__/pc/images/loading.gif"
+              data-url="https://wosmart.s1107.com/system/upfiles/shop/contracticon/7day_60.gif" rel="lazy" /> </span> <span
+            class="name"> 7天退货 </span> </li>
+        <li><span class="line"></span> <span class="icon"> <img style="width: 60px;"
+              src="__STATIC__/pc/images/loading.gif"
+              data-url="https://wosmart.s1107.com/system/upfiles/shop/contracticon/pz_60.gif" rel="lazy" /> </span> <span
+            class="name"> 品质承诺 </span> </li>
+        <li><span class="line"></span> <span class="icon"> <img style="width: 60px;"
+              src="__STATIC__/pc/images/loading.gif"
+              data-url="https://wosmart.s1107.com/system/upfiles/shop/contracticon/psbf_60.gif" rel="lazy" /> </span> <span
+            class="name"> 破损补寄 </span> </li>
+        <li><span class="line"></span> <span class="icon"> <img style="width: 60px;"
+              src="__STATIC__/pc/images/loading.gif"
+              data-url="https://wosmart.s1107.com/system/upfiles/shop/contracticon/jswl_60.gif" rel="lazy" /> </span> <span
+            class="name"> 急速物流 </span> </li>
+      </ul>
+    </div>
+  </div>
+  <div class="faq">
+    <div class="wrapper">
+      <ul>
+        <li>
+          <dl class="s1">
+            <dt>
+              新手上路 </dt>
+            <dd><a href="https://wosmart.s1107.com/help-39.html" title="积分细则"> 积分细则 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-40.html" title="积分兑换说明"> 积分兑换说明 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-6.html" title="如何注册成为会员"> 如何注册成为会员 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-7.html" title="如何搜索"> 如何搜索 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-8.html" title="忘记密码"> 忘记密码 </a></dd>
+          </dl>
+        </li>
+        <li>
+          <dl class="s2">
+            <dt>
+              支付方式 </dt>
+            <dd><a href="https://wosmart.s1107.com/help-28.html" title="分期付款"> 分期付款 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-29.html" title="邮局汇款"> 邮局汇款 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-30.html" title="公司转账"> 公司转账 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-16.html" title="如何注册支付宝"> 如何注册支付宝 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-17.html" title="在线支付"> 在线支付 </a></dd>
+          </dl>
+        </li>
+        <li>
+          <dl class="s3">
+            <dt>
+              售后服务 </dt>
+            <dd><a href="https://wosmart.s1107.com/help-26.html" title="联系卖家"> 联系卖家 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-31.html" title="退换货政策"> 退换货政策 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-32.html" title="退换货流程"> 退换货流程 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-33.html" title="返修/退换货"> 返修/退换货 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-34.html" title="退款申请"> 退款申请 </a></dd>
+          </dl>
+        </li>
+        <li>
+          <dl class="s4">
+            <dt>
+              购物指南 </dt>
+            <dd><a href="https://wosmart.s1107.com/help-18.html" title="会员修改密码"> 会员修改密码 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-19.html" title="会员修改个人资料"> 会员修改个人资料 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-20.html" title="商品发布"> 商品发布 </a></dd>
+            <dd><a href="https://wosmart.s1107.com/help-21.html" title="修改收货地址"> 修改收货地址 </a></dd>
+          </dl>
+        </li>
+        <li class="kefu-con">
+          <dl>
+            <dt>联系我们</dt>
+            <dd>
+              <i class="icon-tel"></i>
+              <div><strong>400-000-0000</strong>
+                <p>08:00-22:30(周一至周日)</p>
+              </div>
+            </dd>
+            <dd>
+              <i class="icon-chat"></i>
+              <div>
+                <strong>在线客服</strong>
+                <p>E-mail：web@wosmart.s1107.com</p>
+              </div>
+            </dd>
+          </dl>
+        </li>
+        <li class="box-qr">
+          <dl>
+            <dt>关注我们<a title="关注WoSmart多用户商城系统微信公众号" class="weixin">
+                <span class="weixin-qr"></span>
+              </a>
+              <a title="关注WoSmart多用户商城系统微博" class="weibo">
+                <span class="weibo-qr"></span>
+              </a>
+            </dt>
+            <dd>
+              <p><img src="__STATIC__/pc/images/loading.gif"
+                  data-url="__STATIC__/pc/images/mb_app.png" rel="lazy" /></p>
+              <p>下载APP手机端</p>
+            </dd>
+            <dd>
+              <p><img src="__STATIC__/pc/images/loading.gif"
+                  data-url="__STATIC__/pc/images/05434220788623960.png" rel="lazy" /></p>
+              <p>关注微信公众号</p>
+            </dd>
+          </dl>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer">
+    <p><a href="https://wosmart.s1107.com">首页</a>
+      | <a href="https://wosmart.s1107.com/index.php?w=article&amp;article_id=24">招聘英才</a>
+      | <a href="https://wosmart.s1107.com/index.php?w=article&amp;article_id=25">合作及洽谈</a>
+      | <a href="https://wosmart.s1107.com/index.php?w=article&amp;article_id=23">联系我们</a>
+      | <a href="https://wosmart.s1107.com/since">物流自取</a>
+      | <a href="https://wosmart.s1107.com/link.html">友情链接</a>
+      | <a href="https://wosmart.s1107.com/home/index.php?w=article&amp;article_id=22">关于我们</a>
+    </p>
+    Copyright 2018 <a href="https://wosmart.s1107.com" target="_blank">WoSmart</a> All rights reserved.<br />版权所有：<a
+      href="https://wosmart.s1107.com" target="_blank">wosmart.s1107.com</a> <a href="http://www.miibeian.gov.cn"
+      rel="nofollow" target="_blank"></a>
+  </div>
+  <div id="task"></div>
+  <script type="text/javascript">
+    document.getElementById('task').innerHTML =
+      '<iframe src="https://wosmart.s1107.com/system/task/cj_index.php?w=task&run=js" width="0" height="0" frameborder="0" style="display:none;"></iframe>';
+  </script>
+  <script type="text/javascript" src="__STATIC__/pc/js/jquery.cookie.js"></script>
+  <link href="__STATIC__/pc/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/pc/js/perfect-scrollbar.min.js"></script>
+  <script type="text/javascript" src="__STATIC__/pc/js/jquery.qtip.min.js"></script>
+  <link href="__STATIC__/pc/css/jquery.qtip.min.css" rel="stylesheet" type="text/css">
+  <script src="__STATIC__/pc/js/compare.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $('[wttype="mcard"]').membershipCard({
+        type: 'shop'
+      });
+    });
+  </script>
+  <script type="text/javascript">
+    $(function () {
+      var storeTrends = true;
+      $('.favorites').mouseover(function () {
+        var $this = $(this);
+        if (storeTrends) {
+          $.getJSON('index.php?w=show_store&t=ajax_store_trend_count&store_id=3', function (data) {
+            $this.find('li:eq(2)').find('a').html(data.count);
+            storeTrends = false;
+          });
+        }
+      });
+
+      $('a[wttype="share_store"]').click(function () {
+        login_dialog();
+      });
+    });
+  </script>
+</body>
+
+</html>

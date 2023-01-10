@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>{$goods_name}&nbsp;&nbsp;的单选属性库存</h5>
+                    </div>
+                    <div class="ibox-content">  
+                    <form method="post" id="form">
+                    <div class="row">
+						   <div class="col-sm-7 m-b-xs">
+                                <button type="submit" id="doSubmit" class="btn btn-sm btn-success" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;保存库存</button>
+                            </div> 
+                   </div>                                           
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                {if condition="!empty($radioAttrRes)"}
+                                {foreach name="radioAttrRes" item="v"}
+                                <th>{$v[0]['attr_name']}</th>
+                                {/foreach}
+                                {/if}
+                                <th>库存</th>
+                                <th>设为默认</th>
+                                {if condition="!empty($radioAttrRes)"}<th>操作</th>{/if}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {if condition="!empty($prores)"}
+                                {foreach name="prores" item="val" key="k2"}
+                                <tr class="kc">
+                                {if condition="!empty($radioAttrRes)"}
+                                {foreach name="radioAttrRes" item="v" key="k"}
+                                    <td>
+                                    <select name="goods_attr[{$k}][]" class="form-control">
+                                    <option value="">请选择</option>
+                                    {foreach name="v" item="vo"}
+                                        <option value="{$vo.id}" {if condition="strpos(','.$val['goods_attr'].',',','.$vo['id'].',') !== false"}selected="selected"{/if}>{$vo.attr_value}</option> 
+                                    {/foreach}     
+                                    </select>
+                                    </td> 
+                                {/foreach}
+                                {/if}
+                                    <td><input type="text" name="goods_number[]" value="{$val.goods_number}" class="form-control"></td> 
+                                    <td>
+                                    {if condition="$val['def'] eq 1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal({$val.id},'def',this);"><i class="fa fa-check"></i></button>
+                                    {elseif condition="$val['def'] eq 0" /}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal({$val.id},'def',this);"><i class="fa fa-times"></i></button>
+                                    {/if}
+                                    </td>
+                                    {if condition="!empty($radioAttrRes)"}<td><button type="button" class="btn btn-success btn-sm" onclick="getAttrPro(this);">{if condition="$k2 eq 0"}+{else/}-{/if}</button></td>{/if}
+                                </tr>
+                                {/foreach}
+                                {else/}
+                                
+                                <tr class="kc">
+                                {if condition="!empty($radioAttrRes)"}
+                                {foreach name="radioAttrRes" item="v" key="k"}
+                                    <td>
+                                    <select name="goods_attr[{$k}][]" class="form-control">
+                                    <option value="">请选择</option>
+                                    {foreach name="v" item="vo"}
+                                        <option value="{$vo.id}">{$vo.attr_value}</option> 
+                                    {/foreach}     
+                                    </select>
+                                    </td> 
+                                {/foreach}
+                                {/if}
+                                    <td><input type="text" name="goods_number[]" class="form-control"></td> 
+                                    <td>
+                                    <button class="btn btn-danger btn-xs changedef" type="button" attr="0" onclick="changedef(this);"><i class="fa fa-times"></i></button>
+                                    <input class="defkc" type="hidden" name="def[]" value="0">
+                                    </td>
+                                    {if condition="!empty($radioAttrRes)"}<td><button type="button" class="btn btn-success btn-sm clone" onclick="getAttrPro(this);">+</button></td>{/if}
+                                </tr>    
+                                                            
+                                {/if}
+                                <input type="hidden" name="goods_id" value="{$goods_id}">
+					
+                            </tbody>
+                        </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    
+    <script>   
+    $(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });   
+        
+        $('#doSubmit').click(function(){
+        	post('{:url("goods/product")}','POST',$('#form').serialize(),1);
+            return false;
+        });
+    });
+    
+    function changeTableVal(field_id,field_name,obj){
+    	if($(obj).hasClass('btn-danger')){
+    		var field_value = 1;
+    	}else if($(obj).hasClass('btn-primary')){
+    		var field_value = 0;
+    	}
+    	$.ajax({
+    		url:"{:url('goods/progaibian')}",
+    		type:'POST',
+    		data:{id:field_id,name:field_name,value:field_value},
+    		dataType:'json',
+    		success:function(data){
+    			if(data == 1){
+    			   	if(field_value == 1){
+    		    		$(obj).removeClass('btn-danger').addClass('btn-primary');
+    		    		$(obj).html('<i class="fa fa-check"></i>');
+    			   	}else if(field_value == 0){
+    		    		$(obj).removeClass('btn-primary').addClass('btn-danger');
+    		    		$(obj).html('<i class="fa fa-times"></i>');
+    			   	}
+    			}else{
+    				layer.msg('更新失败，请重试', {icon: 2,time: 1000});
+    			}
+    		},
+    		error:function(){
+    			layer.msg('操作失败或您没有权限，请重试', {icon: 2,time: 1000});
+    		}
+    	});
+    }
+    
+    function changedef(obj){
+    	var div = $(obj).parent();
+    	var div2 = $(obj).parent().parent().parent();
+    	if($(obj).hasClass('btn-danger')){
+    		var field_value = 1;
+    	}else if($(obj).hasClass('btn-primary')){
+    		var field_value = 0;
+    	}
+	   	div.find('input[class=defkc]').val(field_value);
+
+	   	if(field_value == 1){
+	   		$('.btn-primary').removeClass('btn-primary').addClass('btn-danger');
+	   		$('input[class=defkc]')
+    		$(obj).removeClass('btn-danger').addClass('btn-primary');
+    		$(obj).html('<i class="fa fa-check"></i>');
+	   	}else if(field_value == 0){
+    		$(obj).removeClass('btn-primary').addClass('btn-danger');
+    		$(obj).html('<i class="fa fa-times"></i>');
+	   	}
+    }
+
+    function getAttrPro(o){
+    	var tr = $(o).parent().parent();
+    	if($(o).text() == '+'){
+    		var newtr = tr.clone();
+    		newtr.find('.clone').text('-');
+    		$('.kc:last').after(newtr);
+    	}else if($(o).text() == '-'){
+    		tr.remove();
+    	}
+    }
+    
+
+    function cl(){
+    	location.reload();
+    }
+
+    </script>
+</body>
+</html>

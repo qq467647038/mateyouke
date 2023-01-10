@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{$Think.config.webname}</title>
+    <meta name="keywords" content="{$Think.config.keyword}">
+    <meta name="description" content="{$Think.config.description}">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/jquery-ui-1.10.4.custom.min.js"></script>
+</head>
+
+<style>
+    tr{cursor: pointer;}
+</style>
+
+<script>
+//删除url
+var deleteUrl = "{:url('news/delete')}";
+var url = '/{$Request.module}/news';
+</script>
+
+  <script>
+  $(document).ready(function(){
+      var fixHelperModified = function(e, tr) {
+                  var $originals = tr.children();
+                  var $helper = tr.clone();
+                  $helper.children().each(function(index) {
+                      $(this).width($originals.eq(index).width())
+                  });
+                  return $helper;
+              },
+              updateIndex = function(e, ui) {
+                  var sort = '';
+                  var ids = '';
+                  $('td.index', ui.item.parent()).each(function (i) {
+                      $(this).html(i + 1);
+	        		  ids+=$(this).attr('shuxing')+',';
+	        		  sort+=$(this).text()+',';
+                  });
+                  ids = ids.substring(0,ids.length-1);
+                  sort = sort.substring(0,sort.length-1);
+
+	              $.ajax({
+	            	type:'POST',
+	            	url:"{:url('news/paixu')}",
+	            	  data:{'ids':ids,'sort':sort},
+	            	  dataType:'json',
+	            	  success:function(data){
+	            	     layer.msg(data.mess, {icon: 1,time: 1000});
+	            	  },
+	            	  error:function(){
+	            		  layer.msg('操作失败或您没有权限，请重试', {icon: 2,time: 2000});
+	            	  }
+	              });
+              };
+
+      $("#sort tbody").sortable({
+          helper: fixHelperModified,
+          stop: updateIndex
+      }).disableSelection();
+  });
+  </script>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>{if condition="(isset($cate_name)) && ($cate_name)"}{$cate_name}{/if}文章列表</h5>
+                    </div>
+                    <div class="ibox-content">
+						<div class="row">
+						   <div class="col-sm-7 m-b-xs">
+                                <button type="button" class="btn btn-sm btn-primary" id="addar" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;增加文章</button>
+                                <button type="button" class="btn btn-sm btn-danger" id="del">批量删除</button>
+                            </div> 
+                            
+                            <form action="{:url('news/search')}" method="post" id="form_search">
+                            <div class="col-sm-2 m-b-xs">
+                                <select class="input-sm form-control input-s-sm inline" name="cate_id">
+                                    <option value="0">全文搜索</option>
+                                    {foreach name="cateres" item="v"}
+                                    <option value="{$v.id}" {if condition="(isset($cate_id)) && ($cate_id eq $v['id'])"}selected="selected"{/if} {eq name="v.pid" value="0"}style="font-weight:bold;"{/eq}>{:str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $v['level'])}{gt name="v.level" value="0"}|{/gt}{$v.html}{$v.cate_name}</option>
+                                    {/foreach}
+                                </select>
+                            </div>             
+
+                            <div class="col-sm-3" style="float:right;">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" placeholder="请输入文章标题" {if condition="isset($ar_title)"}value="{$ar_title}"{/if} class="input-sm form-control"> <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary" id="submit_search2">搜索</button></span>
+                                </div>
+                            </div>
+                           </form>
+                        </div>                          
+                        
+                        <div id="ajaxpagetest">
+                        {include file="news/ajaxpage" /}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    <script src="__PUBLIC__/admin/js/common/admin.js"></script>
+	
+</body>
+</html>

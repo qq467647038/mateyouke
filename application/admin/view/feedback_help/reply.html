@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<script>
+var pnum = {$pnum};
+var filter = {$filter};
+{if condition="(!isset($search)) OR (!$search)"}
+var url = "/{$Request.module}/feedback_help/lst/filter/"+filter+".html?page="+pnum;
+{else/}
+var url = "/{$Request.module}/feedback_help/search.html?page="+pnum;
+{/if}
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>回复反馈</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" id="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户昵称：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$fks.user_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户手机号：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$fks.phone}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">反馈内容：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:600px; height:100%; overflow:hidden; line-height:25px;">{$fks.content}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">反馈时间：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{:date('Y-m-d H:i:s',$fks['time'])}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">管理员回复状态：</label>
+                                <div class="col-sm-6">
+                                        {if condition="$fks['reply'] eq 0"}<div style="font-size:14px; width:200px; height:35px; line-height:35px;">未回复</div>{/if}
+                                        {if condition="$fks['reply'] eq 1"}<div style="font-size:14px; width:200px; height:35px; line-height:35px;">已回复</div>{/if}
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            {if condition="$replys"}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">操作管理员：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$replys.en_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">回复时间：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{:date('Y-m-d H:i:s',$replys['replytime'])}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            {/if}
+                            
+                            <div class="form-group">
+                            <label class="col-sm-2 control-label">回复内容:</label>
+                                <div class="col-sm-6">
+                                    <textarea name="content" id="content" class="form-control">{if condition="$replys"}{$replys.content}{/if}</textarea>
+                                </div> 
+                            </div>				
+                            <div class="hr-line-dashed"></div> 
+                           
+                            <input type="hidden" name="fid" value="{$fks.id}" />
+                            
+                            {if condition="$replys"}
+                            <input type="hidden" name="id" value="{$replys.id}" />
+                            {/if}
+                           
+                                                               
+                           <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button" id="doSubmit" style="margin-right:50px;">保存</button>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script>
+      $(function(){ 
+    	  $('#doSubmit').click(function(){
+    		  $(this).attr("disabled", "true");
+			  var content = $('#content').val();
+			  if(content == ''){
+				  layer.msg('请填写回复内容', {icon: 2,time: 1000});
+				  $(this).removeAttr("disabled");//启用按钮
+    			  return false;
+			  }
+			  
+		      $.ajax({
+			      url:"{:url('feedback_help/reply')}",
+			      type:'POST',
+			      data:$('#form').serialize(),
+			      dataType:'json',
+			      success:function(data){
+			    	  if(data.status == 1){
+			    		  layer.msg(data.mess, {icon: 1,time: 1000}, function(){
+                               parent.location.href = url;
+			    		  });
+			    	  }else if(data.status == 0){
+			    		  $('#doSubmit').removeAttr("disabled");//启用按钮
+			    		  layer.msg(data.mess, {icon: 2,time: 1000});
+			    	  }
+			      },
+			      error:function(){
+			    	  $('#doSubmit').removeAttr("disabled");//启用按钮
+			    	  layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+			      }
+			  });
+    	  });
+      });
+    	
+      function cl(){
+    	  parent.location.href = url;
+      }
+    </script>
+
+</body>
+</html>

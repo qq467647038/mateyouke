@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{$webtitle}</title>
+    <meta name="keywords" content="{$keywords}">
+    <meta name="description" content="{$description}22">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <!-- Morris -->
+    <link href="__PUBLIC__/admin/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <!-- Gritter -->
+    <link href="__PUBLIC__/admin/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/Highcharts/highcharts.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+
+</head>
+
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-primary pull-right"></span>
+                    <h5>总会员数（人）</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins"><i class="fa fa-users"></i> {$memberNum}</h1>
+                    <div class="stat-percent font-bold text-navy">
+                    </div>
+                    <small></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-success pull-right"></span>
+                    <h5>总营业额(元)</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins"><i class="fa fa-rmb"></i> {$totalTurnover}</h1>
+                    <div class="stat-percent font-bold text-success">
+                    </div>
+                    <small></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right"></span>
+                    <h5>总订单数（个）</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins"><i class="fa fa-map-signs"></i> {$order_num}</h1>
+                    <div class="stat-percent font-bold text-info">
+                    </div>
+                    <small></small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-danger pull-right"></span>
+                    <h5>{$month}月份订单数（个）</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins"><i class="fa fa-map-signs"></i> {$month_order_num}</h1>
+                    <div class="stat-percent font-bold text-danger">
+                    </div>
+                    <small></small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!--<div class="row">-->
+    <!--    <div class="col-sm-3">-->
+    <!--        <div class="ibox float-e-margins">-->
+    <!--            <div class="ibox-title">-->
+    <!--                <span class="label label-success pull-right"></span>-->
+    <!--                <h5>总有效仓库</h5>-->
+    <!--            </div>-->
+    <!--            <div class="ibox-content">-->
+    <!--                <h1 class="no-margins"><i class="fa fa-rmb"></i> {$memberStock}</h1>-->
+    <!--                <div class="stat-percent font-bold text-success">-->
+    <!--                </div>-->
+    <!--                <small></small>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div class="col-sm-3">-->
+    <!--        <div class="ibox float-e-margins">-->
+    <!--            <div class="ibox-title">-->
+    <!--                <span class="label label-info pull-right"></span>-->
+    <!--                <h5>总充值</h5>-->
+    <!--            </div>-->
+    <!--            <div class="ibox-content">-->
+    <!--                <h1 class="no-margins"><i class="fa fa-map-signs"></i> {$recharge_brand}</h1>-->
+    <!--                <div class="stat-percent font-bold text-info">-->
+    <!--                </div>-->
+    <!--                <small></small>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <!--    <div class="col-sm-3">-->
+    <!--        <div class="ibox float-e-margins">-->
+    <!--            <div class="ibox-title">-->
+    <!--                <span class="label label-danger pull-right"></span>-->
+    <!--                <h5>总扣除预定品牌使用费</h5>-->
+    <!--            </div>-->
+    <!--            <div class="ibox-content">-->
+    <!--                <h1 class="no-margins"><i class="fa fa-map-signs"></i> {$bespokeBrand}</h1>-->
+    <!--                <div class="stat-percent font-bold text-danger">-->
+    <!--                </div>-->
+    <!--                <small></small>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div class="col-sm-3">-->
+    <!--        <div class="ibox float-e-margins">-->
+    <!--            <div class="ibox-title">-->
+    <!--                <span class="label label-primary pull-right"></span>-->
+    <!--                <h5>总扣除利润百分比费用</h5>-->
+    <!--            </div>-->
+    <!--            <div class="ibox-content">-->
+    <!--                <h1 class="no-margins"><i class="fa fa-users"></i> {$profitPercent}</h1>-->
+    <!--                <div class="stat-percent font-bold text-navy">-->
+    <!--                </div>-->
+    <!--                <small></small>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</div>-->
+    
+    <!--<div class="row">-->
+    <!--    <div class="col-sm-3">-->
+    <!--        <div class="ibox float-e-margins">-->
+    <!--            <div class="ibox-title">-->
+    <!--                <span class="label label-success pull-right"></span>-->
+    <!--                <h5>总有效订单数</h5>-->
+    <!--            </div>-->
+    <!--            <div class="ibox-content">-->
+    <!--                <h1 class="no-margins"><i class="fa fa-rmb"></i> {$totalOrder}</h1>-->
+    <!--                <div class="stat-percent font-bold text-success">-->
+    <!--                </div>-->
+    <!--                <small></small>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</div>-->
+
+
+
+    <div class="row">
+
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div id="deal_container" style="min-width:600px;height:400px"></div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div id="month_container" style="min-width:600px;height:400px"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div id="container" style="min-width:1200px;height:500px"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                  <div id="wallet_container" style="min-width:1200px;height:500px"></div>
+            </div>
+        </div>
+    </div>      -->
+
+</div>
+
+<!-- 全局js -->
+
+<!-- Flot -->
+<script src="__PUBLIC__/admin/js/plugins/flot/jquery.flot.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/flot/jquery.flot.spline.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/flot/jquery.flot.pie.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/flot/jquery.flot.symbol.js"></script>
+
+<!-- Peity -->
+<script src="__PUBLIC__/admin/js/plugins/peity/jquery.peity.min.js"></script>
+<script src="__PUBLIC__/admin/js/demo/peity-demo.js"></script>
+
+<!-- 自定义js -->
+<script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+
+
+<!-- jQuery UI -->
+<script src="__PUBLIC__/admin/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+<!-- Jvectormap -->
+<script src="__PUBLIC__/admin/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+
+<!-- EayPIE -->
+<script src="__PUBLIC__/admin/js/plugins/easypiechart/jquery.easypiechart.js"></script>
+
+<!-- Sparkline -->
+<script src="__PUBLIC__/admin/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+<!-- Sparkline demo data  -->
+<script src="__PUBLIC__/admin/js/demo/sparkline-demo.js"></script>
+
+<script>
+
+    $(function () {
+        var dealcontainer = Highcharts.chart('deal_container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: "{$year}年{$month}月销售订单份额"
+            },
+            credits:{
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.2f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            colors: ['#7cb5ec', '#434348', '#f7a35c', '#f7a35c', '#8085e9',
+                '#f15c80', '#e4d354', '#8085e8', '#8d4653', '#91e8e1'],
+            series: [{
+                name: 'Brands',
+                colorByPoint: true,
+                data: [{
+                    name: '成交率',
+                    y: {$deal_lv},
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: '待支付率',
+                    y: {$dai_lv}
+                }, {
+                    name: '售后率',
+                    y: {$shou_lv}
+                }]
+            }]
+        });
+
+
+        $('#month_container').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: "{$year}年{$month}月商品销量统计"
+            },
+            subtitle: {
+                text: '数据来源: 电商平台'
+            },
+            credits:{
+                enabled: false
+            },
+            xAxis: {
+                categories: [
+                    '销售量','退款量','换货量'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '统计数量'
+                }
+            },
+            tooltip: {
+                // head + 每个 point + footer 拼接成完整的 table
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y} 件</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    colorByPoint:true,
+                    borderWidth: 0
+                }
+            },
+            colors: ['#7cb5ec', '#434348', '#f7a35c', '#f7a35c', '#8085e9',
+                '#f15c80', '#e4d354', '#8085e8', '#8d4653', '#91e8e1'],
+            series: [{
+                name: '数量',
+                data: [{$month_salenum}, {$month_tuinum}, {$month_huannum}]
+            }]
+        });
+
+
+        var chart = Highcharts.chart('container',{
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '商品年度销量统计'
+            },
+            subtitle: {
+                text: '数据来源: 电商平台'
+            },
+            credits:{
+                enabled: false
+            },
+            xAxis: {
+                categories: [
+                    '一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '统计数量'
+                }
+            },
+            tooltip: {
+                // head + 每个 point + footer 拼接成完整的 table
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} 件</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    borderWidth: 0
+                }
+            },
+            colors: ['#7cb5ec', '#434348', '#f7a35c', '#f7a35c', '#8085e9',
+                '#f15c80', '#e4d354', '#8085e8', '#8d4653', '#91e8e1'],
+            series: [{
+                name: '销售量',
+                data: [{$monthSalenumStr}]
+            }, {
+                name: '退款量',
+                data: [{$monthTuinumStr}]
+            }, {
+                name: '换货量',
+                data: [{$monthHuannumStr}]
+            }]
+        });
+
+
+        // var walletcontainer = Highcharts.chart('wallet_container', {
+        // 	chart: {
+        // 		type: 'line'
+        // 	},
+        // 	title: {
+        // 		text: '平台年度收入支出统计'
+        // 	},
+        // 	subtitle: {
+        // 		text: '数据来源: '
+        // 	},
+        // 	credits:{
+        // 	    enabled: false
+        // 	},
+        // 	xAxis: {
+        // 		categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+        // 	},
+        // 	yAxis: {
+        // 		title: {
+        // 			text: '统计金额'
+        // 		}
+        // 	},
+        // 	plotOptions: {
+        // 		line: {
+        // 			dataLabels: {
+        // 				// 开启数据标签
+        // 				enabled: true
+        // 			},
+        // 			// 关闭鼠标跟踪，对应的提示框、点击事件会失效
+        // 			enableMouseTracking: false
+        // 		}
+        // 	},
+        // 	series: [{
+        // 		name: '收入',
+        // 		data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        // 	}, {
+        // 		name: '支出',
+        // 		data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+        // 	}]
+        // });
+
+
+    });
+
+
+
+</script>
+
+
+</body>
+
+</html>

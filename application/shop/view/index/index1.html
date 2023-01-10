@@ -1,0 +1,364 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>孝笑好电商管理平台</title>
+    <meta name="keywords" content="孝笑好电商管理平台">
+    <meta name="description" content="孝笑好电商管理平台">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/js/layui/css/layui.css" rel="stylesheet">
+</head>
+
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+    <div id="wrapper">
+        <!--左侧导航开始-->
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="nav-close"><i class="fa fa-times-circle"></i>
+            </div>
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <span><img alt="image" class="img-circle" {if condition="session('shopsh_logo')"}src="/{$Request.session.shopsh_logo}"{else/}src="__PUBLIC__/admin/img/profile_small.png"{/if} width="80px" height="80px" /></span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear">
+                               <span class="block m-t-xs"><strong class="font-bold">{$Request.session.shopsh_name}</strong></span>
+                               </span>
+                            </a>
+                        </div>
+                        <div class="logo-element">H+
+                        </div>
+                    </li>
+					
+                    <li>
+                        <a class="J_menuItem" href="{:url('index/index_v3')}"><i class="fa fa-home"></i><span class="nav-label">主页</span></a>
+                    </li>
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-bars"></i><span class="nav-label">店铺管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="{:url('rzmessage/info')}">入驻资料信息</a></li>
+                            <li><a class="J_menuItem" href="{:url('shops/info')}">店铺基本信息</a></li>
+                            <li><a class="J_menuItem" href="{:url('manage_cate/lst')}">店铺经营类目</a></li>
+                            <li><a class="J_menuItem" href="{:url('shop_pic/lst')}">店铺banner图信息</a></li>
+                            <li><a class="J_menuItem" href="{:url('shop_custom/lst')}">店铺自定义推荐位</a></li>
+                            <li><a class="J_menuItem" href="{:url('shop_shdz/info')}">售后地址设置</a></li>
+                            <li><a class="J_menuItem" href="{:url('shop_admin/editpwd')}">重置登录密码</a></li>
+                            <li><a class="J_menuItem" href="{:url('shop_admin/addpaypwd')}">设置支付密码</a></li>
+                            <li><a class="J_menuItem" href="{:url('shop_admin/editphone')}">更换登录手机号</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-bars"></i><span class="nav-label">账户管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="{:url('shop_txmx/index')}">账户提现</a></li>
+                            <li><a class="J_menuItem" href="{:url('shop_txmx/lst')}">提现明细</a></li>
+                            <li><a class="J_menuItem" href="{:url('shop_bankcard/info')}">银行卡设置</a></li>
+                            <li><a class="J_menuItem" href="{:url('shop_detail/lst')}">账户明细</a></li>
+                        </ul>
+                    </li>  
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-bars"></i><span class="nav-label">商家详情管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="{:url('shop_content/info')}">商家详情</a></li>
+                        </ul>
+                    </li> 
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-bars"></i><span class="nav-label">商品管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="{:url('shop_cate/lst')}">店铺分类</a></li>
+                            <li><a class="J_menuItem" href="{:url('goods/lst')}">商品列表</a></li>
+                            <li><a class="J_menuItem" href="{:url('kcyj/lst')}">商品库存预警</a></li>
+                        </ul>
+                    </li> 
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-bars"></i><span class="nav-label">订单管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="{:url('order/lst')}">订单列表</a></li>
+                            <li><a class="J_menuItem" href="{:url('comment/lst')}">商品评价列表</a></li>
+                        </ul>
+                    </li> 
+                    <li>
+                        <a href="#"><i class="fa fa-bars"></i><span class="nav-label">售后管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="{:url('th_apply/lst')}">售后订单列表</a></li>
+                        </ul>
+                    </li>  
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-bars"></i><span class="nav-label">促销管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="{:url('coupon/lst')}">优惠券管理</a></li>
+                            <li><a class="J_menuItem" href="{:url('rush_activity/lst')}">抢购管理</a></li>
+                            <li><a class="J_menuItem" href="{:url('group_buy/lst')}">团购商品</a></li>
+                            <li><a class="J_menuItem" href="{:url('promotion/lst')}">商品促销管理</a></li>
+                            <li><a class="J_menuItem" href="{:url('promotion/lst')}">订单促销活动</a></li>
+                            <li><a class="J_menuItem" href="{:url('assemble/lst')}">拼团管理</a></li>
+                        </ul>
+                    </li> 
+
+                </ul>
+            </div>
+        </nav>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                        <form role="search" class="navbar-form-custom">
+                            <div class="form-group">
+                                <p class="form-control" id="top-search" style="line-height:49px;">欢迎登录商家后台系统</p>
+                            </div>
+                        </form>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li class="dropdown hidden-xs">
+                            <a class="right-sidebar-toggle" aria-expanded="false">
+                                <i class="fa fa-tasks"></i> 主题
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <div class="row content-tabs">
+                <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
+                </button>
+                <nav class="page-tabs J_menuTabs">
+                <a href="" target="_blank">网站首页>></a>
+                </nav>
+                <div class="btn-group roll-nav roll-right">
+                </div>
+                <a href="{:url('login/loginout')}" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+            </div>
+            
+            <div class="row J_mainContent" id="content-main">
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{:url('index_v3')}" frameborder="0" data-id="index_v3.html" seamless></iframe>
+            </div>
+            
+            <div class="footer">
+                <div class="pull-right">&copy; 2018-2019 孝笑好电商管理平台</div>
+            </div>
+        </div>
+        <!--右侧部分结束-->
+        <!--右侧边栏开始-->
+        <div id="right-sidebar">
+            <div class="sidebar-container">
+
+                <ul class="nav nav-tabs navs-3">
+
+                    <li class="active">
+                        <a data-toggle="tab" href="#tab-1">
+                            <i class="fa fa-gear"></i> 主题
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                        <div class="sidebar-title">
+                            <h3> <i class="fa fa-comments-o"></i> 主题设置</h3>
+                            <small><i class="fa fa-tim"></i> 你可以从这里选择和预览主题的布局和样式，这些设置会被保存在本地，下次打开的时候会直接应用这些设置。</small>
+                        </div>
+                        <div class="skin-setttings">
+                            <div class="title">主题设置</div>
+                            <div class="setings-item">
+                                <span>收起左侧菜单</span>
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="collapsemenu">
+                                        <label class="onoffswitch-label" for="collapsemenu">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="setings-item">
+                                <span>固定顶部</span>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="fixednavbar" class="onoffswitch-checkbox" id="fixednavbar">
+                                        <label class="onoffswitch-label" for="fixednavbar">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="setings-item">
+                                <span>
+                        固定宽度
+                    </span>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="boxedlayout" class="onoffswitch-checkbox" id="boxedlayout">
+                                        <label class="onoffswitch-label" for="boxedlayout">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="title">皮肤选择</div>
+                            <div class="setings-item default-skin nb">
+                                <span class="skin-name ">
+                         <a href="#" class="s-skin-0">
+                             默认皮肤
+                         </a>
+                    </span>
+                            </div>
+                            <div class="setings-item blue-skin nb">
+                                <span class="skin-name ">
+                        <a href="#" class="s-skin-1">
+                            蓝色主题
+                        </a>
+                    </span>
+                            </div>
+                            <div class="setings-item yellow-skin nb">
+                                <span class="skin-name ">
+                        <a href="#" class="s-skin-3">
+                            黄色/紫色主题
+                        </a>
+                    </span>
+                            </div>
+                        </div>
+                    </div>
+					
+                </div>
+
+            </div>
+        </div>
+        <!--右侧边栏结束-->
+
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/hplus.js?v=4.1.0"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/contabs.js"></script>
+    <!-- 第三方插件 -->
+    <script src="__PUBLIC__/admin/js/plugins/pace/pace.min.js"></script>
+    <script src="__PUBLIC__/admin/js/layui/layui.js"></script>
+    <script src="__PUBLIC__/admin/js/heartbeat.js"></script>
+
+    <script>
+        var token = '{$Request.session.shopsh_token}';
+        var avatar = '/{$Request.session.shopsh_logo}';
+        var nickname = '{$Request.session.shopsh_name}';
+        layui.use('layim', function(layim){
+            //基础配置
+            let websocketHeartbeatJs = new window.WebsocketHeartbeatJs({
+                url: 'wss://store.cxy365.com:2000/',
+                pingTimeout: 15000,
+                pongTimeout: 7000,
+                reconnectTimeout: 2000,
+                pingMsg: JSON.stringify({
+                    type: 'ping',
+                    id: token
+                })
+            })
+            websocketHeartbeatJs.onopen = function() {
+                console.log('open success');
+            }
+            websocketHeartbeatJs.onmessage = function(res) {
+                let data = JSON.parse(res.data)
+                if (data.type === 'init') {
+                    websocketHeartbeatJs.send(JSON.stringify({
+                        type: 'bind_id',
+                        id: token,
+                        client_id: data.data.client_id
+                    }))
+                }
+                if (data.type === 'bind_id') {
+                    websocketHeartbeatJs.send(JSON.stringify({
+                        type: 'chatlist',
+                        data: {
+                            fromid: token
+                        }
+                    }))
+                }
+
+                if (data.type === 'chatlist') {
+                    var list = data.data.map(function(item) {
+                        var id = item.fromid === token ? item.toid : item.fromid
+                        var username = item.fromid === token ? item.to_username : item.from_username
+                        var avatar = item.fromid === token ? item.to_headimgurl : item.from_headimgurl
+                        return {
+                            "username": username
+                            ,"id": id
+                            ,"avatar": avatar
+                            ,"sign": "这些都是测试数据，实际使用请严格按照该格式返回"
+                            ,"status": "online"
+                        }
+                    })
+                    layim.config({
+                        notice: true,
+                        isgroup: false,
+                        isfriend: true,
+                        init: {
+                            "mine": {
+                                "username": nickname,
+                                "id": token,
+                                "status": "online",
+                                "sign": "在深邃的编码世界，做一枚轻盈的纸飞机",
+                                "avatar": avatar
+                            },
+                            "friend": [{
+                                "groupname": "客户",
+                                "id": 1,
+                                "list": list
+                            }]
+                        },
+                        title: '客服一号'
+
+                        //上传图片接口（返回的数据格式见下文），若不开启图片上传，剔除该项即可
+                        ,uploadImage: {
+                            url: 'https://store.cxy365.com/index.php/apicloud/find/huploadspic' //接口地址
+                            ,type: 'post' //默认post
+                        }
+                    });
+                }
+
+            }
+            websocketHeartbeatJs.onreconnect = function() {
+                console.log('reconnecting...');
+            }
+            layim.on('sendMessage', function(res){
+                console.log(res)
+                websocketHeartbeatJs.send(JSON.stringify({
+                    type: 'say',
+                    data: {
+                        fromid: token,
+                        message: res.mine.content,
+                        message_type: "text",
+                        toid: res.to.id,
+                        userType: "home"
+                    }
+                }));
+            });
+        });
+    </script>
+</body>
+</html>

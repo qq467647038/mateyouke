@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/static/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+<body>
+<h5>文件上传</h5><hr/>
+播放地址：<input type="text" style="width: 100%;height: 20px;" name="url" id="url" value=""/>
+<input type="file" name="file" id="file" onchange="uploadFile(0, true)"/>
+<progress id="progress" style="display: none;">
+    <span id="objprogress">100</span>%
+</progress>
+<video id="video" style="display: none;" controls src=""></video>
+    <script>
+        var RequestId = '';
+        var UploadId = '';
+        var path = '';
+        const chunkObj = 2 * 1024 * 1024;
+        var i = 0;
+        function uploadFile(start, afresh) {
+            var fileObj = document.getElementById('file')['files'][0];
+            if(fileObj.type.split('/')[1] != 'mp4'){
+                alert('只能上传MP4格式的视频');
+                return false;
+            }
+
+            $('#progress').css('display', 'block');
+            if(start==0 && afresh===true){
+                path = '';
+                $.ajax({
+                    type: "post",
+                    url: "/apicloud/Video/initiateMultipartUpload",
+                    success: function(res){
+                        var arr = JSON.parse(res);
+                        RequestId = arr['RequestId'];
+                        UploadId = arr['UploadId'];
+                        path = arr['path'];
+
+                        $('#progress').prop('value', 0);
+                        $('#progress').prop('max', fileObj.size);
+                        uploadFile(start, false);
+                    }
+                });
+
+                return false;
+            }
+
+            if(start >= fileObj.size){
+                // 开始合并
+                $.ajax({
+                    type: "post",
+                    data: {
+                        'UploadId': UploadId,
+                        'path': path
+                    },
+                    url: "/apicloud/Video/completeMultipartUpload",
+                    success: function(res){
+                        var arr = JSON.parse(res);
+                        if(arr.errcode == 200){
+                            // 合并成功
+                            $('#url').val(arr.url);
+                            $('#video').prop('src', arr.url);
+                            $('#video').css('display', 'block');
+
+                            alert('上传成功');
+                        }
+                    }
+                });
+
+                return false
+            }
+
+            // 切片上传
+            var end = (start + chunkObj) > fileObj.size ? fileObj.size : start + chunkObj;
+
+            var fd = new FormData();
+            fd.append('video', fileObj.slice(start, end));
+            fd.append('PartNumber', i+1);
+            fd.append('UploadId', UploadId);
+            fd.append('Offset', end);
+            fd.append('path', path);
+            fd.append('PartSize', chunkObj);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('post',"/apicloud/Video/uploadPart",true);
+
+            xhr.onload = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    $('#progress').prop('value', ++i*chunkObj);
+                    uploadFile(end, false);
+                }
+            }
+            xhr.send(fd);
+        }
+    </script>
+</body>
+</html>

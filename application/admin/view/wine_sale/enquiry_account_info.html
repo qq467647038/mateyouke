@@ -1,0 +1,159 @@
+<div>
+    <div style="width:100%;text-align:center;">
+        <div>
+            <label for="">查询账号信息</label>
+        </div>
+        <div>
+            <input type="text" name="phone" id="phone" value="" />
+            <button type="button" id="enquiry">查询</button>
+        </div>
+    </div>
+    
+    <fieldset>
+        <legend>预定列表<text id="wine_order_record_count"></text></legend>
+        <div id="wine_order_record">
+            <table class="table table-hover table-bordered" style="text-align: center;width:100%">
+                <thead>
+                <tr >
+                    <th style="width:1%">id</th>
+                    <th style="width:1%">单号</th>
+                    <th style="width:1%">商品名称</th>
+                    <th style="width:1%">缩略图</th>
+                    <th style="width:1%">金额</th>
+                    <th style="width:1%">状态</th>
+                    <th style="width:1%">预约时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+    
+    <fieldset>
+        <legend>出售列表<text id="wine_order_saler_count"></text></legend>
+        <div id="wine_order_saler">
+            <table class="table table-hover table-bordered" style="text-align: center;width:100%">
+                <thead>
+                <tr >
+                    <th style="width:1%">id</th>
+                    <th style="width:1%">单号</th>
+                    <th style="width:1%">商品名称</th>
+                    <th style="width:1%">缩略图</th>
+                    <th style="width:1%">比例</th>
+                    <th style="width:1%">已匹配价格</th>
+                    <th style="width:1%">销售价格</th>
+                    <th style="width:1%">购入时间</th>
+                    <th style="width:1%">冻结</th>
+                </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+    
+    <fieldset>
+        <legend>进货列表<text id="wine_order_buyer_count"></text></legend>
+        <div id="wine_order_buyer">
+            <table class="table table-hover table-bordered" style="text-align: center;width:100%">
+                <thead>
+                <tr >
+                    <th style="width:3%">id</th>
+                    <th style="width:3%">交易类型</th>
+                    <th style="width:3%">单号</th>
+                    <th style="width:5%">商品名称</th>
+                    <th style="width:5%">缩略图</th>
+                    <th style="width:5%">进货价</th>
+                    <th style="width:5%">销售价格</th>
+                    <th style="width:5%">支付时间</th>
+                    <th style="width:5%">冻结</th>
+                    <th style="width:5%">支付状态</th>
+                    <th style="width:5%">商品状态</th>
+                    <th style="width:5%">支付方式</th>
+                    <th style="width:5%">转让时间</th>
+                    <th style="width:5%">升级产品</th>
+                    <th style="width:5%">进货开始</th>
+                </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+</div>
+
+<script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+<script type="text/javascript" charset="utf-8">
+    $('#enquiry').click(function(){
+        var phone = $('#phone').val();
+        
+        $.ajax({
+            type: 'post',
+            url: '{:url("WineSale/enquiryaccountinfo")}',
+            data: {
+                phone: phone
+            },
+            success: function(res){
+                var wine_order_buyer = res.wine_order_buyer
+                var wine_order_record = res.wine_order_record
+                var wine_order_saler = res.wine_order_saler
+                
+                var wine_order_record_tr = '';
+                var wine_order_saler_tr = '';
+                var wine_order_buyer_tr = '';
+                
+                $('#wine_order_saler_count').html(wine_order_saler.length);
+                $('#wine_order_record_count').html(wine_order_record.length);
+                $('#wine_order_buyer_count').html(wine_order_buyer.length);
+                
+                
+                for(var i=0; i<wine_order_record.length; i++){
+                    wine_order_record_tr += '<tr><td>'+wine_order_record[i]['id']+'</td>'
+                                           +'<td>'+wine_order_record[i]['odd']+'</td>'
+                                           +'<td>'+wine_order_record[i]['goods_name']+'</td>'
+                                           +'<td><img src="'+wine_order_record[i]['goods_thumb']+'" width="80px" height="80px" /></td>'
+                                           +'<td>'+wine_order_record[i]['buy_amount']+'</td>'
+                                           +'<td>'+(wine_order_record[i]['status']==0 ? '待匹配' : (wine_order_record[i]['status']==1 ? '已匹配' : (wine_order_record[i]['status']==2 ? '已完成交易' : (wine_order_record[i]['status']==4 ? '提前匹配' : ''))))+'</td>'
+                                           +'<td>'+wine_order_record[i]['addtime']+'</td></tr>';
+                }
+                $('#wine_order_record tbody').html(wine_order_record_tr);
+                
+                for(var i=0; i<wine_order_saler.length; i++){
+                    wine_order_saler_tr += '<tr><td>'+wine_order_saler[i]['id']+'</td>'
+                                           +'<td>'+wine_order_saler[i]['odd']+'</td>'
+                                           +'<td>'+wine_order_saler[i]['goods_name']+'</td>'
+                                           +'<td><img src="'+wine_order_saler[i]['goods_thumb']+'" width="80px" height="80px" /></td>'
+                                           +'<td>'+wine_order_saler[i]['goods_rate']+'</td>'
+                                           +'<td>'+wine_order_saler[i]['pipei_amount']+'</td>'
+                                           +'<td>'+wine_order_saler[i]['sale_amount']+'</td>'
+                                           +'<td>'+wine_order_saler[i]['addtime']+'</td>'
+                                           +'<td>'+(wine_order_saler[i]['checked']==0 ? '<label style="color:red;">冻结</label>' : '<label style="color:green;">正常</label>')+'</td>';
+                }
+                $('#wine_order_saler tbody').html(wine_order_saler_tr);
+                
+                for(var i=0; i<wine_order_buyer.length; i++){
+                    wine_order_buyer_tr += '<tr><td>'+wine_order_buyer[i]['id']+'</td>'
+                                           +'<td>'+((wine_order_buyer[i]['status']==2 && wine_order_buyer[i]['pay_status']==1 && wine_order_buyer[i]['paytime']>0 && (wine_order_buyer[i]['sale_appeal_question'] || wine_order_buyer[i]['buyer_appeal_question'])) ? '<label style="color:red;">强制交易</label>' : '<label style="color:green;">正常交易</label>')+'</td>'
+                                           +'<td>'+wine_order_buyer[i]['odd']+'</td>'
+                                           +'<td>'+wine_order_buyer[i]['goods_name']+'</td>'
+                                           +'<td><img src="'+wine_order_buyer[i]['goods_thumb']+'" width="80px" height="80px" /></td>'
+                                           +'<td>'+wine_order_buyer[i]['buy_amount']+'</td>'
+                                           +'<td>'+wine_order_buyer[i]['sale_amount']+'</td>'
+                                           +'<td>'+wine_order_buyer[i]['paytime']+'</td>'
+                                           +'<td>'+(wine_order_buyer[i]['checked']==0 ? '<label style="color:red;">冻结</label>' : '<label style="color:green;">正常</label>')+'</td>'
+                                           +'<td>'+(wine_order_buyer[i]['pay_status']==0 ? '未支付' : '<label style="color:green;font-weight:bold;">已支付</label>')+'</td>'
+                                           +'<td>'+(wine_order_buyer[i]['status']==1 ? '进货中' : (wine_order_buyer[i]['status']==2 ? '已进货' : (wine_order_buyer[i]['status']==3 ? '申诉' : (wine_order_buyer[i]['status']==4 ? '超时' : ''))))+'</td>'
+                                           +'<td>'+(wine_order_buyer[i]['paywayindex']==0 ? '支付宝' : (wine_order_buyer[i]['paywayindex']==1 ? '微信' : (wine_order_buyer[i]['paywayindex']==2 ? '银行卡' : '')))+'</td>'
+                                           +'<td>'+wine_order_buyer[i]['confirm_exchange']+'</td>'
+                                           +'<td>'+(wine_order_buyer[i]['upgrade']==1 ? '升级' : '')+'</td>'
+                                           +'<td>'+wine_order_buyer[i]['addtime']+'</td></tr>';
+                }
+                $('#wine_order_buyer tbody').html(wine_order_buyer_tr);
+            }
+        })
+    })
+</script>

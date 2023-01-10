@@ -1,0 +1,65 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/shop_comment/lst/filter/"+filter+".html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/shop_comment/search.html?page="+pnum;
+	{/if}
+</script>  
+
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%">商品名称</th>
+                                    <th style="width:10%">所属商家</th>
+                                    <th style="width:10%">手机号</th>
+                                    <th style="width:10%">昵称</th>
+                                    <th style="width:5%">评分</th>
+                                    <th style="width:15%">评论内容</th>
+                                    <th>评论图片</th>
+                                    <th style="width:10%">评论时间</th>
+                                    <th style="width:5%">审核</th>
+                                    <th style="width:10%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.goods_name}<br>{$v.goods_attr_str}</td>
+                                    <td>{$v.shop_name}</td>
+                                    <td>{$v.phone}</td>
+                                    <td>{$v.user_name}</td>
+                                    <td>商品：{$v.goods_star}星<br>物流：{$v.logistics_star}星<br>服务：{$v.service_star}星</td>
+                                    <td>{$v['content']}</td>
+                                    <td>
+                                        {volist name="v.images" id="data"}
+                                        <a class="fancybox" href="{$data}" title="{$v.goods_name}">
+                                            <img class="image comment_pic" src="{$data}">
+                                        </a>
+                                        {/volist}
+                                    </td>
+                                    <td>{:date('Y-m-d H:i:s',$v['time'])}</td>
+                                    <td>
+                                        {if condition="$v['checked'] eq 1"}正常
+                                        {elseif condition="$v['checked'] eq 2"/}违规
+                                        {else/}未审核
+                                        {/if}
+                                    </td>
+                                    <td>
+                                    <button type="button" class="btn btn-success btn-xs" onclick="checkedpinglun({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;审核</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button>
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="9" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

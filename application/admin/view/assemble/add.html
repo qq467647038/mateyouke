@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/date.js"></script>
+</head>
+
+<script>
+var url = "{:url('assemble/lst')}";
+var insertUrl = "{:url('assemble/add')}";
+var gurl = "/{$Request.module}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+#calendarPanel table td{
+	border:solid #FFF; border-width:0px 1px 1px 0px; padding:3px 3px;
+}
+</style>
+
+
+<style>
+.shuxing{width:600px; height:100%; overflow:hidden;}
+.goodsAttrC{width:600px; height:100%; overflow:hidden;}
+.goodsAttrC .attr{width:600px; height:30px; line-height:30px; font-size:14px; font-weight:bold;}
+.goodsAttrC ul{width:600px; height:100%; overflow:hidden; padding-left:0px;}
+.goodsAttrC ul li{height:30px; line-height:12px; font-size:14px; text-align:center; padding:10px; float:left; margin-right:15px; list-style-type:none; cursor:pointer; background-color:#F5F5F5;}
+.on{border: 2px solid #1992FC;}
+.goods_info{width:600px; height:40px; line-height:40px; font-size:14px;}
+.qbattr{height:30px; line-height:12px; font-size:14px; text-align:center; padding:10px; float:left; margin-top:20px; cursor:pointer; background-color:#F5F5F5;}
+</style>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>增加拼团活动</h5>
+                    </div>
+
+                    <div class="ibox-content">
+                    <div style="width:95%; height:100%; margin:0px auto 50px auto; overflow:hidden; padding:20px; font-size:14px; line-height:25px; background-color:#F5F5F6;">
+                    1.不存在商品规格的商品不用选择商品规格即添加拼团活动<br/>                                   
+                    2.存在商品规格且不存在价格区间的商品可选择所有商品规格添加拼团活动<br/>
+                    3.存在商品规格且存在价格区间的商品需指定商品规格添加拼团活动<br/>                                                                                 
+                    </div>
+                        <form method="post" class="form-horizontal" id="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">拼团活动名称：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="pin_name" class="form-control">
+                                </div>
+                                 <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">选择商品信息：</label>
+                                <div class="col-sm-6">
+                                <button type="button" class="btn btn-success" onclick="selectGoods();">选择商品信息</button>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">已选择的商品信息：</label>
+                                <div class="col-sm-8">
+	                            <table class="table table-hover table-bordered">
+	                            <thead class="biaoge">
+                                <tr><th style="width:30%">商品名称</th><th style="width:20%">缩略图</th><th style="width:15%">所属分类</th><th style="width:20%">金额</th><th style="width:15%">操作</th></tr>
+	                            </thead>
+                                <tbody id="goods_list">
+                                
+                                </tbody>	
+	                            </table>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="szattr" attr_type="0" style="display:none;">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">设置商品信息：</label>
+                                <div class="col-sm-6">
+                                   <div class="goods_info">
+                                   <b>商品库存：</b><span class='goods_product' style="color:#1992FC;"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <b>商品价格：</b><span class='goods_price' style="color:#1992FC;"></span>元
+                                   </div>
+						           <div class="shuxing">
+
+						           </div>
+                                </div>
+                                 <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">拼团价：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="price" class="form-control">
+                                </div>
+                                 <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">几人团数量：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="pin_num" class="form-control">
+                                </div>
+                                 <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">活动时间：</label>
+                                <div class="col-sm-8">
+                                    <div style="float:left; margin-right:25px;">
+                                                                                                    开始时间：<input type="text" name="start_time" onclick="SetDate(this,'yyyy-MM-dd hh:mm:ss')" readonly="readonly" class="form-control">
+                                    </div>
+                                    <div style="float:left;">
+                                                                                                    结束时间：<input type="text" name="end_time" onclick="SetDate(this,'yyyy-MM-dd hh:mm:ss')" readonly="readonly" class="form-control">
+                                    </div>
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="form-group"><div class="col-sm-6" style="margin-left:220px;line-height:20px;">平台每日团购活动时间段为每日8时、10时、12时、14时、16时、20时、22时、24时，活动开始时间在以上时间段，并被平台设为推荐后可在平台每日团购活动版块展示</div></div>
+                            <div class="hr-line-dashed"></div>
+                            
+                           <div class="form-group">
+                           <label class="col-sm-2 control-label">活动介绍:</label>
+                                <div class="col-sm-6">
+                                    <textarea name="remark" class="form-control"></textarea>
+                                </div>  
+                           </div>
+                           <div class="hr-line-dashed"></div> 
+                           
+                           <input type="hidden" name="goods_attr" value="">
+                                                 
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:20px;">保存内容</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script>
+    	$(function(){  
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	            //layer ajax提交表单
+	            submitHandler:function(){
+	                // 序列化 表单数据 后提交 ，太简洁了
+	                var goods_id = $('input:radio[name=goods_id]:checked').val();
+	                if(goods_id == null){
+	                    layer.msg('请选择商品', {icon: 2,time: 1000});
+	                    return false;
+	                }
+	                
+	                var attr_type = $('.szattr').attr('attr_type');
+	                if(attr_type == 1){
+	                	var goods_attr = $('input[name=goods_attr]').val();
+	                	if(goods_attr == ''){
+	                		layer.msg('请选择商品属性', {icon: 2,time: 2000});
+	            			return false;
+	                	}
+	                	
+	                	if(goods_attr != '*'){
+		        			var panduan = 1;
+		        			
+		                	$('.goodsAttrC').each(function(index,value){
+		        				var attrxinxi = $(value).attr('xinxi');
+		        				if(attrxinxi == 2){
+		                            panduan = 2;
+		        				}
+		        			});
+		                	
+		                	if(panduan == 2){
+		                		layer.msg('请选择商品属性', {icon: 2,time: 2000});
+		            			return false;
+		                	}
+	                	}
+	                }
+
+	                var goods_price = $('.goods_price').text();
+	                var price = $('input[name=price]').val();
+	                if(parseFloat(price) > parseFloat(goods_price)){
+                		layer.msg('团购价格不得大于商品价格', {icon: 2,time: 2000});
+            			return false;
+	                }
+	                
+	                post(insertUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+	                
+	        	rules:{
+	        		group_name:{required:true},
+	        		price:{required:true},
+	        		pin_num:{required:true},
+	        		start_time:{required:true},
+	        		end_time:{required:true}
+	        	},
+	        		
+	        	messages:{
+	        		group_name:{required:icon+'必填'},
+	        		price:{required:icon+'必填'},
+	        		pin_num:{required:icon+'必填'},
+	        		start_time:{required:icon+'必填'},
+	        		end_time:{required:icon+'必填'}
+	        	}
+            });
+      });
+    	
+      function selectGoods(){
+          var goods_id = $('input:radio[name=goods_id]:checked').val();
+          //过滤选择重复信息
+    	  var goodsurl = gurl+"/hdgoods/lst/goods_id/"+goods_id;
+          
+          layer.open({
+              type: 2,
+              title: '选择商品信息',
+              shadeClose: true,
+              shade: 0.3,
+              area: ['70%', '80%'],
+              content: goodsurl,
+          });      	  
+      }
+
+      function call_backgoods(table_html){
+          layer.closeAll('iframe');
+          $('#goods_list').html(table_html);
+          var gd_id = $('input:radio[name=goods_id]:checked').val();
+          
+          if(gd_id == null){
+              layer.msg('请选择商品', {icon: 2,time: 1000});
+              return false;
+          }
+          
+          layer.load(2);
+          
+	      $.ajax({
+		      url:"{:url('assemble/getgoodsinfo')}",
+		      type:'POST',
+		      data:{'id':gd_id},
+		      dataType:'json',
+		      success:function(data){
+		    	  if(data.status == 1){
+		    		  layer.closeAll('loading');
+                      $('.szattr').show();
+                      $('.goods_product').text(data.pronum);
+                      if(data.min_price == data.max_price){
+                    	  $('.goods_price').text(data.min_price);
+                      }else{
+                    	  $('.goods_price').text(data.min_price+' - '+data.max_price);
+                      }
+
+		    		  if(data.radioattr.length !== 0){
+			    		  var html = '';
+	                      $.each(data.radioattr,function(index,value){
+	                    	  html+='<div class="goodsAttrC" xinxi="2"><div class="attr">'+value[0]['attr_name']+'：</div><ul>';
+	                    	  $.each(value,function(i,v){
+	                    		  html+='<li shuxing="'+v.id+'" onclick="changeattr(this);">'+v.attr_value+'</li>';
+	                    	  });
+	                          html+='</ul></div>';
+	                      });
+	                      if(data.min_price == data.max_price){
+		                      html+='<div class="qbattr" qbsx="0" onclick="qbshuxing(this);">选择全部规格</div>';
+	                      }
+	                      $('.shuxing').html(html);
+	                      $('.szattr').attr('attr_type',1);
+		    		  }else{
+		    			  $('.shuxing').html('');
+		    			  $('.szattr').attr('attr_type',0);
+		    		  }
+		    	  }else{
+		    		  layer.closeAll('loading');
+		    	  }
+		      },
+		      error:function(){
+		    	  layer.closeAll('loading');
+		      }
+		  });          
+      }
+      
+      function changeattr(obj){
+      	  var i = $(obj).index();
+      	  var div = $(obj).parent();
+  		  div.find('li').filter(':not(:eq('+i+'))').removeClass('on');
+  		  $('.qbattr').removeClass('on');
+  		  $('.qbattr').attr('qbsx',0);
+  		  
+    	  if(!$(obj).hasClass('on')){
+      		  $(obj).addClass('on');
+      		  $(obj).css('line-height','8px');
+      		  var parent_div = div.parent();
+      		  var top_div = div.parent().parent();
+      		  var xinxi = parent_div.attr('xinxi');
+      		  if(xinxi == 2){
+      		     parent_div.attr('xinxi',1);
+      		  }
+      		  var attr_idres = '';
+      		  top_div.find('li.on').each(function(i,v){
+      			  attr_idres+=$(v).attr('shuxing')+',';
+      		  });
+      			
+      		  $('input[name=goods_attr]').val(attr_idres);
+      		  
+  			  var panduan = 1;
+      		  
+	          $('.goodsAttrC').each(function(index,value){
+				  var attrxinxi = $(value).attr('xinxi');
+				  if(attrxinxi == 2){
+	                  panduan = 2;
+				  }
+			  });
+	        	
+	          if(panduan == 2){
+	    		  return false;
+	          }else if(panduan == 1){
+	        	  get_goods_price();
+	          }      		  
+      	  }  		  
+      }
+      
+      function qbshuxing(obj){
+    	  var qbsx = $(obj).attr('qbsx');
+    	  if(qbsx == 0){
+    		  $(obj).addClass('on');
+    		  $(obj).css('line-height','8px');
+    		  $(obj).attr('qbsx',1);
+          	  $('.goodsAttrC').each(function(index,value){
+				  $(value).attr('xinxi',2);
+			  });
+      		  $('input[name=goods_attr]').val('*');
+      		  get_goods_price();
+    	  }else if(qbsx == 1){
+    		  $(obj).removeClass('on');
+    		  $(obj).attr('qbsx',0);
+    		  $('input[name=goods_attr]').val('');
+    	  }
+  		  $('.shuxing').find('li.on').each(function(i,v){
+  			  if($(v).hasClass('on')){
+  	  			  $(v).removeClass('on');
+  			  }
+  		  });
+      }
+      
+      function get_goods_price(){
+        	var goods_attr = $('input[name=goods_attr]').val();
+          	if(goods_attr == ''){
+          		layer.msg('请选择商品属性', {icon: 2,time: 1000});
+      			return false;
+          	}
+          	
+            var gd_id = $('input:radio[name=goods_id]:checked').val();
+            
+            if(gd_id == null){
+                layer.msg('请选择商品', {icon: 2,time: 1000});
+                return false;
+            }
+            
+            layer.load(2);
+          	
+            $.ajax({
+               type:'POST',
+               url:"{:url('assemble/get_goods_price')}",
+               data:{'goods_attr':goods_attr,'goods_id':gd_id},
+               dataType:'json',
+          	   success:function(data){
+                   if(data.status == 1){
+                	   layer.closeAll('loading');
+                       $('.goods_product').text(data.goods_number);
+                       $('.goods_price').text(data.shop_price);
+                   }else if(data.status == 0){
+                	   layer.closeAll('loading');
+                	   layer.msg(data.mess, {icon: 2,time: 2000});
+                   }else{
+                	   layer.closeAll('loading');
+                	   layer.msg('操作失败', {icon: 2,time: 2000});
+                   }
+          	   },
+          	   error:function(){
+          		   layer.closeAll('loading');
+          		   layer.msg('操作失败，请刷新重试', {icon: 2,time: 2000});
+          	   }
+            });    	  
+      }
+      
+      function yichu(obj){
+    	  $(obj).parent().parent().remove();
+          $('.szattr').hide();
+          $('.szattr').attr('attr_type',0);
+          $('.shuxing').html('');
+      }
+    	
+      function cl(){
+    	  location.href = url;
+      }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+</head>
+
+<script>
+var url = "/{$Request.module}/th_apply";
+</script>
+
+<body class="gray-bg" >
+    <div class="wrapper wrapper-content" id="server">
+       <style>
+		.qiehuan{
+		width:120px; height:40px; line-height:40px; font-size:14px; font-weight:bold; color:#333; background-color:#F5F5F6; float:left; margin-top:15px; margin-right:10px; text-align:center; cursor:pointer;
+		}
+		</style>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>售后申请列表</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+						   <div class="col-sm-5 m-b-xs">                    
+                               <div style="width:1300px; height:40px; margin-bottom:25px;">
+                               <a href="{:url('th_apply/lst',array('filter'=>10))}"><div class="qiehuan" {if condition="$filter && $filter eq 10"}style="background-color: #1992FC;color: #FFF;"{/if}>全部</div></a>
+                               <a href="{:url('th_apply/lst',array('filter'=>1))}"><div class="qiehuan" {if condition="$filter && $filter eq 1"}style="background-color: #1992FC;color: #FFF;"{/if}>待审核</div></a>
+                               <a href="{:url('th_apply/lst',array('filter'=>2))}"><div class="qiehuan" {if condition="$filter && $filter eq 2"}style="background-color: #1992FC;color: #FFF;"{/if}>售后中</div></a>
+                               <a href="{:url('th_apply/lst',array('filter'=>3))}"><div class="qiehuan" {if condition="$filter && $filter eq 3"}style="background-color: #1992FC;color: #FFF;"{/if}>已拒绝</div></a>
+                               <a href="{:url('th_apply/lst',array('filter'=>5))}"><div class="qiehuan" {if condition="$filter && $filter eq 5"}style="background-color: #1992FC;color: #FFF;"{/if}>已完成</div></a>
+                               <a href="{:url('th_apply/lst',array('filter'=>4))}"><div class="qiehuan" {if condition="$filter && $filter eq 4"}style="background-color: #1992FC;color: #FFF;"{/if}>用户已撤销</div></a>
+                               </div>
+                            </div>                                                                                             
+                        </div>
+                        
+						<div class="row" style="margin-top:15px;">
+                            <form action="{:url('th_apply/search')}" method="post" id="form_search">          
+                            <div class="col-sm-3" style="float:right;">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" placeholder="请输入退换订单号" {if condition="(isset($keyword)) AND ($keyword)"}value="{$keyword}"{/if} class="input-sm form-control" /><span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary">搜索</button></span>
+                                </div>
+                            </div>
+                                     
+                            <div style="float:right; font-size:15px; margin-right:10px;">
+                                <select style="height:30px; line-height:30px; border:1px solid #e5e6e7;" name="th_status">
+                                    <option value="0" {if condition="isset($th_status) && $th_status eq 0"}selected="selected"{/if}>全部状态</option>
+                                    <option value="1" {if condition="isset($th_status) && $th_status eq 1"}selected="selected"{/if}>待审核</option>
+                                    <option value="2" {if condition="isset($th_status) && $th_status eq 2"}selected="selected"{/if}>售后中</option>
+                                    <option value="3" {if condition="isset($th_status) && $th_status eq 3"}selected="selected"{/if}>已拒绝</option>
+                                    <option value="5" {if condition="isset($th_status) && $th_status eq 5"}selected="selected"{/if}>已完成</option>
+                                    <option value="4" {if condition="isset($th_status) && $th_status eq 4"}selected="selected"{/if}>用户已撤销</option>
+                                </select>
+                            </div>
+                              
+                            <div style="float:right; font-size:15px; margin-right:10px;">
+                                <select style="height:30px; line-height:30px; border:1px solid #e5e6e7;" name="thfw_id">
+                                    <option value="0" {if condition="isset($thfw_id) && $thfw_id eq 0"}selected="selected"{/if}>全部退换方式</option>
+                                    <option value="1" {if condition="isset($thfw_id) && $thfw_id eq 1"}selected="selected"{/if}>仅退款</option>
+                                    <option value="2" {if condition="isset($thfw_id) && $thfw_id eq 2"}selected="selected"{/if}>退货退款</option>
+                                    <option value="3" {if condition="isset($thfw_id) && $thfw_id eq 3"}selected="selected"{/if}>换货</option>
+                                </select>
+                            </div>   
+                            
+                            <div class="date fr" id="to" style="float:right; font-size:15px; margin-right:10px;"> 
+                                <input type="text" name="endtime" readonly="readonly" placeholder="结束时间" {if condition="(isset($endtime)) AND ($endtime)"}value="{:date('Y-m-d',$endtime)}"{/if} class="date-check">                           
+                            </div> 
+                            
+                            <div class="date date1 fl" id="from" style="float:right; font-size:15px; margin-right:10px;">
+                                <input type="text" name="starttime" readonly="readonly" placeholder="开始时间" {if condition="(isset($starttime)) AND ($starttime)"}value="{:date('Y-m-d',$starttime)}"{/if} class="date-check">                              
+                            </div> 
+                            
+                           </form>                  
+                        </div>
+                        <div id="ajaxpagetest">
+                        {include file="th_apply/ajaxpage" /}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/admin.js"></script>    
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    
+    <script>
+    function getinfo(id,obj){
+    	var infoUrl = url+'/info/th_id/'+id;
+        location.href=infoUrl;
+    }
+	</script>
+
+</body>
+</html>

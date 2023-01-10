@@ -1,0 +1,180 @@
+<!--
+ * @Descripttion: 
+ * @Copyright: ©版权所有
+ * @Link: www.s1107.com
+ * @Contact: QQ:2487937004
+ * @LastEditors: cbing
+ * @LastEditTime: 2020-05-01 18:40:18
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="!isset($search) && !isset($cate_id)"}
+	var search = 0;
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/integral_goods/wine_type_lst/filter/"+filter+".html?page="+pnum;
+	{elseif condition="isset($search) && $search" /}
+	var search = {$search};
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/integral_goods/search.html?page="+pnum;
+	{elseif condition="isset($cate_id) && $cate_id" /}
+	var cate_id = {$cate_id};
+	var search = 0;
+	var goUrl = "/{$Request.module}/integral_goods/catelist/cate_id/"+cate_id+"/filter/"+filter+".html?page="+pnum;
+	{/if}
+</script>                                     
+                 <style type="text/css" media="all">
+                     .table.table-hover th, .table.table-hover td{
+                         padding: 2px;
+                         text-align: center;
+                         line-height: 1.8;
+                     }
+                 </style>   
+                        
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:1%">id</th>
+                                    <th style="width:1%">单号</th>
+                                    <th style="width:1%">拆单</th>
+                                    <th style="width:1%">升级</th>
+                                    <th style="width:1%">商品名称</th>
+                                    <th style="width:1%">缩略图</th>
+                                    <th style="width:1%">比例</th>
+                                    <th style="width:1%">已匹配价格</th>
+                                    <th style="width:1%">销售价格</th>
+                                    <th style="width:1%">销售者</th>
+                                    <th style="width:1%">售银行卡姓名</th>
+                                    <th style="width:1%">售银行卡卡号</th>
+                                    <th style="width:1%">售银行卡手机</th>
+                                    <th style="width:1%">售微信姓名</th>
+                                    <th style="width:1%">售微信二维码</th>
+                                    <th style="width:1%">售微信手机</th>
+                                    <th style="width:1%">售支付宝姓名</th>
+                                    <th style="width:1%">售支付宝二维码</th>
+                                    <th style="width:1%">售支付宝手机</th>
+                                    <th style="width:1%">紧急联系手机</th>
+                                    <th style="width:1%">购入时间</th>
+                                    <th style="width:1%">天数</th>
+                                    <th style="width:1%">截至时间</th>
+                                    <th style="width:1%">冻结</th>
+                                    <th style="width:1%">售库存</th>
+                                    <th style="width:1%">售品牌使用费</th>
+                                    <th style="width:1%">进货方账号</th>
+                                    <th style="width:1%">进货方紧急联系电话</th>
+                                    <th style="width:3%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <td>{$v.odd}</td>
+                                    <td>
+                                        {$v.separate_order==1 ? '<label style="color:red;">是</label>' : '<label style="color:green;">否</label>'}
+                                    </td>
+                                    <td>
+                                        {$v.upgrade==1 ? '<label style="color:red;">是</label>' : '<label style="color:green;">否</label>'}
+                                    </td>
+                                    <td>{$v.goods_name}</td>   
+                                    <td><img src="{$v.goods_thumb}" width="80px" height="80px"/></td>
+                                    <td>{$v.goods_rate}%</td>
+                                    <td>{$v.pipei_amount}</td>
+                                    <td>{$v.sale_amount}</td>
+                                    <td>{$v.user_name}</td>
+                                        <td>{$v.bank_name}</td>
+                                        <td>{$v.bank_card_number}</td>
+                                        <td>{$v.bank_telephone}</td>
+                                        <td>{$v.wx_name}</td>
+                                        <td><img style="width:100px;height:!00px;" src="{$v.wx_qrcode}" alt="" /></td>
+                                        <td>{$v.wx_telephone}</td>
+                                        <td>{$v.zfb_name}</td>
+                                        <td><img style="width:100px;height:!00px;" src="{$v.zfb_qrcode}" alt="" /></td>
+                                        <td>{$v.zfb_telephone}</td>
+                                    
+                                    
+                                    
+                                    <!--{if condition="$v.sale_id == 1"}-->
+                                    <!--    <td>{$v.bank_name}</td>-->
+                                    <!--    <td>{$v.bank_card_number}</td>-->
+                                    <!--    <td>{$v.bank_telephone}</td>-->
+                                    <!--    <td>{$v.wx_name}</td>-->
+                                    <!--    <td><img style="width:100px;height:!00px;" src="{$v.wx_qrcode}" alt="" /></td>-->
+                                    <!--    <td>{$v.wx_telephone}</td>-->
+                                    <!--    <td>{$v.zfb_name}</td>-->
+                                    <!--    <td><img style="width:100px;height:!00px;" src="{$v.zfb_qrcode}" alt="" /></td>-->
+                                    <!--    <td>{$v.zfb_telephone}</td>-->
+                                    <!--{else /}-->
+                                        <!--<td>{$v.bank_name}</td>-->
+                                        <!--<td>{$v.bank_card_number}</td>-->
+                                        <!--<td>{$v.bank_telephone}</td>-->
+                                        <!--<td>{$v.wx_name}</td>-->
+                                        <!--<td><img style="width:100px;height:!00px;" src="{$v.wx_qrcode}" alt="" /></td>-->
+                                        <!--<td>{$v.wx_telephone}</td>-->
+                                        <!--<td>{$v.zfb_name}</td>-->
+                                        <!--<td><img style="width:100px;height:!00px;" src="{$v.zfb_qrcode}" alt="" /></td>-->
+                                        <!--<td>{$v.zfb_telephone}</td>-->
+                                    <!--{/if}-->
+                                    
+                                    
+                                    <!--<td>{$v.bank_name}</td>-->
+                                    <!--<td>{$v.bank_card_number}</td>-->
+                                    <!--<td>{$v.bank_telephone}</td>-->
+                                    <!--<td>{$v.zfb_name}</td>-->
+                                    <!--<td><img style="width:100px;height:!00px;" src="{$v.zfb_qrcode}" alt="" /></td>-->
+                                    <!--<td>{$v.zfb_telephone}</td>-->
+                                    <!--<td>{$v.wx_name}</td>-->
+                                    <!--<td><img style="width:100px;height:!00px;" src="{$v.wx_qrcode}" alt="" /></td>-->
+                                    <!--<td>{$v.wx_telephone}</td>-->
+                                    <td>{$v.emergency_phone}</td>
+                                    <td>{$v.addtime|date="Y-m-d H:i:s",###}</td>
+                                    <td>{$v.day}天</td>
+                                    <!--<td>{$v.addtime+12*60*60|date="Y-m-d H:i:s", ###}</td>-->
+                                    <td>{$v.endtime}</td>
+                                    <td>{$v.checked==0 ? '<label style="color:red;">冻结</label>' : '<label style="color:green;">正常</label>'}</td>
+                                    <td>{$v.total_stock}</td>
+                                    <td>{$v.brand}</td>
+                                    <td>{$v.bm_phone}</td>
+                                    <td>{$v.bm_emergency_phone}</td>
+                                    <td>
+                                        {if condition="$v.pipei_amount != $v.sale_amount"}
+                                        <button type="default" onclick="pipei({$v.id}, {$v.pipei_amount}, {$v.sale_amount}, '{$v.goods_name}')">匹配</button>
+                                        {else /}
+                                        <label style="color:red;font-weight: bold;" for="">已成单</label>
+                                        {/if}
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="25" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}								
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+
+    <script src="/static/admin/js/jquery.min.js?v=2.1.4"></script>  
+    <script type="text/javascript" charset="utf-8">
+        $('.table').on("click", "img", function(){
+            var src = $(this).attr('src');
+            
+            layer.open({
+                content: '<img src="'+src+'" style="max-width:305px;max-height: 600px;" />'
+            });
+        });
+    </script>
+<script>
+    function pipei(id,pipei_amount,sale_amount,goods_name){
+        var editUrl = url+'/pipei/id/'+id+'/single/1';
+        layer.open({
+            type : 2,
+            title : '【'+goods_name+'】出售：'+sale_amount+'元，已匹配：'+pipei_amount+'元',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['100%','100%'],
+            content : editUrl
+        });
+    }
+</script>

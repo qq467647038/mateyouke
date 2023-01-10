@@ -1,0 +1,63 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) AND (!isset($pro_id))"}
+	var search = 0;
+	var pro_id = 0;
+	var goUrl = "{$Request.root}/city/lst.html?page="+pnum;
+	var addUrl = "{:url('city/add')}";
+	{elseif condition="(isset($pro_id)) AND ($pro_id)"/}
+	var pro_id = {$pro_id};
+	var search = 0;
+	var goUrl = "{$Request.root}/city/citylst/pro_id/"+pro_id+".html?page="+pnum;	
+	var addUrl = "{$Request.root}/city/add/pro_id/"+pro_id;
+	{elseif condition="(isset($search)) AND ($search)"/}
+	var search = {$search};
+	var pro_id = 0;
+	var goUrl = "{$Request.root}/city/search.html?page="+pnum;
+	var addUrl = "{:url('city/add')}";
+	{/if}
+		
+	$(function(){
+		$("#checkAll").click(function () {
+	        $("input[class='text_id']:checkbox").prop("checked", this.checked);
+	    }); 
+	});
+</script>
+                        
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%">城市名称</th>
+                                    <th style="width:15%">所属省份</th>
+                                    <th style="width:15%">月嫂服务定位价</th>
+                                    <th style="width:15%">体检定位价</th>
+                                    <th style="width:10%">热门</th>
+                                    <th style="width:10%">排序</th>
+                                    <th style="width:25%">操作</th>                                             
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.city_name}</td>
+                                    <td>{$v.pro_name}</td>
+                                    <td>{$v.price}元</td>
+                                    <td>{$v.fee_price}元</td>
+                                    <td>
+                                    {if condition="$v['is_hot'] eq 1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal({$v.id},'is_hot',this);"><i class="fa fa-check"></i></button>
+                                    {elseif condition="$v['is_hot'] eq 0"/}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal({$v.id},'is_hot',this);"><i class="fa fa-times"></i></button>
+                                    {/if}
+                                    </td>
+                                    <td><input name="{$v.id}" type="text" value="{$v.sort}" class="sort" size="1"></td>
+                                    <td><button type="button" class="btn btn-success btn-xs" onclick="area({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;下属区县</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs" onclick="editcity({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="7" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}							
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

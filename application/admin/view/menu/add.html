@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<script>
+var url = "{:url('menu/lst')}";
+var insertUrl = "{:url('menu/add')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>增加微信菜单</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" id="form"> 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">菜单名称：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="name" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>                          							
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">上级菜单：</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="pid">
+                                        <option value="0">一级菜单</option>
+                                        {foreach name="menures" item="v"}
+                                        <option value="{$v.id}">{:str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $v['level'])}{if condition='$v["level"] gt 0'}|{/if}{$v.html}{$v.name}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">菜单类型：</label>
+                                <div class="col-sm-6" id="atype">
+                                        <label class="radio-inline"><input type="radio" name="type" checked="checked" value="top">无事件的一级菜单</label>
+                                        <label class="radio-inline"><input type="radio" name="type" value="view">跳转url</label>
+                                        <label class="radio-inline"><input type="radio" name="type" value="click">点击推事件</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="adurl"></div>
+                            
+                            <div class="adurl">							
+							<div class="form-group">
+                                <label class="col-sm-2 control-label">url：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="url" class="form-control">
+                                </div>
+                            </div>	
+                            <div class="hr-line-dashed"></div>	
+                            </div>                             
+                            
+                            <div class="adurl">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">关键字：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="key" class="form-control">
+                                </div>
+                            </div>						
+                            <div class="hr-line-dashed"></div> 
+                            </div>
+                            
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">排序：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="sort" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>                                                     
+                                                                                                                                                          
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:20px;">保存内容</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>      
+
+	<script>
+    	$(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+            
+            $('.adurl').hide();
+            $('.adurl').eq(0).show();
+            $('#atype .radio-inline').click(function(){
+            	var i = $(this).index();
+            	$('.adurl').hide();
+            	$('.adurl').eq(i).show();
+            });
+                                    
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	        	//layer ajax提交表单
+	            submitHandler:function(){
+	               // 序列化 表单数据 后提交 ，太简洁了
+	            	post(insertUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+	                
+	        	rules:{
+	        		name:{required:true},
+	        		sort:{
+	        			required:true,
+	        			digits:true
+	        	    }
+	        	},
+	        		
+	        	messages:{
+	        		name:{required:icon+'必填'},
+	                sort:{
+	                	required:icon+'必填',
+	                	digits:icon+'排序必须是整数'
+	                }
+	        	}
+        	});
+      });
+    	
+	  function cl(){
+	     location.href = url;
+	  }	  
+    </script>
+        
+
+</body>
+</html>

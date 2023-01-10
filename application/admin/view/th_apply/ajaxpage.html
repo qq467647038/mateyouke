@@ -1,0 +1,61 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/th_apply/lst/filter/"+filter+".html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/th_apply/search.html?page="+pnum;
+	{/if}
+</script> 
+
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%">售后流水单号</th>
+                                    <th style="width:10%">类型</th>
+                                    <th style="width:10%">状态</th>
+                                    <th style="width:15%">会员昵称</th>
+                                    <th style="width:15%">会员手机号</th>
+                                    <th style="width:10%">退款金额</th>
+                                    <th style="width:15%">申请时间</th>                                
+                                    <th style="width:10%">操作</th>  
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.th_number}</td>
+                                    <td>{$v.cate_name}</td>
+                                    <td>
+                                    {if condition="$v['apply_status'] eq 0"}
+                                    <font style="color:#1c84c6;">待审核</font>
+                                    {elseif condition="$v['apply_status'] eq 1"/}
+                                    <font style="color:#1c84c6;">售后中</font>
+                                    {elseif condition="$v['apply_status'] eq 2"/}
+                                    <font style="color:#F00;">已拒绝</font>                                                             
+                                    {elseif condition="$v['apply_status'] eq 3"/}
+                                    <font style="color:#1992FC;">已完成</font>    
+                                    {elseif condition="$v['apply_status'] eq 4"/}
+                                    <font style="color:#1992FC;">用户已撤销</font>                                                                                                                                                                          
+                                    {/if}                                                               
+                                    </td>
+                                    <td>{if condition="$v['user_name']"}{$v.user_name}{else}/{/if}</td>
+                                    <td>{$v.phone}</td>
+                                    <td>{$v.tui_price}&nbsp;元</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['apply_time'])}</td>
+                                    <td>
+                                    <button type="button" class="btn btn-success btn-xs" onclick="getinfo({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;详情</button>
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="8" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

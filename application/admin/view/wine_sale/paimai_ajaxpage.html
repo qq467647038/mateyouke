@@ -1,0 +1,350 @@
+<!--
+ * @Descripttion: 
+ * @Copyright: ©版权所有
+ * @Link: www.s1107.com
+ * @Contact: QQ:2487937004
+ * @LastEditors: cbing
+ * @LastEditTime: 2020-05-01 18:40:18
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="!isset($search) && !isset($cate_id)"}
+	var search = 0;
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/integral_goods/lst/filter/"+filter+".html?page="+pnum;
+	{elseif condition="isset($search) && $search" /}
+	var search = {$search};
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/integral_goods/search.html?page="+pnum;
+	{elseif condition="isset($cate_id) && $cate_id" /}
+	var cate_id = {$cate_id};
+	var search = 0;
+	var goUrl = "/{$Request.module}/integral_goods/catelist/cate_id/"+cate_id+"/filter/"+filter+".html?page="+pnum;
+	{/if}
+</script>                      
+                 <style type="text/css" media="all">
+                     .table.table-hover th, .table.table-hover td{
+                         padding: 2px;
+                         text-align: center;
+                         line-height: 1.8;
+                     }
+                 </style>       
+                 <button class="btn btn-sm btn-primary" onclick="piliang_del()">批量删除</button>
+                 <button class="btn btn-sm btn-primary" onclick="piliang_shangjia()">批量上架</button>
+                 <button class="btn btn-sm btn-primary" onclick="piliang_xiajia()">批量下架</button>
+                 <button class="btn btn-sm btn-primary" onclick="onkey_xiajia()">一键隐藏</button>
+                 <button class="btn btn-sm btn-primary" onclick="xianshi()">显示</button>
+                 <button class="btn btn-sm btn-primary" onclick="yincang()">隐藏</button>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" name="" id="del" onclick="selectAll(this)" />
+                                    </th>
+                                    <th>ID</th>
+                                    <th>商品图片</th>
+                                    <th>商品名称</th>
+                                    <th>商品分类</th>
+                                    <th>挂售时间</th>
+                                    <th>寄售时间</th>
+                                    <th>商品编号</th>
+                                    <th>所有者id</th>
+                                    <th>所有者名称</th>
+                                    <th>所有者手机</th>
+                                    <th>当前价格</th>
+                                    <th>上架/下架</th>
+                                    <th>状态</th>
+                                    <th>指定买家</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="del" value="{$v.id}" name="del[]" id="" />
+                                    </td>
+                                    <td>{$v.id}</td>
+                                    <td><img src="{$v.goods_thumb}" width="80px" height="80px"/></td>
+                                    <td>{$v.goods_name}</td>   
+                                    <td>{$v.desc}</td>
+                                    <td>{$v.addtime|date="Y-m-d H:i:s", ###}</td>
+                                    <td>
+                                        {if condition="$v.sale_addtime"}
+                                        {$v.sale_addtime|date="Y-m-d H:i:s", ###}
+                                        {else /}
+                                        {$v.addtime|date="Y-m-d H:i:s", ###}
+                                        {/if}
+                                    </td>
+                                    <td>{$v.odd}</td>
+                                    <td>{$v.sale_id}</td>
+                                    <td>{$v.true_name ? $v.true_name : $v.user_name}</td>
+                                    <td>{$v.phone}</td>
+                                    <td>{$v.sale_amount}元</td>
+                                    <td>
+                                    {switch name="v.onsale"}
+                                    {case value="0"}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVals({$v.id},'onsale',this);"><i class="fa fa-times"></i></button>
+                                    {/case}
+                                    {case value="1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVals({$v.id},'onsale',this);"><i class="fa fa-check"></i></button>
+                                    {/case}
+                                    {/switch}
+                                    </td>
+                                    <td>
+                                        {if condition="$v.status == 0"}
+                                        <label style="color:red;font-weight: bold;" for="">待销售</label>
+                                        {elseif condition="$v.status == 1"}
+                                        <label style="color:blue;font-weight: bold;" for="">销售中</label>
+                                        {elseif condition="$v.status == 3" /}
+                                        <label style="color:red;font-weight: bold;" for="">申述中</label>
+                                        {elseif condition="$v.status == 2" /}
+                                        <label style="color:green;font-weight: bold;" for="">已成单</label>
+                                        {/if}
+                                    </td>
+                                    <td>{$v.bm_phone}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-xs" onclick="del({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button>
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="editWineGoods({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="25" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}								
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+
+    <script src="/static/admin/js/jquery.min.js?v=2.1.4"></script>  
+    <script type="text/javascript" charset="utf-8">
+        function piliang_del(){
+            var arr = [];
+            $('.del:checked').each(function(){
+                arr.push($(this).val());
+            });
+            
+            layer.confirm('是否确认批量删除吗？', {
+                btn: ['确认', '取消']
+            }, function(index){
+                $.ajax({
+                    url: "{:url('WineSale/del')}",
+                    type: "post",
+                    data: {
+                        id: arr
+                    },
+                    success: function(res){
+                        if(res == 1){
+                            layer.msg('删除成功');
+                            
+                            setTimeout(function(){
+                                location.reload();
+                            }, 1000)
+                        }
+                        else{
+                            layer.msg('删除失败');
+                        }
+                    }
+                })
+            })
+        }
+          
+        function piliang_shangjia(){
+            var arr = [];
+            $('.del:checked').each(function(){
+                arr.push($(this).val());
+            });
+            
+            layer.confirm('是否确认批量上架吗？', {
+                btn: ['确认', '取消']
+            }, function(index){
+                $.ajax({
+                    url: "{:url('WineSale/shangjia')}",
+                    type: "post",
+                    data: {
+                        id: arr
+                    },
+                    success: function(res){
+                        if(res == 1){
+                            layer.msg('操作成功');
+                            
+                            setTimeout(function(){
+                                location.reload();
+                            }, 1000)
+                        }
+                        else{
+                            layer.msg('操作失败');
+                        }
+                    }
+                })
+            })
+        }
+        
+        function onkey_xiajia(){
+            layer.confirm('是否确认一键隐藏吗？', {
+                btn: ['确认', '取消']
+            }, function(index){
+                $.ajax({
+                    url: "{:url('WineSale/onkey_xiajia')}",
+                    type: "post",
+                    success: function(res){
+                        if(res == 1){
+                            layer.msg('操作成功');
+                            
+                            setTimeout(function(){
+                                location.reload();
+                            }, 1000)
+                        }
+                        else{
+                            layer.msg('操作失败');
+                        }
+                    }
+                })
+            })
+        }
+        
+        function piliang_xiajia(){
+            var arr = [];
+            $('.del:checked').each(function(){
+                arr.push($(this).val());
+            });
+            
+            layer.confirm('是否确认批量下架吗？', {
+                btn: ['确认', '取消']
+            }, function(index){
+                $.ajax({
+                    url: "{:url('WineSale/xiajia')}",
+                    type: "post",
+                    data: {
+                        id: arr
+                    },
+                    success: function(res){
+                        if(res == 1){
+                            layer.msg('操作成功');
+                            
+                            setTimeout(function(){
+                                location.reload();
+                            }, 1000)
+                        }
+                        else{
+                            layer.msg('操作失败');
+                        }
+                    }
+                })
+            })
+        }
+    
+        function selectAll(obj){
+            $('.del').prop('checked', $(obj).is(":checked"));
+        }
+    
+        //修改新窗口打开
+        function changeTableVals(field_id,field_name,obj){
+            if($(obj).hasClass('btn-danger')){
+            		var field_value = 1;
+            	}else if($(obj).hasClass('btn-primary')){
+            		var field_value = 0;
+            	}
+            	layer.load(2);
+            	$.ajax({
+            		url:url+'/gaibian',
+            		type:'POST',
+            		data:{id:field_id,name:field_name,value:field_value},
+            		dataType:'json',
+            		success:function(data){
+            			if(data == 1){
+            				layer.closeAll('loading');
+            			   	if(field_value == 1){
+            		    		$(obj).removeClass('btn-danger').addClass('btn-primary');
+            		    		$(obj).html('<i class="fa fa-check"></i>');
+            			   	}else if(field_value == 0){
+            		    		$(obj).removeClass('btn-primary').addClass('btn-danger');
+            		    		$(obj).html('<i class="fa fa-times"></i>');
+            			   	}
+            			}else{
+            				layer.closeAll('loading');
+            				layer.msg('更新失败，请重试', {icon: 2,time: 1000});
+            			}
+            		},
+            		error:function(){
+            			layer.closeAll('loading');
+            			layer.msg('操作失败或您没有权限，请重试', {icon: 2,time: 1000});
+            		}
+            	});
+        }
+        
+        $('.table').on("click", "img", function(){
+            var src = $(this).attr('src');
+            
+            layer.open({
+                content: '<img src="'+src+'" style="max-width:305px;max-height: 600px;" />'
+            });
+        });
+        
+        function del(id, obj){
+            layer.confirm('是否确认删除吗？', {
+                btn: ['删除', '取消']
+            }, function(index){
+                $.ajax({
+                    url: "{:url('WineSale/del')}",
+                    type: "post",
+                    data: {
+                        id: id
+                    },
+                    success: function(res){
+                        if(res == 1){
+                            layer.msg('删除成功');
+                            
+                            setTimeout(function(){
+                                location.reload();
+                            }, 1000)
+                        }
+                        else{
+                            layer.msg('删除失败');
+                        }
+                    }
+                })
+            })
+        }
+        
+        function editWineGoods(id, obj){
+            var editUrl = url+'/editWineGoods/id/'+id;
+            layer.open({
+                type : 2,
+                title : '更改所有者',
+                shadeClose : true,
+                shade : 0.5,
+                area : ['80%','90%'],
+                content : editUrl
+            });
+        }
+        
+        function xianshi(id, obj){
+            var editUrl = url+'/xianshi';
+            layer.open({
+                type : 2,
+                title : '显示',
+                shadeClose : true,
+                shade : 0.5,
+                area : ['80%','90%'],
+                content : editUrl
+            });
+        }
+        
+        function yincang(id, obj){
+            var editUrl = url+'/yincang';
+            layer.open({
+                type : 2,
+                title : '隐藏',
+                shadeClose : true,
+                shade : 0.5,
+                area : ['80%','90%'],
+                content : editUrl
+            });
+        }  
+    </script>
+    

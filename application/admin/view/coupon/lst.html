@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+    <script src="__PUBLIC__/admin/js/jquery-ui-1.10.4.custom.min.js"></script>
+</head>
+
+<script>
+var url = "/{$Request.module}/coupon";
+var recycleUrl = "{:url('coupon/recycle')}";
+</script>
+
+  <script>
+  $(document).ready(function(){
+      var fixHelperModified = function(e, tr) {
+                  var $originals = tr.children();
+                  var $helper = tr.clone();
+                  $helper.children().each(function(index) {
+                      $(this).width($originals.eq(index).width())
+                  });
+                  return $helper;
+              },
+              updateIndex = function(e, ui) {
+                  var sort = '';
+                  var ids = '';
+                  $('td.index', ui.item.parent()).each(function (i) {
+                      $(this).html(i + 1);
+	        		  ids+=$(this).attr('shuxing')+',';
+	        		  sort+=$(this).text()+',';
+                  });
+                  ids = ids.substring(0,ids.length-1);
+                  sort = sort.substring(0,sort.length-1);
+
+	              $.ajax({
+	            	type:'POST',
+	            	url:"{:url('coupon/paixu')}",
+	            	  data:{'ids':ids,'sort':sort},
+	            	  dataType:'json',
+	            	  success:function(data){
+	            	     layer.msg(data.mess, {icon: 1,time: 1000});
+	            	  },
+	            	  error:function(){
+	            		 layer.msg('操作失败或您没有权限，请重试', {icon: 2,time: 2000});
+	            	  }
+	              });
+              };
+
+      $("#sort tbody").sortable({
+          helper: fixHelperModified,
+          stop: updateIndex
+      }).disableSelection();
+  });
+  </script>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+        <style>
+		.qiehuan{
+		width:120px; height:40px; line-height:40px; font-size:14px; font-weight:bold; color:#333; background-color:#F5F5F6; float:left; margin-right:10px; text-align:center; cursor:pointer;
+		}
+		</style>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>优惠券列表</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                        <div class="col-sm-5 m-b-xs">                    
+                               <div style="width:1300px; height:40px; margin-bottom:25px;">
+                               <a href="{:url('coupon/lst',array('filter'=>5))}"><div class="qiehuan" {if condition="$filter && $filter eq 5"}style="background-color: #1992FC;color: #FFF;"{/if}>全部</div></a>
+                               <a href="{:url('coupon/lst',array('filter'=>1))}"><div class="qiehuan" {if condition="$filter && $filter eq 1"}style="background-color: #1992FC;color: #FFF;"{/if}>上架</div></a>
+                               <a href="{:url('coupon/lst',array('filter'=>2))}"><div class="qiehuan" {if condition="$filter && $filter eq 2"}style="background-color: #1992FC;color: #FFF;"{/if}>下架</div></a>         
+                               <a href="{:url('coupon/lst',array('filter'=>3))}"><div class="qiehuan" {if condition="$filter && $filter eq 3"}style="background-color: #1992FC;color: #FFF;"{/if}>已过期</div></a>                 
+                               </div>
+                        </div> 
+                        </div>
+         
+						<div class="row">
+						    <div class="col-sm-2 m-b-xs">
+						    <a href="{:url('coupon/add')}"><button type="button" class="btn btn-sm btn-primary" id="add" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;新增优惠券</button></a>                  
+                            <a href="{:url('coupon/hslst')}"><button type="button" class="btn btn-sm btn-success"><i class="fa fa-paste"></i>&nbsp;回收站</button></a>
+                            </div>  
+                            
+                            <div class="col-sm-10 m-b-xs" style="float:right;">
+                            <form action="{:url('coupon/search')}" method="post" id="form_search" style="margin-top:10px;">
+                            
+                            <div class="col-sm-4" style="float:right;">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" placeholder="请输入优惠券满金额" {if condition="(isset($keyword)) AND ($keyword)"}value="{$keyword}"{/if} class="input-sm form-control" />
+                                    <span class="input-group-btn"><button type="submit" class="btn btn-sm btn-primary">搜索</button></span>
+                                </div>
+                            </div> 
+                            
+                            <div style="float:right; font-size:15px; margin-right:10px;">
+                                <select style="height:30px; line-height:30px; border:1px solid #e5e6e7;" name="onsale">
+                                    <option value="0" {if condition="(isset($onsale)) AND ($onsale eq 0)"}selected="selected"{/if}>全部</option>
+                                    <option value="1" {if condition="(isset($onsale)) AND ($onsale eq 1)"}selected="selected"{/if}>上架</option>
+                                    <option value="2" {if condition="(isset($onsale)) AND ($onsale eq 2)"}selected="selected"{/if}>下架</option>
+                                    <option value="3" {if condition="(isset($onsale)) AND ($onsale eq 3)"}selected="selected"{/if}>已过期</option>
+                                </select>
+                            </div>                              
+                            
+                            <div class="date fr" id="to" style="float:right; font-size:15px; margin-right:10px;"> 
+                                <input type="text" name="endtime" readonly="readonly" placeholder="结束时间" {if condition="(isset($endtime)) AND ($endtime)"}value="{:date('Y-m-d',$endtime)}"{/if} class="date-check">                           
+                            </div> 
+                            
+                            <div class="date date1 fl" id="from" style="float:right; font-size:15px; margin-right:10px;">
+                                <input type="text" name="starttime" readonly="readonly" placeholder="开始时间" {if condition="(isset($starttime)) AND ($starttime)"}value="{:date('Y-m-d',$starttime)}"{/if} class="date-check">                              
+                            </div> 
+                            
+                                                    
+                                                                  
+                           </form>  
+                           </div>                                                                                          
+                        </div>
+                        
+                        
+
+                        <div id="ajaxpagetest">
+                        {include file="coupon/ajaxpage" /}
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/admin.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    
+    <script>
+    function coupon_info(id,obj){
+ 		var infoUrl = url+'/info/id/'+id;
+ 		location.href = infoUrl;
+    }
+    </script>      
+</body>
+</html>

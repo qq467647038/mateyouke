@@ -1,0 +1,44 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/shop_txmx/lst/filter/"+filter+".html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/shop_txmx/search.html?page="+pnum;
+	{/if}
+</script>    
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%">流水单号</th>
+                                    <th style="width:10%">商家名称</th>
+                                    <th style="width:15%">手机号</th>
+                                    <th style="width:15%">申请时间</th>
+                                    <th style="width:15%">提现金额</th>
+                                    <th style="width:15%">状态</th>
+                                    <th style="width:15%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.tx_number}</td>
+                                    <td>{$v.shop_name}</td>
+                                    <td>{$v.telephone}</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['time'])}</td>
+                                    <td>{$v.price}</td>
+                                    <td>{if condition="($v['checked'] eq 0) AND ($v['complete'] eq 0)"}<span style="color:#1c84c6;">待审核</span>{elseif condition="($v['checked'] eq 1) AND ($v['complete'] eq 0)"/}<span style="color:#1c84c6;">待打款</span>{elseif condition="($v['checked'] eq 1) AND ($v['complete'] eq 1)"/}<span style="color:#1992FC;">已完成</span>{elseif condition="($v['checked'] eq 1) AND ($v['complete'] eq 2)"/}<span style="color:#ed5565;">打款失败</span>{elseif condition="($v['checked'] eq 2) AND ($v['complete'] eq 0)"/}<span style="color:#ed5565;">审核未通过</span>{/if}</td>
+                                    <td>{if condition="($v['checked'] eq 0) AND ($v['complete'] eq 0)"}<button type="button" class="btn btn-success btn-xs" onclick="tixianchecked({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;审核</button>{elseif condition="($v['checked'] eq 1) AND ($v['complete'] eq 0)"/}<button type="button" class="btn btn-primary btn-xs" onclick="dakuan({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;打款</button>{else/}<button type="button" class="btn btn-info btn-xs" onclick="tixianinfo({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;详细</button>{/if}</td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="7" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

@@ -1,0 +1,35 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/kcyj/lst.html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/kcyj/search.html?page="+pnum;
+	{/if}
+</script>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:30%">商品名称</th>
+                                    <th style="width:25%">商品规格</th>
+                                    <th style="width:15%">库存量</th>
+                                    <th style="width:10%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="!empty($list)"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.goods_name}</td>
+                                    <td>{$v.goods_attr_str}</td>
+                                    <td>{$v.goods_number}</td>
+                                    <td><button type="button" class="btn btn-primary btn-xs" onclick="product({$v.goods_id},this);"><i class="fa fa-pencil"></i>&nbsp;库存</button></td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="9" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

@@ -1,0 +1,65 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/config/lst.html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/config/search.html?page="+pnum;
+	{/if}
+	$(function(){
+		$("#checkAll").click(function () {
+	        $("input[class='text_id']:checkbox").prop("checked", this.checked);
+	    }); 
+	});
+</script>                     
+   
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%"><input type="checkbox" id="checkAll"></th>
+                                    <th style="width:20%">配置名称</th>
+                                    <th style="width:20%">英文名称</th>
+                                    <th style="width:20%">所属分类</th>
+                                    <th style="width:15%">类型</th>
+                                    <th style="width:20%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"}
+                                <tr>
+                                    <td><input type="checkbox" class="text_id" name="id" value="{$v.id}"></td>
+                                    <td>{$v.cname}</td>
+                                    <td>{$v.ename}</td>
+                                    <td>
+                                    {$v.ca_name}
+                                    </td>
+                                    <td>
+                                    {switch name="v.type"}
+                                    {case value="0"}
+                                                                                                    文本框
+                                    {/case}
+                                    {case value="1"}
+                                                                                                    文本域
+                                    {/case}
+                                    {case value="2"}
+                                                                                                    单选按钮
+                                    {/case}
+                                    {case value="3"}
+                                                                                                    复选框
+                                    {/case}
+                                    {case value="4"}
+                                                                                                   下拉框  
+                                    {/case}
+                                    {/switch}
+                                    </td>
+                                    <td><button type="button" class="btn btn-primary btn-xs" onclick="edit({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="6" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}							
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

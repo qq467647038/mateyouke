@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+  <link rel="stylesheet" href="/ajax/libs/layui/2.6.8/css/layui.css"  media="all">
+</head>
+
+<script>
+//删除url
+var deleteUrl = "{:url('wine_deal_area_contract/delete')}";
+var url = "/{$Request.module}/wine_deal_area_contract";
+</script>
+
+<body class="gray-bg" >
+<style>
+    .qiehuan{
+        width:120px; height:40px; line-height:40px; font-size:14px; font-weight:bold; color:#333; background-color:#F5F5F6; float:left; margin-right:10px; text-align:center; cursor:pointer;
+    }
+</style>
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>预约记录（{$count}）</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="ajaxpagetest">
+                        {include file="wine_deal_area_contract/yuyue_ajaxpage" /}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/admin.js"></script>    
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+<script src="/ajax/libs/layui/2.6.8/layui.js" charset="utf-8"></script>
+    
+    <script>
+    
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+</head>
+
+<script>
+var url = "/{$Request.module}/thcate";
+var deleteUrl = "{:url('thcate/delete')}";
+var sortUrl = "{:url('thcate/order')}";
+</script>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>退换种类列表</h5>
+                    </div>
+                    <div class="ibox-content">
+						<div class="row">
+						   <div class="col-sm-8 m-b-xs">
+                                <a href="{:url('thcate/add')}"><button type="button" class="btn btn-sm btn-primary" id="add" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;增加种类</button></a>
+                                <button type="button" class="btn btn-sm btn-success" style="margin-right:15px;" id="order">更新排序</button>
+                            </div>              
+
+                        </div>
+						<div id="sj">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:20%">种类名称</th>
+                                    <th style="width:30%">描述</th>
+                                    <th style="width:10%">是否需要已发货</th>
+                                    <th style="width:10%">显示/隐藏</th>
+                                    <th style="width:10%">排序</th>
+                                    <th style="width:20%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="!empty($list)"}
+							{foreach name="list" item="v"}
+                                <tr>
+                                    <td>{$v.cate_name}</td>
+                                    <td>{$v.desc}</td>
+                                    <td>{switch name="v.fh_type"}{case value="0"}否{/case}{case value="1"}是{/case}{/switch}</td>
+                                    <td>
+                                    {switch name="v.is_show"}
+                                    {case value="0"}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal({$v.id},'is_show',this);"><i class="fa fa-times"></i></button>
+                                    {/case}
+                                    {case value="1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal({$v.id},'is_show',this);"><i class="fa fa-check"></i></button>
+                                    {/case}
+                                    {/switch}
+                                    </td>
+                                    <td><input name="{$v.id}" typed="text" value="{$v.sort}" class="sort" size="1" /></td>
+                                    <td><button type="button" class="btn btn-primary btn-xs" onclick="edit({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-success btn-xs" onclick="addinfo({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;信息列表</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}		
+							{else/}
+							<tr><td colspan="6" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}				
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/catecommon.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    
+    <script>
+    function addinfo(id,obj){
+        var thurl = "/{$Request.module}/thmess/lst/cate_id/"+id;
+        location.href = thurl;
+     }
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/promotion/lst/filter/"+filter+".html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/promotion/search.html?page="+pnum;
+	{/if}
+</script>    
+
+                  
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%">状态</th>
+                                    <th style="width:15%">活动名称</th>                                    
+                                    <th style="width:15%">活动类型</th>
+                                    <th style="width:15%">开始时间</th>
+                                    <th style="width:15%">结束时间</th>
+                                    <th style="width:10%">推荐</th>
+                                    <th style="width:15%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="!empty($list)"}
+							{foreach name="list" item="v"}
+                                <tr>
+                                    <td>
+                                    {switch name="v.zhuangtai"}
+                                    {case value="1"}
+                                    <span style="color:#1c84c6;">即将开始</span>
+                                    {/case}
+                                    {case value="2"}
+                                    <span style="color:#1c84c6;">活动中</span>                                    
+                                    {/case}
+                                    {case value="3"}
+                                    <span style="color:#1992FC;">已结束</span>                                    
+                                    {/case}                                                                        
+                                    {/switch}
+                                    </td>
+                                    <td>{$v.activity_name}</td>
+                                    <td>{switch name="v.type"}{case value="1"}直接打折{/case}{case value="2"}减价优惠{/case}{/switch}</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['start_time'])}</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['end_time'])}</td>
+                                    <td>{if condition="$v['recommend'] eq 1"}是{else condition="$v['recommend'] eq 0/}否{/if}</td>
+                                    <td> 
+                                    <button type="button" class="btn btn-primary btn-xs" onclick="editmatr({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;                                 
+                                    <button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button>
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="7" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}				
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

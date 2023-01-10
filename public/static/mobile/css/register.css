@@ -1,0 +1,166 @@
+@charset "utf-8";
+/* CSS Document */
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+body {
+	font-family: "Microsoft Yahei", "Calibri";
+	font-size: 12px;
+	background-color: #FFF;
+	color:#333;
+}
+
+a {
+	cursor: pointer;
+	text-decoration: none;
+	color: #333;
+}
+
+li {
+	list-style: none
+}
+img {
+	border: 0;
+}
+textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="button"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {
+	border-color: rgba(82,168,236,0.8);
+	outline: 0;
+}
+
+.tip
+{
+	width:100%;
+	margin-top:15px;
+	overflow:hidden;
+}
+.tip a
+{
+	float:right;
+	padding:0px 15px;
+	color:#09C;
+}
+.tip a input
+{
+	margin-right:5px;
+	vertical-align: -1.5px;
+}
+
+.agreement-alert {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    margin-top: 18px;
+}
+
+.agreement-handle {
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+	vertical-align: sub;
+	background: url(../images/checked.png) no-repeat center 3px;
+	margin-right: 5px;
+	background-size: 100%;
+}
+
+.btndl
+{
+	width:100%;
+	text-align:center;
+	margin-top:40px;
+}
+.btndl a
+{
+	width:88%;
+	height:42px;
+	color:#fff;
+	border:0;
+	font-family:"Microsoft Yahei", "Calibri";
+	cursor:pointer;
+	font-size:16px;
+	background:#ff3030;
+	border-radius:20px;
+	display: block;
+	line-height: 42px;
+	margin: 0 auto;
+}
+
+/*注册*/
+.zhuce
+{
+	width:100%;
+	margin-top:80px;
+}
+
+.zhuce .reg_1{
+	text-align: center;
+}
+
+.zhuce .reg_1 img{
+	width: 90px;
+}
+
+.zhuce .reg_2{
+	text-align: center;
+	font-size: 18px;
+	color: #333;
+	font-weight: bold;
+	line-height: 30px;
+	
+}
+
+.zhuce .reg_3{
+	text-align: center;
+	color: #343434;
+}
+
+.regform {
+	margin-top: 10px;
+}
+
+.zhuce .text
+{
+	line-height:42px;
+	padding:3px 10px;
+	border-bottom:1px solid #ddd;
+	display:block;
+	overflow:hidden;
+}
+.zhuce .text span
+{
+	width:20%;
+	float:left;
+	text-align:center;
+}
+.zhuce .text .input
+{
+	width:80%;
+	height:42px;
+	font-family:"Microsoft Yahei", "Calibri";
+	border:0;
+	float:left;
+	text-indent:20px;
+}
+.zhuce .text .yzm
+{
+	width:25%;
+	text-align:left;
+}
+
+.zhuce .text .yzm a
+{
+	color: #f00 !important;
+}
+
+
+.zhuce .text .yzm input
+{
+	border:0;
+	padding:3px;
+	font-family:"Microsoft Yahei", "Calibri";
+	color:#f00;
+	cursor:pointer;
+	font-size:12px;
+	background: transparent;
+}

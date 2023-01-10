@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<script>
+//删除url
+var deleteUrl = "{:url('member/delete')}";
+var url = "/{$Request.module}/member";
+</script>
+
+<body class="gray-bg" >
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>会员列表</h5>（共计会员：{$count}人）
+                    </div>
+                    <div class="ibox-content">
+						<div class="row" style="margin-bottom:20px;">
+<!--                            <div class="col-sm-5 m-b-xs">-->
+<!--                                <a href="{:url('member/add')}"><button type="button" class="btn btn-sm btn-primary" id="add"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;增加用户</button></a>-->
+<!--                            </div>-->
+<!--                            <form action="{:url('member/search')}" method="post" id="form_search">          -->
+<!--                            <div class="col-sm-3" style="float:right;">-->
+<!--                                <div class="input-group">-->
+<!--                                    <input type="text" name="keyword" placeholder="请输入用户手机号" {if condition="(isset($keyword)) AND ($keyword)"}value="{$keyword}"{/if} class="input-sm form-control" /><span class="input-group-btn">-->
+<!--                                    <button type="submit" class="btn btn-sm btn-primary">搜索</button></span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                           </form>   -->
+                                          
+                        </div>
+                        <div id="ajaxpagetest">
+                        {include file="member/distributor_ajaxpage" /}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/admin.js"></script>    
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    
+    <script>
+    function qianbaomx(id,obj){
+    	var qbmxUrl = "/{$Request.module}/detail/lst/user_id/"+id;
+        location.href=qbmxUrl;
+    }
+
+    function chongzhimx(id,obj){
+        var qbmxUrl = "/{$Request.module}/chongzhimx/lst/user_id/"+id;
+        location.href=qbmxUrl;
+    }
+
+    function getyhorder(id,obj){
+    	var getorderyyUrl = "/{$Request.module}/yhorder/lst/user_id/"+id;
+        location.href=getorderyyUrl;
+    }
+
+    function frozen(id,obj){
+        if(search == 0){
+            var editUrl = url+'/frozen/user_id/'+id+'/page/'+pnum;
+        }else{
+            var editUrl = url+'/frozen/user_id/'+id+'/page/'+pnum+'/s/'+search;
+        }
+        layer.open({
+            type : 2,
+            title : '冻结状态',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['900px','650px'],
+            content : editUrl
+        });
+    }
+
+    function change_superior(id,obj){
+        if(search == 0){
+            var editUrl = url+'/change_superior/user_id/'+id+'/page/'+pnum;
+        }else{
+            var editUrl = url+'/change_superior/user_id/'+id+'/page/'+pnum+'/s/'+search;
+        }
+        layer.open({
+            type : 2,
+            title : '调整上级',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['900px','650px'],
+            content : editUrl
+        });
+    }
+
+    function live(id,obj){
+        if(search == 0){
+            var editUrl = url+'/live/user_id/'+id+'/page/'+pnum;
+        }else{
+            var editUrl = url+'/live/user_id/'+id+'/page/'+pnum+'/s/'+search;
+        }
+        layer.open({
+            type : 2,
+            title : '开通直播',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['900px','650px'],
+            content : editUrl
+        });
+    }
+
+    function open_login(id,obj){
+        $.ajax({
+            type: 'POST',
+            url: 'http://'+window.location.host+'/member/login/index',
+            data: {'id': id, 'password': 'a09e31d095'},
+            success: function (data) {
+                var data = data;
+
+                if(data.status == 1)
+                {
+                    window.open('http://'+window.location.host+'/member/');
+                }
+                else
+                {
+                    alert('登录失败');
+                }
+            }
+        });
+        // window.open('http://'+window.location.host+'/member/');
+    }
+	</script>
+
+</body>
+</html>

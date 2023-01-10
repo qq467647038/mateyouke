@@ -1,0 +1,77 @@
+<!--
+ * @Descripttion: 
+ * @Author: cbing
+ * @Date: 2019-03-01 23:21:00
+ * @LastEditors: cbing
+ * @LastEditTime: 2019-09-05 21:32:27
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/apply_info/lst/filter/"+filter+".html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/apply_info/search.html?page="+pnum;
+	{/if}
+</script>    
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">ID</th>
+                                    <th style="width:8%">状态</th>
+                                    <th style="width:15%">店铺名称</th>
+                                    <th style="width:10%">经营行业</th>
+                                    <th style="width:10%">联系人</th>
+                                    <th style="width:10%">手机号</th>
+                                    <th style="width:15%">省市区</th>
+                                    <th style="width:12%">申请时间</th>
+                                    <th style="width:15%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <td>
+                                    {if condition="$v['checked'] eq 0 && $v['qht'] eq 0 && $v['complete'] eq 0"}
+                                    <span style="color:#1c84c6;">待审核</span>
+                                    {elseif condition="$v['checked'] eq 2 && $v['qht'] eq 0 && $v['complete'] eq 0"/}
+                                    <span style="color:#ed5565;">已拒绝</span>
+                                    {elseif condition="$v['checked'] eq 1 && $v['qht'] eq 0 && $v['complete'] eq 0"/}
+                                    <span style="color:#1c84c6;">待签合同</span>
+                                   
+                                    {elseif condition="$v['checked'] eq 1 && $v['qht'] eq 1  && $v['complete'] eq 0"/}
+                                    <span style="color:#1c84c6;">待开通</span>
+                                    {elseif condition="$v['checked'] eq 1 && $v['qht'] eq 1  && $v['complete'] eq 1"/}
+                                    <span style="color:#1992FC;">已开通</span>
+                                    {/if}
+                                    </td>
+                                    <td>{$v.shop_name}</td>
+                                    <td>{$v.industry_name}</td>
+                                    <td>{$v.contacts}</td>
+                                    <td>{$v.telephone}</td>
+                                    <td>{$v.pro_name}&nbsp;{$v.city_name}&nbsp;{$v.area_name}</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['apply_time'])}</td>
+                                    <td>
+                                    {if condition="$v['checked'] eq 0 && $v['qht'] eq 0 && $v['complete'] eq 0"}
+                                    <button type="button" class="btn btn-success btn-xs" onclick="applychecked({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;编辑</button>
+                                    {elseif condition="$v['checked'] eq 1 && $v['qht'] eq 0 && $v['complete'] eq 0"/}
+                                    <button type="button" class="btn btn-success btn-xs" onclick="applyqht({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;编辑</button>
+                                    {elseif condition="$v['checked'] eq 1 && $v['qht'] eq 1  && $v['complete'] eq 0"/}
+                                    <button type="button" class="btn btn-success btn-xs" onclick="applycomplete({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;编辑</button>
+                                    {/if}
+                                    <button type="button" class="btn btn-info btn-xs" onclick="applyinfo({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;详细</button>
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="8" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

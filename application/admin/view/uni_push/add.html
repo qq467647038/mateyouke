@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title></title>
+
+    <meta name="keywords" content="">
+
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/Huploadify/Huploadify.css"/>
+
+</head>
+
+
+
+<script>
+
+    var url = "{:url('uni_push/lst')}";
+
+    var insertUrl = "{:url('uni_push/add')}";
+
+</script>
+
+<body class="gray-bg">
+
+<style>
+
+input.error{
+
+	border:1px solid red;
+
+}
+
+span.error{
+
+	padding-top:10px;
+
+	color: #f00;
+
+	font-size:12px;
+
+}
+
+</style>
+
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+
+            <div class="col-sm-12">
+
+                <div class="ibox float-e-margins">
+
+                    <div class="ibox-title">
+
+                        <h5>发布推送</h5>
+
+                    </div>
+
+                    <div class="ibox-content">
+
+                        <form method="post" class="form-horizontal" id="form">
+
+                            <div class="form-group">
+
+                                <label class="col-sm-2 control-label">标题</label>
+
+                                <div class="col-sm-6">
+
+                                    <input type="text" name="title" class="form-control">
+
+                                </div>
+
+                            </div>						
+
+                            <div class="hr-line-dashed"></div>                                                               
+
+
+
+                            <div class="form-group">
+
+                                <label class="col-sm-2 control-label">内容</label>
+
+                                <div class="col-sm-6">
+
+                                    <input type="text" name="content" class="form-control">
+
+                                </div>
+
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">点击链接地址:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="push_url" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+
+                                <div class="col-sm-4 col-sm-offset-2">
+
+                                    <button class="btn btn-primary" type="button" id="doSubmit" style="margin-right:100px;">保存内容</button>
+
+                                    <button type="reset" class="btn btn-default">重置</button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- 全局js -->
+
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- 自定义js -->
+
+    <script type="text/javascript" src="__PUBLIC__/admin/Huploadify/jquery.Huploadify.js"></script>
+
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+
+    <!-- iCheck -->
+
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+
+
+<script>
+
+
+
+        $(function(){
+
+
+
+            //上传图片
+
+            $('#uploaderInput').Huploadify({
+
+                uploader : '{:url("version/uploadify")}',
+
+                method:'post',
+
+                formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+
+                buttonText : '上传ANDROID包',
+
+                removeTimeout: 2000,
+
+                fileTypeDesc:'*.apk;',
+
+                fileTypeExts:'*.apk;',
+
+                fileObjName: 'filedata', //上传附件$_FILE标识
+
+                fileSizeLimit : 51200,
+
+                //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+
+                auto : true, //开启,自动上传
+
+                multi : false, //开启,多选文件
+
+                //开始上传
+
+                onUploadStart:function(file){
+
+                    layer.load(2);
+
+                },
+
+                onUploadSuccess : function(file, data, response) {
+
+                    //解析成json对象
+
+                    eval('var data='+data);
+
+                    if(data.status == 1){
+
+                        var picpath = data;
+
+                        console.log(data);
+
+                        $('#imageinfo').attr('src',picpath.path);
+
+                        $('.del').show();
+
+                        $('input[name=urls]').val(picpath.filepath);
+
+                    }else{
+
+                        layer.msg(data.msg, {icon: 2,time: 2000});
+
+                    }
+
+                },
+
+                //上传完成后执行的操作
+
+                onUploadComplete:function(file){
+
+                    layer.closeAll('loading');
+
+                },
+
+                //上传错误
+
+                onUploadError : function(file, errorCode, errorMsg, errorString) {
+
+                    layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000});
+
+                }
+
+            });
+
+
+
+            $('.del').click(function(){
+
+                layer.load(2);
+
+                $.ajax({
+
+                    url:'{:url("version/delfile")}',
+
+                    type:'POST',
+
+                    data:{'urls':$('input[name=urls]').val()},
+
+                    dataType:'json',
+
+                    success:function(data){
+
+                        if(data == 1){
+
+                            layer.closeAll('loading');
+
+                            $('input[name=urls]').val('');
+
+                            $('#imageinfo').attr('src','__PUBLIC__/admin/img/nopic.jpg');
+
+                            $('.del').hide();
+
+                        }else{
+
+                            layer.closeAll('loading');
+
+                            layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+
+                        }
+
+                    },
+
+                    error:function(){
+
+                        layer.closeAll('loading');
+
+                        layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+
+                    }
+
+                });
+
+            });
+
+
+
+
+
+            $("#doSubmit").on('click',function () {
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: insertUrl,
+
+                    data: $("#form").serialize(),
+
+                    success: function(msg){
+
+                        if(msg.status == 1){
+
+                            $("#doSubmit").attr('disabled','disabled');
+
+                            layer.msg(msg.mess);
+
+                            setTimeout(function(){
+
+                                location.href="{:url('lst')}";
+
+                            },1000);
+
+                        }else{
+
+                            layer.msg(msg.mess);
+
+                        }
+
+                    }
+
+                });
+
+            })
+
+
+
+
+
+
+
+        });
+
+
+
+
+
+        function cl(){
+
+    	  location.href = url;
+
+      }
+
+    </script>
+
+
+
+</body>
+
+</html>
+

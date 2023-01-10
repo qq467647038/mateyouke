@@ -1,0 +1,243 @@
+<!--
+ * @Descripttion: 
+ * @Author: cbing
+ * @Date: 2019-04-25 15:00:00
+ * @LastEditors: cbing
+ * @LastEditTime: 2020-04-28 13:13:59
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <style>
+	.qiehuan{
+	    width:120px; height:40px; line-height:40px; font-size:14px; font-weight:bold; color:#333; background-color:#F5F5F6; float:left; margin-right:10px; text-align:center; cursor:pointer;
+	}
+	</style>
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>直播间列表</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="margin-top:10px;margin-bottom:20px;">
+                            <form action="{:url('alive/lst')}" method="post" id="form_search">
+                            <div class="col-sm-3" style="float:right;">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" placeholder="请输入描述关键字/电话/用户名" value="{:input('param.keyword')}" class="input-sm form-control">
+                                    <span class="input-group-btn"><button type="submit" class="btn btn-sm btn-primary" id="submit_search2">搜索</button></span>
+                                </div>
+                            </div>
+                           </form>
+                           
+                        </div>  
+                        
+                        
+                        <div id="ajaxpagetest">
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="width:5%">房间ID</th>
+                                    <th style="width:10%">直播封面</th>
+                                    <th style="width:10%">房间标题</th>
+                                    <th style="width:10%">商品类型</th>
+                                    <th style="width:10%">直播房间号</th>
+                                    <th style="width:10%">用户名-电话</th>
+                                    <th style="width:10%">店铺名称</th>
+                                    <th style="width:10%">直播状态</th>
+                                    <th style="width:10%">最后直播开始时间</th>
+                                    <th style="width:5%">新人</th>
+                                    <th style="width:5%">推荐</th>
+                                    <th style="width:10%">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {if condition="$list->isEmpty() == false"}
+                                {foreach name="list" item="v"}
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <td><img src="{$v.cover}" width="80px;"/></td>
+                                    <td>{$v.title}</td>
+                                    <td>{$v.type_name}</td>
+                                    <td>{$v.room}</td>
+                                    <td>{$v.user_name}-{$v.phone}</td>
+                                    <td>{$v.shop_name}</td>
+                                    <td>
+                                        {switch name="v.status"}{case value="-1"}等待直播
+                                        {/case}
+                                        {case value="1"}直播中
+                                        {/case}
+                                        {case value="2"}
+                                        被管理员关闭
+                                        {/case}
+                                        {/switch}
+                                    </td>
+                                    <td>{$v.starttime|date="Y-m-d H:i:s",###}</td>
+                                   
+
+                                    <td>
+                                        {switch name="v.isnewperson"}
+                                        {case value="1"}
+                                        <button class="btn btn-primary btn-xs" type="button" onclick="isnewperson({$v.id});"><i class="fa fa-check"></i></button>
+                                        {/case}
+                                        {case value="-1"}
+                                        <button class="btn btn-danger btn-xs" type="button" onclick="isnewperson({$v.id});"><i class="fa fa-times"></i></button>
+                                        {/case}
+                                        {/switch}
+                                    </td>
+
+                                    <td>
+                                        {switch name="v.isrecommend"}
+                                        {case value="1"}
+                                        <button class="btn btn-primary btn-xs" type="button" onclick="isrecommend({$v.id});"><i class="fa fa-check"></i></button>
+                                        {/case}
+                                        {case value="-1"}
+                                        <button class="btn btn-danger btn-xs" type="button" onclick="isrecommend({$v.id});"><i class="fa fa-times"></i></button>
+                                        {/case}
+                                        {/switch}
+                                    </td>
+
+                                    <td>
+                                        <a href="{:url('editAlive',array('id'=>$v['id']))}" class="btn btn-primary btn-xs">&nbsp;编辑&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {if condition="$v['status'] eq 2"}
+                                        <button type="button" class="btn btn-default btn-sm btn-block btn-warning" onclick="resetalive({$v['id']})"><i class="fa fa-exclamation-triangle"></i> 恢复直播</button>
+                                        {/if}
+
+<!--                                        {if condition="$v['course'] === 0"}-->
+<!--                                        <button class="btn btn-success btn-xs" type="button" onclick="course({$v.id}, 1);">加入学堂</button>-->
+<!--                                        {elseif condition="$v['course'] === 1"}-->
+<!--                                        <button class="btn btn-danger btn-xs" type="button" onclick="course({$v.id}, 0);">取消学堂</button>-->
+<!--                                        {/if}-->
+                                    </td>
+                                </tr>
+                                {/foreach}
+                                {else/}
+                                <tr><td colspan="11" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+                                {/if}
+                                </tbody>
+                            </table>
+                            <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+                        </div>                        
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script type="text/javascript">
+        // function course(id, course){
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "{:url('course')}",
+        //         data: {'alive_id': id, 'course': course},
+        //         success: function (str) {
+        //             console.log(str);
+        //         }
+        //     });
+        //
+        //     window.setTimeout(function () {
+        //         location.reload();
+        //     }, 500);
+        // }
+
+        /**
+         * 筛选查询
+         */
+        $("ul li a").on("click",function (e) {
+            var url = $(this).attr("href");
+            var formdata = $("#form_search").serialize();
+            if(url.indexOf('?')<=-1){
+                url = url+"?"+formdata;
+            }else{
+                url = url+"&"+formdata;
+            }
+            e.preventDefault();
+            $(location).attr('href', url);
+        });
+
+        function resetalive(id){
+            $.ajax({
+                type: "POST",
+                url: "{:url('resetalive')}",
+                data: {'id':id},
+                success: function(str){
+                    console.log(str);
+                }
+            });
+            window.setTimeout(function () {
+                location.reload();
+            },500);
+        }
+
+        /*
+        是否是新人
+         */
+        function isnewperson(id) {
+            $.ajax({
+                url:"{:url('alive/isnewperson')}",
+                type:'POST',
+                data:{id:id},
+                dataType:'json',
+                success:function(data) {
+                    if(data.code == 200){
+                        layer.msg(data.mess);
+                    }else{
+                        layer.msg(data.mess)
+                    }
+                }
+            });
+            window.setTimeout(function () {
+                location.reload();
+            },1000);
+        }
+
+
+
+        /*
+        是否推荐
+         */
+        function isrecommend(id) {
+            $.ajax({
+                url:"{:url('alive/isrecommend')}",
+                type:'POST',
+                data:{id:id},
+                dataType:'json',
+                success:function(data) {
+                    if(data.code == 200){
+                        layer.msg(data.mess);
+                    }else{
+                        layer.msg(data.mess)
+                    }
+                }
+            });
+            window.setTimeout(function () {
+                location.reload();
+            },1000);
+        }
+    </script>
+	
+</body>
+</html>

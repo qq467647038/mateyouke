@@ -1,0 +1,231 @@
+<!--
+ * @Descripttion: 
+ * @Author: cbing
+ * @Date: 2019-09-15 16:11:04
+ * @LastEditors: cbing
+ * @LastEditTime: 2019-09-15 16:12:15
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/Huploadify/Huploadify.css"/>
+</head>
+<script>
+var url = "{:url('wine_deal_area_contract/lst')}";
+var updateUrl = "{:url('wine_deal_area_contract/edit')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>编辑交易时间段</h5>
+                    </div>
+                    <div class="ibox-content">
+                    <form method="post" class="form-horizontal" id="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">交易时间段</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="test1" name="deal_area" class="form-control" value="{$wine_deal_area.deal_area}">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">描述</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="desc" class="form-control" value="{$wine_deal_area.desc}">
+                                </div>
+                            </div>						
+                            <div class="hr-line-dashed"></div>
+                            
+                            <!--<div class="form-group">-->
+                            <!--    <label class="col-sm-2 control-label">单数</label>-->
+                            <!--    <div class="col-sm-6">-->
+                            <!--        <input type="number" name="odd_num" class="form-control" value="{$wine_deal_area.odd_num}">-->
+                            <!--    </div>-->
+                            <!--</div>						-->
+                            <!--<div class="hr-line-dashed"></div>-->
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">保证金</label>
+                                <div class="col-sm-6">
+                                    <input type="number" name="deposit" class="form-control" value="{$wine_deal_area.deposit}">
+                                </div>
+                            </div>						
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+							<label  class="col-sm-2 control-label">图片:</label>
+							<div class="col-sm-6">
+                            <div style="margin-bottom:7px; margin-top:5px;">
+                            <img id="imageinfo" {if condition="$wine_deal_area['img']"}src="{$wine_deal_area.img}"{else/}src="__PUBLIC__/admin/img/nopic.jpg"{/if} width="180" height="120" border="0" />
+                            <!--<br/><button type="button" class="btn btn-danger btn-xs del" style="display:none;">删除</button>-->
+                            </div>
+                            <div id="uploaderInput"></div>
+                            <input type="hidden" name="img" value="{$wine_deal_area['img']}" >
+                            </div>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">状态</label>
+                                <div class="col-sm-6">
+                                    <input type="radio" name="status" id="status" value="1" {if condition="$wine_deal_area.status==1"}checked{/if} />开启
+                                    <input type="radio" name="status" id="status" value="0" {if condition="$wine_deal_area.status==0"}checked{/if} />关闭
+                                </div>
+                            </div>						
+                            <div class="hr-line-dashed"></div>
+
+                        <input type="hidden" name="id" value="{$wine_deal_area.id}" />
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:20px;">保存</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/Huploadify/jquery.Huploadify.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/Huploadify/Huploadify.css"/>
+  <link rel="stylesheet" href="/ajax/libs/layui/2.6.8/css/layui.css"  media="all">
+<script src="/ajax/libs/layui/2.6.8/layui.js" charset="utf-8"></script>
+
+	 <script>	
+	 layui.use('laydate', function(){
+      var laydate = layui.laydate;
+      
+      //执行一个laydate实例
+      laydate.render({
+        elem: '#test1', //指定元素
+        type: 'time',
+        range: true
+      });
+    });
+
+    	$(function(){    	
+    		//上传缩略图
+	        $('#uploaderInput').Huploadify({
+	            uploader : '{:url("uploadifys")}',
+		        method:'post',
+		        formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+		        buttonText : '上传图像', 
+		        removeTimeout: 2000,
+		        fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',  
+		        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;', 
+		        fileObjName: 'filedata', //上传附件$_FILE标识  
+		        fileSizeLimit : 2048,
+		        //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+		        auto : true, //开启,自动上传
+		        multi : false, //开启,多选文件
+		        //开始上传
+				onUploadStart:function(file){
+					layer.load(2);
+				},
+		        onUploadSuccess : function(file, data, response) {
+		        	//解析成json对象
+		        	eval('var data='+data);
+		        	if(data.status == 1){
+		        		var picpath = data.path;
+	    	        	$('#imageinfo').attr('src',picpath.pic_url);
+	    	        	$('.del').show();
+	    	        	$('input[name=img]').val(picpath.pic_url);
+		        	}else{
+		        		layer.msg(data.msg, {icon: 2,time: 2000});
+		        	}
+		        },
+		        //上传完成后执行的操作
+		        onUploadComplete:function(file){
+		        	layer.closeAll('loading');
+		        },
+		        //上传错误  
+		        onUploadError : function(file, errorCode, errorMsg, errorString) { 
+		        	layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000}); 
+		        }
+		    });
+		    
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	            errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	            //layer ajax提交表单
+	            submitHandler:function(){
+	               // 序列化 表单数据 后提交 ，太简洁了
+	            	post(updateUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+
+                rules:{
+                    user_name:{
+                        required:true,
+                    },
+                    phone:{
+                        required:true,
+                    },
+
+                },
+
+                messages:{
+                    user_name:{
+                        required:icon+'必填',
+                        remote:icon+'已存在'
+                    },
+                    phone:{
+                        required:icon+'必填',
+                        remote:icon+'已存在'
+                    },
+                }
+            });
+      }); 
+
+      function cl(){
+    	  parent.location.href = url;
+      }
+    </script>
+
+</body>
+</html>

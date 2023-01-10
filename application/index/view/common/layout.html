@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    {block name="seo"}
+    <title>{$configres.web_site_name}</title>
+    <meta name="keywords" content="WoSmart多用户商城系统" />
+    <meta name="description" content="WoSmart多用户商城系统" />
+    {/block}
+
+
+    {block name="commonStyleScript"}
+    <meta name="author" content="WoSmart">
+    <meta name="copyright" content="WoSmart Inc. All Rights Reserved">
+    <meta name="renderer" content="webkit">
+    <meta name="renderer" content="ie-stand">
+    <link href="__STATIC__/pc/css/common.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/pc/css/header.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/pc/css/font-awesome.min.css" rel="stylesheet" />
+
+
+
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/pc/js/html5shiv.js"></script>
+    <script src="__STATIC__/pc/js/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        var PRICE_FORMAT = '&yen;%s';
+        var COOKIE_PRE = 'B87D_';
+        var _CHARSET = 'utf-8';
+        var LOGIN_SITE_URL = 'http://store.cxy365.com/home';
+        var MEMBER_SITE_URL = 'http://store.cxy365.com/home';
+        var SITEURL = 'http://store.cxy365.com';
+        var BASE_SITE_URL = 'http://store.cxy365.com';
+        var STATIC_SITE_URL = 'http://store.cxy365.com/system/static';
+        var STATIC_SITE_URL = 'http://store.cxy365.com/system/static';
+        var SHOP_TEMPLATES_URL = 'http://store.cxy365.com/templets/WoSmart';
+        if(isMoble()){
+            location.href="{:url('mobile/index')}";
+        }
+        function isMoble() {
+            return navigator.userAgent.toLowerCase().match(/(ipod|iphone|android|coolpad|mmp|smartphone|midp|wap|xoom|symbian|j2me|blackberry|wince)/i) != null;
+        }
+    </script>
+    <script src="__STATIC__/pc/js/jquery.min.js"></script>
+    <script src="__STATIC__/pc/js/common.js" charset="utf-8"></script>
+    <script src="__STATIC__/pc/js/fun.min.js" charset="utf-8"></script>
+    <script src="__STATIC__/pc/js/jquery.ui.js"></script>
+    <script src="__STATIC__/pc/js/jquery.validation.min.js"></script>
+    <script src="__STATIC__/pc/js/dialog.js" id="wt_dialog" charset="utf-8"></script>
+    <script src="__STATIC__/pc/js/jquery.scrollLoading-min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("img[rel='lazy']").scrollLoading();
+            $(".category ul.menu").find("li").each(
+                function () {
+                    $(this).hover(
+                        function () {
+                            var cat_id = $(this).attr("cat_id");
+                            var menu = $(this).find("div[cat_menu_id='" + cat_id + "']");
+                            menu.show();
+                            $(this).addClass("hover");
+                            var menu_height = menu.height();
+                            if (menu_height < 60) menu.height(80);
+                            menu_height = menu.height();
+                            var li_top = $(this).position().top;
+                            $(menu).css("top", -li_top + 37);
+                        },
+                        function () {
+                            $(this).removeClass("hover");
+                            var cat_id = $(this).attr("cat_id");
+                            $(this).find("div[cat_menu_id='" + cat_id + "']").hide();
+                        }
+                    );
+                }
+            );
+            $(".head-my-menu dl").hover(function () {
+                    $(this).addClass("hover");
+                },
+                function () {
+                    $(this).removeClass("hover");
+                });
+            $('.head-my-menu .my-cart').mouseover(function () {
+                load_cart_information();
+                $(this).unbind('mouseover');
+            });
+            $('#keyword').focus(function () {
+                if ($(this).val() == $(this).attr('title')) {
+                    $(this).val('').removeClass('tips');
+                }
+            }).blur(function () {
+                if ($(this).val() == '' || $(this).val() == $(this).attr('title')) {
+                    $(this).addClass('tips').val($(this).attr('title'));
+                }
+            }).blur().autocomplete({
+                source: function (request, response) {
+                    $.getJSON('http://store.cxy365.com/index.php?w=search&t=auto_complete', request, function (data,
+                                                                                                              status, xhr) {
+                        $('#top_search_box > ul').unwrap();
+                        response(data);
+                        if (status == 'success') {
+                            $('body > ul:last').wrap("<div id='top_search_box'></div>").css({
+                                'zIndex': '1000',
+                                'width': '362px'
+                            });
+                        }
+                    });
+                },
+                select: function (ev, ui) {
+                    $('#keyword').val(ui.item.label);
+                    $('#head_search_form').submit();
+                }
+            });
+
+            $('#button').click(function () {
+                if ($('#keyword').val() == '') {
+                    if ($('#keyword').attr('data-value') == '') {
+                        return false
+                    } else {
+                        window.location.href = "http://store.cxy365.com/index.php?w=search&t=index&keyword=" + $('#keyword')
+                            .attr('data-value');
+                        return false;
+                    }
+                }
+            });
+            $(".search-m").hover(null,
+                function () {
+                    $('#search-tips').hide();
+                });
+            $('#keyword').focus(function () {
+                if ($('#search_wt').val() == 'search') {
+                    $('#search-tips').show();
+                } else {
+                    $('#search-tips').hide();
+                }
+            }).autocomplete({
+                source: function (request, response) {
+                    $.getJSON('http://store.cxy365.com/index.php?w=search&t=auto_complete', request, function (data,
+                                                                                                              status, xhr) {
+                        $('#top_search_box > ul').unwrap();
+                        response(data);
+                        if (status == 'success') {
+                            $('#search-tips').hide();
+                            $(".search-m").unbind('mouseover');
+                            $('body > ul:last').wrap("<div id='top_search_box'></div>").css({
+                                'zIndex': '1000',
+                                'width': '362px'
+                            });
+                        }
+                    });
+                },
+                select: function (ev, ui) {
+                    $('#keyword').val(ui.item.label);
+                    $('#head_search_form').submit();
+                }
+            });
+            $('#search-his-del').on('click', function () {
+                $.cookie('B87D_his_sh', null, {
+                    path: '/'
+                });
+                $('#search-history-list').empty();
+            });
+        });
+    </script>
+    {/block}
+    {block name="style"}{/block}
+</head>
+
+<body>
+
+
+
+    {block name="header"}
+    <div id="append_parent"></div>
+    <div id="ajaxwaitid"></div>
+    <div id="vToolbar" class="wt-appbar">
+        <div class="wt-appbar-tabs" id="siteslidebar">
+            <div class="user ta_delay" wttype="a-barLoginBox">
+                <div class="avatar">
+                    <img src="__STATIC__/pc/loading.gif" data-url="__STATIC__/pc/default_user_portrait.gif" rel="lazy" />
+                </div>
+                <p>请登录</p>
+            </div>
+            <div class="user-login-box" wttype="barLoginBox" style="display:none;">
+                <i class="arrow"></i>
+                <a href="javascript:void(0);" class="close-a" wttype="close-barLoginBox" title="关闭">X</a>
+                <form id="login_form" method="post" action="http://store.cxy365.com/home/index.php?w=login&t=login" onsubmit="ajaxpost('login_form', '', '', 'onerror')">
+                    <input type='hidden' name='formhash' value='lnoM0Nv7bz8dNl6gJm3noN09rjxMNlL' />
+                    <input type="hidden" name="form_submit" value="ok" />
+                    <input name="wthash" type="hidden" value="4d91088c" />
+                    <dl>
+                        <dt>用户名</dt>
+                        <dd>
+                            <input type="text" class="text" tabindex="1" autocomplete="off" name="user_name" autofocus>
+                            <label></label>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>密&nbsp;&nbsp;&nbsp;&nbsp;码</dt>
+                        <dd>
+                            <input tabindex="2" type="password" class="text" name="password" autocomplete="off">
+                            <label></label>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>验证码</dt>
+                        <dd>
+                            <input tabindex="3" type="text" name="captcha" autocomplete="off" class="text w130" id="captcha2"
+                                   maxlength="4" size="10" />
+                            <img src="" name="codeimage" border="0" id="codeimage" title="更换验证码"
+                                 onclick="javascript:document.getElementById('codeimage').src='http://store.cxy365.com/index.php?w=vercode&type=30x92&c=' + Math.random();"
+                                 class="vt">
+                            <label></label>
+                        </dd>
+                    </dl>
+                    <div class="bottom">
+                        <input type="submit" class="submit" value="确认">
+                        <input type="hidden" value="" name="ref_url">
+                        <span class="enter">
+                  <a class="wx" href="javascript:void(0);"
+                     onclick="ajax_form('weixin_form', '微信账号登录', 'http://store.cxy365.com/home/index.php?w=connect_wx&t=index', 360);"
+                     title="微信账号登录"><i></i></a>
+                  <a class="sina" href="#/home/index.php?w=connect_sina" title="新浪微博账号登录"><i></i></a>
+                  <a class="qq" href="#/home/index.php?w=connect_qq" title="QQ账号登录"><i></i></a>
+                </span>
+                        <h4></h4>
+                    </div>
+                </form>
+            </div>
+            <ul class="tools">
+                <li><a href="javascript:void(0);" id="chat_show_user" class="chat ta_delay">
+                    <div class="tools_img"></div><span>聊天</span><i id="new_msg" class="new_msg" style="display:none;"></i>
+                </a></li>
+                <li><a href="javascript:void(0);" id="rtoolbar_cart" class="cart ta_delay">
+                    <div class="tools_img"></div><span>购物车</span><i id="rtoobar_cart_count" class="new_msg"
+                                                                    style="display:none;"></i>
+                </a></li>
+                <li><a href="javascript:void(0);" id="compare" class="compare ta_delay">
+                    <div class="tools_img"></div><span>对比</span>
+                </a></li>
+                <li><a href="#/index.php?w=member_goodsbrowse&t=list" class="track ta_delay">
+                    <div class="tools_img"></div><span>我的足迹</span>
+                </a></li>
+            </ul>
+            <div class="content-box" id="content-compare">
+                <div class="top">
+                    <h3>商品对比</h3>
+                    <a href="javascript:void(0);" class="close" title="隐藏"></a>
+                </div>
+                <div id="comparelist"></div>
+            </div>
+            <div class="content-box" id="content-cart">
+                <div class="top">
+                    <h3>我的购物车</h3>
+                    <a href="javascript:void(0);" class="close" title="隐藏"></a>
+                </div>
+                <div id="rtoolbar_cartlist"></div>
+            </div>
+            <a id="activator" href="javascript:void(0);" class="wt-appbar-hide"></a>
+            <a id="gotop" href="javascript:void(0);" class="wt-appbar-gotop"></a>
+        </div>
+        <div class="wt-hidebar" id="wtHideBar">
+            <div class="wt-hidebar-bg">
+                <div class="user-avatar">
+                    <img src="__STATIC__/pc/loading.gif" data-url="__STATIC__/pc/loading.gif" data-url="__STATIC__/pc/default_user_portrait.gif" rel="lazy" />
+                </div>
+                <div class="frame"></div>
+                <div class="show"></div>
+            </div>
+        </div>
+    </div>
+    <div class="wt-topbar w">
+        <div class="topbar wrapper">
+            <div class="service fl">
+                <div class="home"><a href="#" title="WoSmart多用户商城系统" target="_self">商城首页</a></div>
+                <div class="tel">服务热线：<b>400-000-0000</b></div>
+                <div class="m-mx"> <span><i></i><a href="#/mobile">手机逛商城</a></span>
+                    <div>
+                        <dl class="down_app">
+                            <dd>
+                                <div class="qrcode">
+                                    <img src="__STATIC__/pc/loading.gif" data-url="__STATIC__/pc/mb_app.png" width="120" height="120" rel="lazy" />
+                                </div>
+                                <div class="hint">
+                                    <h4>手机扫一扫下载</h4>
+                                </div>
+                                <div class="addurl">
+                                    <a href="http://app.33hao.com/down/2094" target="_blank"><i class="icon-android"></i>Android</a>
+                                    <a href="http://app.33hao.com/down/2094" target="_blank"><i class="icon-apple"></i>iPhone</a>
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="left">
+                    <div id="TopCity"></div>
+                </div>
+            </div>
+            <div class="right-menu">
+                <dl>
+                    <dt>客户服务<i></i></dt>
+                    <dd>
+                        <ul>
+                            <li><a href="#/help-cate-2.html">帮助中心</a></li>
+                            <li><a href="#/help-cate-5.html">售后服务</a></li>
+                            <li><a href="#/help-cate-6.html">客服中心</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><a href="#/index.php?w=show_joinin&t=index" title="商家管理">商家管理</a><i></i></dt>
+                    <dd>
+                        <ul>
+                            <li><a href="#/index.php?w=show_joinin&t=index" title="招商入驻">招商入驻</a></li>
+                            <li><a href="#/index.php?w=seller_login&t=show_login" target="_blank" title="商家登录">商家登录</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+            </div>
+
+
+            <div class="head-user-mall">
+                <dl class="my-mall">
+                    <dt><span class="ico"></span><a href="{:url('member/index')}" title="我的商城">我的商城</a><i class="arrow"></i></dt>
+                    <dd>
+                        <div class="my-top-menu">
+                            <ul>
+                                <li><a href="#/home/index.php?w=member_message&t=message">站内消息(<span>0</span>)</a>
+                                </li>
+                                <li><a href="{:url('member_order/index')}" class="arrow">我的订单<i></i></a></li>
+                                <li><a href="#/index.php?w=member_consult&t=my_consult">咨询回复(<span id="member_consult">0</span>)</a></li>
+                                <li><a href="#/index.php?w=member_favorite_goods&t=fglist" class="arrow">我的收藏<i></i></a></li>
+                                <li><a href="#/home/index.php?w=member_voucher&t=index">代金券(<span id="member_voucher">0</span>)</a></li>
+                                <li><a href="#/home/index.php?w=member_points&t=index" class="arrow">我的积分<i></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="my-history">
+                            <div class="part-title">
+                                <h4>最近浏览的商品</h4>
+                                <span style="float:right;"><a href="#/index.php?w=member_goodsbrowse&t=list">全部浏览历史</a></span>
+                            </div>
+                            <ul>
+                                <li class="no-goods"><img class="loading" src="__STATIC__/pc/images/loading.gif" /></li>
+                            </ul>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+
+            <div class="user-entry">
+                您好, <span class="wr"><a class="login" href="{:url('/index/login')}">请登录</a>
+                <a  href="{:url('/index/register')}">注册</a></span>
+                <span><a href="#/index.php?w=invite">邀请返利</a></span>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var getcity = '全国';
+        //登录开关
+        var connect_qq = "1";
+        var connect_sn = "1";
+        var connect_wx = "1";
+        var connect_wx_appid = "1";
+
+        $(function () {
+            if (($.cookie("wt0"))) {
+                tCity = $.cookie("wt0").split(',');
+                $("#tbarea").html(tCity[2]);
+            } else {
+                $("#tbarea").html(getcity);
+            }
+            $('#gotop').click(function () {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+            var wtkey = getCookie('wtkey');
+            if (wtkey) {
+                $("#top-banner").hide();
+            } else {
+                $("#top-banner").slideDown(800);
+            }
+            $("#top-banner .close").click(function () {
+                setCookie('wtkey', 'yes', 1);
+                $("#top-banner").hide();
+            });
+            $(".head-user-mall dl").hover(function () {
+                    $(this).addClass("hover");
+                },
+                function () {
+                    $(this).removeClass("hover");
+                });
+            $('.head-user-mall .my-mall').mouseover(function () {
+                load_history_information();
+                $(this).unbind('mouseover');
+            });
+
+            $('#activator').click(function () {
+                $('#content-cart').animate({
+                    'right': '-250px'
+                });
+                $('#content-compare').animate({
+                    'right': '-250px'
+                });
+                $('#vToolbar').animate({
+                        'right': '-60px'
+                    }, 300,
+                    function () {
+                        $('#wtHideBar').animate({
+                            'right': '59px'
+                        }, 300);
+                    });
+                $('div[wttype^="bar"]').hide();
+            });
+            $('#wtHideBar').click(function () {
+                $('#wtHideBar').animate({
+                        'right': '-86px'
+                    },
+                    300,
+                    function () {
+                        $('#content-cart').animate({
+                            'right': '-250px'
+                        });
+                        $('#content-compare').animate({
+                            'right': '-250px'
+                        });
+                        $('#vToolbar').animate({
+                            'right': '6px'
+                        }, 300);
+                    });
+            });
+            $("#compare").click(function () {
+                if ($("#content-compare").css('right') == '-250px') {
+                    loadCompare(false);
+                    $('#content-cart').animate({
+                        'right': '-250px'
+                    });
+                    $("#content-compare").animate({
+                        right: '0px'
+                    });
+                } else {
+                    $(".close").click();
+                    $(".chat-list").css("display", 'none');
+                }
+            });
+            $("#rtoolbar_cart").click(function () {
+                if ($("#content-cart").css('right') == '-250px') {
+                    $('#content-compare').animate({
+                        'right': '-250px'
+                    });
+                    $("#content-cart").animate({
+                        right: '0px'
+                    });
+                    if (!$("#rtoolbar_cartlist").html()) {
+                        $("#rtoolbar_cartlist").load('http://store.cxy365.com/index.php?w=cart&t=ajax_load&type=html');
+                    }
+                } else {
+                    $(".close").click();
+                    $(".chat-list").css("display", 'none');
+                }
+            });
+            $(".close").click(function () {
+                $(".content-box").animate({
+                    right: '-250px'
+                });
+            });
+
+            $(".right-menu dl").hover(function () {
+                    $(this).addClass("hover");
+                },
+                function () {
+                    $(this).removeClass("hover");
+                });
+
+            // 右侧bar用户信息
+            $('div[wttype="a-barUserInfo"]').click(function () {
+                $('div[wttype="barUserInfo"]').toggle();
+            });
+            // 右侧bar登录
+            $('div[wttype="a-barLoginBox"]').click(function () {
+                $('div[wttype="barLoginBox"]').toggle();
+                document.getElementById('codeimage').src = 'http://store.cxy365.com/index.php?w=vercode&type=30x92&c=' +
+                    Math.random();
+            });
+            $('a[wttype="close-barLoginBox"]').click(function () {
+                $('div[wttype="barLoginBox"]').toggle();
+            });
+        });
+
+        (function () {
+            var ReplaceTpl = function (str, o, regexp) {
+                return str.replace(regexp || /\\?\{([^{}]+)\}/g, function (match, name) {
+                    return (o[name] === undefined) ? '' : o[name];
+                });
+            };
+            $.ReplaceTpl = ReplaceTpl;
+            String.prototype.wtReplaceTpl = function (option) {
+                return ReplaceTpl(this, option);
+            };
+        })();
+        window.WoSmart = {},
+            ["Array", "Object", "Function", "String", "Number", "Date", "Boolean", "regexp"].forEach(function (e) {
+                WoSmart["is" + e] = function (t) {
+                    return jQuery.type(t) === e.toLowerCase()
+                }
+            }),
+            jQuery.extend(WoSmart, {
+                isEmpty: function (e) {
+                    return WoSmart.isBoolean(e) ? !e : null == e ? !0 : WoSmart.isNumber(e) ? 0 >= e : WoSmart.isArray(e) ||
+                    WoSmart.isString(e) || e instanceof jQuery ? 0 === e.length : 0 === Object.keys(e).length
+                },
+            });
+        var topMyCity = function ($) {
+            "use strict";
+            var areaUrl = SITEURL + '/index.php?w=index&t=area_list&area_id=0';
+            var $element = {};
+            var tmpl =
+                '<a href="javascript:;" class="area"><span class="icon-map-marker"></span><span id="shortCutAreaName" title="{areaName}" data-id="{areaId}">{areaName}</span> <i></i></a>'
+
+            function _init() {
+                $element.TopCity = $("#TopCity");
+                _getAreaList();
+                "MjJTaG9wTkMySW5jMjIy";
+            }
+
+            function _getAreaIdByCookie() {
+                return $.cookie("wt0");
+            }
+
+            function _setAreaIdByCookie(value) {
+                return $.cookie("wt0", value, {
+                    expires: 30,
+                    path: '/'
+                });
+            }
+
+            function _getAreaList() {
+                $.getJSON(areaUrl, function (data) {
+                    if (data.code == "200") {
+                        _buildElement(data.data.areaList)
+                    }
+                })
+            }
+
+            function _buildElement(data) {
+                var myCookie = _getAreaIdByCookie(),
+                    myCity = !WoSmart.isEmpty(myCookie) ? myCookie.split(",") : "";
+                var a = $.map(data, function (n, index) {
+                    //5.3
+                    if (WoSmart.isEmpty($.cookie("wt0"))) {
+                        $.each(data, function (i) {
+                            if (getcity == this.areaName) {
+                                $.cookie("wt0", [this.areaId, this.areaDeep, this.areaName].join(","), {
+                                    expires: 30,
+                                    path: '/'
+                                });
+                            }
+                        });
+                    }
+                    return '<div class="item"><a href="javascript:;" data-deep="' + n.areaDeep + '" data-id="' + n.areaId +
+                        '" class="' +
+                        ((myCity.length && n.areaId == myCity[0]) ? "selected" : "") + '">' + n.areaName + '</a></div>';
+                });
+                if (a.length) {
+                    a.splice(0, 0, '<div class="item"><a href="javascript:;" data-deep="1" data-id="0" class="">全国</a></div>');
+                }
+                $element.TopCity
+                    .append(tmpl.wtReplaceTpl(myCity ? {
+                        areaId: myCity[0],
+                        areaName: myCity[2]
+                    } : {
+                        areaId: 0,
+                        areaName: getcity
+                    }))
+                    .append(
+                        a.length ? '<div id="shortCutAreaList" class="area-list">' + a.join('') + '</div>' : '');
+            }
+
+            //更换当前URL
+            function changeURLPar(destiny, par, par_value) {
+                var pattern = par + '=([^&]*)';
+                var replaceText = par + '=' + par_value;
+                if (destiny.match(pattern)) {
+                    var tmp = '/\\' + par + '=[^&]*/';
+                    tmp = destiny.replace(eval(tmp), replaceText);
+                    return (tmp);
+                } else {
+                    if (destiny.match('[\?]')) {
+                        return destiny + '&' + replaceText;
+                    } else {
+                        return destiny + '?' + replaceText;
+                    }
+                }
+                return destiny + '\n' + par + '\n' + par_value;
+            }
+
+            function bindEvents() {
+                $element.TopCity.on("click", "a[data-id]", function () {
+                    var $this = $(this);
+                    $("#shortCutAreaList a").removeClass("selected");
+                    $this.addClass("selected");
+                    $("#shortCutAreaName")
+                        .html($this.html())
+                        .attr({
+                            title: $this.html(),
+                            "data-id": $this.data("id") ? $this.data("id") : 0
+                        });
+                    //修改cookie
+                    _setAreaIdByCookie([$this.data("id"), $this.data("deep"), $this.html()].join(","));
+                    $('.region').html("请选择地区");
+                    $.cookie('dregion', '', {
+                        expires: -1
+                    });
+                    var geturl = changeURLPar(window.location.href, 'area_id', $this.data("id"));
+                    location.replace(geturl);
+                    //location.reload(geturl);
+                })
+            }
+
+            return {
+                init: function () {
+                    _init();
+                    bindEvents();
+                },
+                getAreaIdByCookie: _getAreaIdByCookie
+            };
+        }(jQuery);
+        $(function () {
+            topMyCity.init();
+
+        });
+    </script>
+    <div class="header-box">
+        <header class="wt-head wrapper">
+            <h1 class="site-logo"><a title="WoSmart多用户商城系统" href="#"><img
+                    src="__STATIC__/pc/images/logo.png" class="pngFix"></a></h1>
+            <div class="logo-banner"></div>
+            <div class="wt-head-search">
+                <div class="search-m" id="search-m">
+                    <div id="search">
+                        <ul class="tab">
+                            <li w="search" class="current"><span>商品</span><i class="arrow"></i></li>
+                            <li w="store"><span>店铺</span></li>
+                        </ul>
+                    </div>
+
+                    <form action="http://store.cxy365.com" method="get" class="search-form" id="head_search_form">
+                        <input name="w" id="search_wt" value="search" type="hidden">
+                        <input name="keyword" id="keyword" type="text" class="input-text" value="" maxlength="60" x-webkit-speech lang="zh-CN" onwebkitspeechchange="foo()" placeholder="秋装" data-value="%E7%A7%8B%E8%A3%85" x-webkit-grammar="builtin:search" autocomplete="off" />
+                        <input type="submit" id="button" value="搜索" class="search-submit">
+                    </form>
+                    <div class="search-tips" id="search-tips">
+                        <div class="search-history">
+                            <div class="title">历史纪录<a href="javascript:void(0);" id="search-his-del">清除</a></div>
+                            <ul id="search-history-list">
+                                <li><a href="#/index.php?w=search&t=index&keyword=%E7%A7%8B%E8%A3%85">秋装</a></li>
+                            </ul>
+                        </div>
+                        <div class="search-hot">
+                            <div class="title">热门搜索...</div>
+                            <ul>
+                                <li><a href="#/index.php?w=search&t=index&keyword=%E7%A7%8B%E8%A3%85">秋装</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="keyword">
+                    <ul>
+                        <li><a href="#/index.php?w=search&t=index&keyword=%E4%BC%91%E9%97%B2">休闲</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="head-my-menu">
+                <dl class="my-cart">
+                    <div class="addcart-goods-num">0</div>
+                    <dt><span class="ico"></span>我的购物车<i class="arrow"></i></dt>
+                    <dd>
+                        <div class="sub-title">
+                            <h4>最新加入的商品</h4>
+                        </div>
+                        <div class="incart-goods-box">
+                            <div class="incart-goods">
+                                <img class="loading" src="__STATIC__/pc/images/loading.gif" /> </div>
+                        </div>
+                        <div class="checkout"> <span class="total-price">共<i>0</i>种商品</span><a href="#/index.php?w=cart" class="btn-cart">去购物车结算</a> </div>
+                    </dd>
+                </dl>
+            </div>
+        </header>
+    </div>
+    {/block}
+    <!--导航开始-->
+
+
+
+
+    {block name="insertjs"}{/block}
+
+
+
+
+
+    <nav class="wt-nav wtm-header-nav all-nav-box">
+        <div class="wrapper">
+            {block name="catenav"}
+            <!--商品分类导航开始-->
+            <div class="category-nav">
+                <div class="title"><i></i>
+                    <h3><a href="#/category.html">全部商品分类</a></h3>
+                </div>
+                <div class="category">
+                    <ul class="menu">
+
+                        <li cat_id="1" class="odd">
+
+                            <div class="class"><span class="arrow"></span>
+                                <span class="ico"
+                                      style="background-image:url(__STATIC__/pc/images/04849343852775378.png)"></span>
+                                <h4><a href="#/channel-2.html">服饰鞋帽</a></h4>
+                            </div>
+                            <div class="sub-class" cat_menu_id="1">
+                                <div class="sub-class-content">
+                                    <div class="recommend-class">
+                                        <span><a href="#/list-12-0-0-0-0-0-0-0-0-0.html" title="T恤">T恤</a></span>
+                                    </div>
+                                    <dl>
+                                        <dt>
+                                            <h3><a href="#/list-4-0-0-0-0-0-0-0-0-0.html">女装</a></h3>
+                                        </dt>
+                                        <dd class="goods-class">
+                                            <a href="#/list-12-0-0-0-0-0-0-0-0-0.html">T恤</a>
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <div class="sub-class-right">
+                                    <div class="brands-list">
+                                        <ul>
+                                            <li>
+                                                <a href="#/brand-352-0-0-0-0-0-0-0.html" title="婷美（TINGMEI）">
+                                                    <img src="__STATIC__/pc/loading.gif" data-url="__STATIC__/pc/images/04431809546541815_sm.png" rel="lazy" /> <span>婷美（TINGMEI）</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="show-sales">
+                                        <a href="javascript:;"><img src="__STATIC__/pc/loading.gif"
+                                                                    data-url="__STATIC__/pc/images/04849383096194771.jpg"
+                                                                    rel="lazy" /></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li cat_id="2" class="even">
+                            <div class="class"><span class="arrow"></span>
+                                <span class="ico"
+                                      style="background-image:url(__STATIC__/pc/images/04849344505821846.png)"></span>
+                                <h4><a href="#/list-2-0-0-0-0-0-0-0-0-0.html">礼品箱包</a></h4>
+                            </div>
+                            <div class="sub-class" cat_menu_id="2">
+                                <div class="sub-class-content">
+                                    <div class="recommend-class">
+                                        <span><a href="#/list-156-0-0-0-0-0-0-0-0-0.html" title="钱包/卡包">钱包/卡包</a></span>
+                                    </div>
+                                    <dl>
+                                        <dt>
+                                            <h3><a href="#/list-151-0-0-0-0-0-0-0-0-0.html">潮流女包</a></h3>
+                                        </dt>
+                                        <dd class="goods-class">
+                                            <a href="#/list-156-0-0-0-0-0-0-0-0-0.html">钱包/卡包</a>
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <div class="sub-class-right">
+                                    <div class="brands-list">
+                                        <ul>
+                                            <li> <a href="#/brand-342-0-0-0-0-0-0-0.html" title="富安娜"><img
+                                                    src="__STATIC__/pc/loading.gif"
+                                                    data-url="__STATIC__/pc/images/04399904168163421_sm.jpg"
+                                                    rel="lazy" /> <span>富安娜</span>
+                                            </a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="show-sales">
+                                        <a href="javascript:;">
+                                            <img src="__STATIC__/pc/loading.gif" data-url="__STATIC__/pc/images/04849386427434184.jpg" rel="lazy" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--商品分类导航结束-->
+            {/block}
+
+            {block name="nav"}
+            {include file="common/nav"}
+            {/block}
+        </div>
+    </nav>
+
+
+    {block name="main"}{/block}
+
+
+    {block name="footer"}
+
+    <!--七天退换 品质承诺  破损补寄 急速物流-->
+    <div class="slogen">
+        <div class="wrapper">
+            <ul>
+                <li><span class="line"></span>
+                    <span class="icon">
+                        <img style="width: 60px;" src="__STATIC__/pc/loading.gif" data-url="__STATIC__/pc/images/7day_60.gif" rel="lazy" />
+                    </span>
+                    <span class="name"> 7天退货 </span>
+                </li>
+                <li><span class="line"></span>
+                    <span class="icon">
+                        <img style="width: 60px;" src="__STATIC__/pc/loading.gif" data-url="__STATIC__/pc/images/pz_60.gif" rel="lazy" />
+                    </span>
+                    <span class="name"> 品质承诺 </span>
+                </li>
+                <li><span class="line"></span>
+                    <span class="icon">
+                        <img style="width: 60px;" src="__STATIC__/pc/loading.gif" data-url="__STATIC__/pc/images/psbf_60.gif" rel="lazy" />
+                    </span>
+                    <span class="name"> 破损补寄 </span>
+                </li>
+                <li><span class="line"></span>
+                    <span class="icon">
+                        <img style="width: 60px;" src="__STATIC__/pc/loading.gif" data-url="__STATIC__/pc/images/jswl_60.gif" rel="lazy" />
+                    </span>
+                    <span class="name"> 急速物流 </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--七天退换 品质承诺  破损补寄 急速物流 结束-->
+
+    <!--购物指南-->
+    <div class="faq">
+        <div class="wrapper">
+            <ul>
+                <li>
+                    <dl class="s1">
+                        <dt>新手上路 </dt>
+                        <dd><a href="#/help-39.html" title="积分细则"> 积分细则 </a></dd>
+                        <dd><a href="#/help-40.html" title="积分兑换说明"> 积分兑换说明 </a></dd>
+                        <dd><a href="#/help-6.html" title="如何注册成为会员"> 如何注册成为会员 </a></dd>
+                        <dd><a href="#/help-7.html" title="如何搜索"> 如何搜索 </a></dd>
+                        <dd><a href="#/help-8.html" title="忘记密码"> 忘记密码 </a></dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl class="s2">
+                        <dt>支付方式 </dt>
+                        <dd><a href="#/help-28.html" title="分期付款"> 分期付款 </a></dd>
+                        <dd><a href="#/help-29.html" title="邮局汇款"> 邮局汇款 </a></dd>
+                        <dd><a href="#/help-30.html" title="公司转账"> 公司转账 </a></dd>
+                        <dd><a href="#/help-16.html" title="如何注册支付宝"> 如何注册支付宝 </a></dd>
+                        <dd><a href="#/help-17.html" title="在线支付"> 在线支付 </a></dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl class="s3">
+                        <dt>售后服务 </dt>
+                        <dd><a href="#/help-26.html" title="联系卖家"> 联系卖家 </a></dd>
+                        <dd><a href="#/help-31.html" title="退换货政策"> 退换货政策 </a></dd>
+                        <dd><a href="#/help-32.html" title="退换货流程"> 退换货流程 </a></dd>
+                        <dd><a href="#/help-33.html" title="返修/退换货"> 返修/退换货 </a></dd>
+                        <dd><a href="#/help-34.html" title="退款申请"> 退款申请 </a></dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl class="s4">
+                        <dt>购物指南 </dt>
+                        <dd><a href="#/help-18.html" title="会员修改密码"> 会员修改密码 </a></dd>
+                        <dd><a href="#/help-19.html" title="会员修改个人资料"> 会员修改个人资料 </a></dd>
+                        <dd><a href="#/help-20.html" title="商品发布"> 商品发布 </a></dd>
+                        <dd><a href="#/help-21.html" title="修改收货地址"> 修改收货地址 </a></dd>
+                    </dl>
+                </li>
+                <li class="kefu-con">
+                    <dl>
+                        <dt>联系我们</dt>
+                        <dd>
+                            <i class="icon-tel"></i>
+                            <div><strong>400-000-0000</strong>
+                                <p>08:00-22:30(周一至周日)</p>
+                            </div>
+                        </dd>
+                        <dd>
+                            <i class="icon-chat"></i>
+                            <div>
+                                <strong>在线客服</strong>
+                                <p>E-mail：web@wosmart.s1107.com</p>
+                            </div>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="box-qr">
+                    <dl>
+                        <dt>关注我们<a title="关注WoSmart多用户商城系统微信公众号" class="weixin">
+                            <span class="weixin-qr"></span>
+                        </a>
+                            <a title="关注WoSmart多用户商城系统微博" class="weibo">
+                                <span class="weibo-qr"></span>
+                            </a>
+                        </dt>
+                        <dd>
+                            <p><img src="__STATIC__/pc/loading.gif"
+                                    data-url="__STATIC__/pc/mb_app.png" rel="lazy" /></p>
+                            <p>下载APP手机端</p>
+                        </dd>
+                        <dd>
+                            <p><img src="__STATIC__/pc/loading.gif"
+                                    data-url="__STATIC__/pc/images/05434220788623960.png" rel="lazy" /></p>
+                            <p>关注微信公众号</p>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--购物指南结束-->
+
+    <!--友情链接-->
+    <div class="footer">
+        <p><a href="#">首页</a>
+            | <a href="#/index.php?w=article&amp;article_id=24">招聘英才</a>
+            | <a href="#/index.php?w=article&amp;article_id=25">合作及洽谈</a>
+            | <a href="#/index.php?w=article&amp;article_id=23">联系我们</a>
+            | <a href="#/since">物流自取</a>
+            | <a href="#/link.html">友情链接</a>
+            | <a href="#/home/index.php?w=article&amp;article_id=22">关于我们</a>
+        </p>
+        Copyright 2018
+        <a href="https://wosmart.s1107.com" target="_blank">WoSmart</a> All rights reserved.<br />版权所有：
+        <a href="https://wosmart.s1107.com" target="_blank">wosmart.s1107.com</a>
+        <a href="http://www.miibeian.gov.cn" rel="nofollow" target="_blank"></a>
+    </div>
+    <!--友情链接结束-->
+
+    <script type="text/javascript" src="__STATIC__/pc/js/jquery.cookie.js"></script>
+    <link href="__STATIC__/pc/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/pc/js/perfect-scrollbar.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/pc/js/jquery.qtip.min.js"></script>
+    <link href="__STATIC__/pc/css/jquery.qtip.min.css" rel="stylesheet" type="text/css">
+    <script src="__STATIC__/pc/js/compare.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('[wttype="mcard"]').membershipCard({
+                type: 'shop'
+            });
+        });
+    </script>
+
+    {/block}
+</body>
+    {block name="script"}{/block}
+
+</html>

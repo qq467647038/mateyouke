@@ -1,0 +1,146 @@
+<!--
+ * @Descripttion: 
+ * @Copyright: ©版权所有
+ * @Link: www.s1107.com
+ * @Contact: QQ:2487937004
+ * @LastEditors: cbing
+ * @LastEditTime: 2020-05-01 18:40:18
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="!isset($search) && !isset($cate_id)"}
+	var search = 0;
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/integral_goods/lst/filter/"+filter+".html?page="+pnum;
+	{elseif condition="isset($search) && $search" /}
+	var search = {$search};
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/integral_goods/search.html?page="+pnum;
+	{elseif condition="isset($cate_id) && $cate_id" /}
+	var cate_id = {$cate_id};
+	var search = 0;
+	var goUrl = "/{$Request.module}/integral_goods/catelist/cate_id/"+cate_id+"/filter/"+filter+".html?page="+pnum;
+	{/if}
+</script>                           
+                        
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:3%">id</th>
+                                    <th style="width:3%">交易类型</th>
+                                    <th style="width:3%">单号</th>
+                                    <th style="width:1%">拆单</th>
+                                    <th style="width:5%">升级</th>
+                                    <th style="width:5%">商品名称</th>
+                                    <th style="width:5%">缩略图</th>
+                                    <th style="width:5%">进货价</th>
+                                    <th style="width:5%">比例</th>
+                                    <th style="width:5%">销售价格</th>
+                                    <th style="width:5%">销售者</th>
+                                    <th style="width:5%">销售联系</th>
+                                    <th style="width:5%">进货者</th>
+                                    <th style="width:5%">进货联系</th>
+                                    <th style="width:5%">支付时间</th>
+                                    <th style="width:5%">冻结</th>
+                                    <th style="width:5%">支付状态</th>
+                                    <th style="width:5%">商品状态</th>
+                                    <th style="width:5%">支付凭证</th>
+                                    <th style="width:5%">支付方式</th>
+                                    <th style="width:5%">转让时间</th>
+                                    <th style="width:5%">进货开始</th>
+                                    <th style="width:5%">天数</th>
+                                    <th style="width:5%">进货结束</th>
+                                    <th style="width:8%">订银行卡姓名</th>
+                                    <th style="width:7%">订银行卡卡号</th>
+                                    <th style="width:5%">订银行卡手机</th>
+                                    <th style="width:7%">订微信姓名</th>
+                                    <th style="width:5%">订微信二维码</th>
+                                    <th style="width:5%">订微信手机</th>
+                                    <th style="width:8%">订支付宝姓名</th>
+                                    <th style="width:5%">订支付宝二维码</th>
+                                    <th style="width:5%">订支付宝手机</th>
+                                    <th style="width:5%">订库存</th>
+                                    <th style="width:5%">订品牌使用费</th>
+                                    <!--<th style="width:5%">单号</th>-->
+                                    <!--<th style="width:15%">操作</th>-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <td>
+                                        {if condition="$v.status==2 && $v.pay_status==1 && $v.paytime>0 && ($v.sale_appeal_question || $v.buyer_appeal_question)"}
+                                        <label style="color: red;">强制交易</label>
+                                        {else /}
+                                        <label style="color: green;">正常交易</label>
+                                        {/if}
+                                    </td>
+                                    <td>{$v.odd}</td>
+                                    <td>
+                                        {$v.separate_order==1 ? '<label style="color:red;">是</label>' : '<label style="color:green;">否</label>'}
+                                    </td>
+                                    <td>
+                                        {$v.upgrade==1 ? '<label style="color:red;">是</label>' : '<label style="color:green;">否</label>'}
+                                    </td>
+                                    <td>{$v.goods_name}</td>   
+                                    <td><img src="{$v.goods_thumb}" width="80px" height="80px"/></td>
+                                    <td>{$v.buy_amount}</td>
+                                    <td>{$v.goods_rate}%</td>
+                                    <td>{$v.sale_amount}</td>
+                                    <td>{$v.sale_user_name}</td>
+                                    <td>{$v.sale_phone}</td>
+                                    <td>{$v.buy_user_name}</td>
+                                    <td>{$v.buy_phone}</td>
+                                    <td>
+                                        {if condition="$v.paytime"}
+                                        {$v.paytime|date='Y-m-d H:i:s', ###}
+                                        {/if}
+                                    </td>
+                                    <td>{$v.checked==0 ? '<label style="color:red;">冻结</label>' : '<label style="color:green;">正常</label>'}</td>
+                                    <td>{$v.pay_status == 0 ? '未支付' : '<label style="color:green;font-weight:bold;">已支付</label>'}</td>
+                                    <td>{$v.status == 1 ? '进货中' : ($v.status==2 ? '已进货' : ($v.status==3 ? '申诉' : ($v.status==4 ? '超时' : ($v.status==5 ? '冻结' : ($v.status==6 ? '兑换实物酒' : '')))))}</td>
+                                    <td>
+                                        {if condition="$v.proof_qrcode"}
+                                        <img src="{$v.proof_qrcode}" style="width:100px;height:100px;" alt="" />
+                                        {/if}
+                                    </td>
+                                    <td>{$v.paywayindex == 0 ? '支付宝' : ($v.paywayindex == 1 ? '微信' : ($v.paywayindex==2 ? '银行卡' : ''))}</td>
+                                    <td>{$v.confirm_exchange|date="Y-m-d H:i:s", ###}</td>
+                                    <td>{$v.addtime|date="Y-m-d H:i:s", ###}</td>
+                                    <td>{$v.day}天</td>
+                                    <td>{$v.addtime+$v.day*24*60*60|date="Y-m-d H:i:s", ###}</td>
+                                    <td>{$v.bank_name}</td>
+                                    <td>{$v.bank_card_number}</td>
+                                    <td>{$v.bank_telephone}</td>
+                                    <td>{$v.wx_name}</td>
+                                    <td><img style="width:100px;height:!00px;" src="{$v.wx_qrcode}" alt="" /></td>
+                                    <td>{$v.wx_telephone}</td>
+                                    <td>{$v.zfb_name}</td>
+                                    <td><img style="width:100px;height:!00px;" src="{$v.zfb_qrcode}" alt="" /></td>
+                                    <td>{$v.zfb_telephone}</td>
+                                    <td>{$v.total_stock}</td>
+                                    <td>{$v.brand}</td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="32" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}								
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+                        
+    <script src="/static/admin/js/jquery.min.js?v=2.1.4"></script>  
+    <script type="text/javascript" charset="utf-8">
+        $('.table').on("click", "img", function(){
+            var src = $(this).attr('src');
+            
+            layer.open({
+                content: '<img src="'+src+'" style="max-width:305px;max-height: 600px;" />'
+            });
+        });
+    </script>

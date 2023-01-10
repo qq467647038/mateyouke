@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+</head>
+
+<script>
+var filter = {$filter};
+var pnum = {$pnum};
+
+{if condition="(!isset($search)) OR (!$search)"}
+var url = "/{$Request.module}/shop_coupon/lst/filter/"+filter+".html?page="+pnum;
+{else/}
+var url = "/{$Request.module}/shop_coupon/search.html?page="+pnum;
+{/if}
+
+var checkedUrl = "{:url('shop_coupon/checked')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>审核优惠券</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" id="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属商家：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$coupons.shop_name}</div>
+                                </div>     
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        
+                        
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">满金额：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$coupons.man_price}&nbsp;元</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">减金额：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$coupons.dec_price}&nbsp;元</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">有效日期：</label>
+                                <div class="col-sm-8">
+                                    <div class="date date1 fl" style="float:left; margin-right:25px;">
+                                           <div style="font-size:14px; width:500px; height:35px; line-height:35px;">开始日期：{:date('Y-m-d',$coupons['start_time'])}</div>    
+                                    </div>
+                                    <div class="date fr" style="float:left;">
+                                           <div style="font-size:14px; width:500px; height:35px; line-height:35px;">结束日期：{:date('Y-m-d',$coupons['end_time'])}</div>    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否上架：</label>
+                                <div class="col-sm-6">
+                                     <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{if condition="$coupons['onsale'] eq 1"}是{else condition="$coupons['onsale'] eq 0"/}否{/if}</div>        
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">放入回收站：</label>
+                                <div class="col-sm-6">
+                                     <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{if condition="$coupons['is_recycle'] eq 1"}是{else condition="$coupons['is_recycle'] eq 0"/}否{/if}</div>        
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">排序：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$coupons.sort}</div> 
+                                </div>
+                            </div>						
+                            <div class="hr-line-dashed"></div>
+
+		                     <div class="form-group" style="margin-top:50px;">
+		                          <label class="col-sm-2 control-label">是否设为正常：</label>
+		                          <div class="col-sm-6">
+		                              <label class="radio-inline"><input type="radio" name="checked" {if condition="$coupons['checked'] eq 1"}checked="checked"{/if} value="1">是</label>
+		                              <label class="radio-inline"><input type="radio" name="checked" {if condition="$coupons['checked'] eq 2"}checked="checked"{/if} value="2">否</label>
+		                          </div>
+		                     </div>
+		                     <div class="hr-line-dashed"></div>
+                           
+                            <input name="id" type="hidden" value="{$coupons.id}">
+                                                 
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button" id="doSubmit" style="margin-right:20px;">保存内容</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script>
+	
+    	$(function(){   		  
+      	  $('#doSubmit').click(function(){
+    		  var shcanshu = $('input:radio[name=checked]:checked').val();
+    		  if(shcanshu == null){
+    			  layer.msg('请选择设为正常或不正常', {icon: 2,time: 1000});
+    			  return false;
+    		  }
+    			
+    		  if('1,2'.indexOf(shcanshu) == -1){
+    			  layer.msg('参数错误', {icon: 2,time: 1000});
+    			  return false;
+    		  }
+    		  
+    		  if(shcanshu == 1){
+    			  var shuoming = '确定设为正常么？';
+    		  }
+    		  
+    		  if(shcanshu == 2){
+    			  var shuoming = '确定设为不正常么？';
+    		  }
+    		  
+    		  var id = $('input[name=id]').val();
+    		  
+	  		  layer.confirm(shuoming, {  			  
+				  skin: 'layui-layer-molv',
+				  closeBtn: 0,
+				  shadeClose : true,
+				  btn: ['确定','取消'] //按钮
+			  },function(){
+				  layer.load(2);
+				  
+			      $.ajax({
+				      url:"{:url('shop_coupon/checked')}",
+				      type:'POST',
+				      data:{'id':id,'checked':shcanshu},
+				      dataType:'json',
+				      success:function(data){
+				    	  if(data.status == 1){
+				    		  layer.closeAll('loading');
+				    		  layer.msg(data.mess, {icon: 1,time: 1000}, function(){
+	                               location.href = url;
+				    		  });
+				    	  }else if(data.status == 0){
+				    		  layer.closeAll('loading');
+				    		  layer.msg(data.mess, {icon: 2,time: 1000});
+				    	  }
+				      },
+				      error:function(){
+				    	  layer.closeAll('loading');
+				    	  layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+				      }
+				  });
+			  });
+    	  });
+      });
+      
+    </script>
+
+</body>
+</html>

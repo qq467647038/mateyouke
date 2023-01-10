@@ -1,0 +1,358 @@
+<!--
+ * @Descripttion: 
+ * @Author: cbing
+ * @Date: 2019-06-10 14:42:00
+ * @LastEditors: cbing
+ * @LastEditTime: 2019-08-24 18:15:04
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/member/lst.html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/member/search.html?page="+pnum;
+	{/if}
+</script>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">ID</th>
+                                    <!--<th style="width:5%">添加方式</th>-->
+                                    <th style="width:%">头像</th>
+                                    <th style="width:%">用户名</th>
+                                    <th style="width:%">手机号</th>
+                                    <th style="width:%">账号</th>
+                                    <th style="width:%">直推人姓名</th>
+                                    <th style="width:%">直推人手机号</th>
+                                    <th style="width:%">余额</th>
+                                    <th style="width:%">积分券</th>
+                                    <th style="width:%">积分信用</th>
+                                    <th style="width:%">门票</th>
+                                    <th style="width:%">注册时间</th>
+                                    <th style="width:%">解冻/冻结</th>
+                                    <th style="width:20%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <!--<td>{$v.add_way==0 ? '用户自行注册' : '管理员添加'}</td>-->
+                                    <td><img {if condition="$v['headimgurl'] && $v['oauth'] eq 0"}src="{$v.headimgurl}"{elseif condition="$v['headimgurl'] && $v['oauth'] eq 1"/}src="{$v.headimgurl}"{else/}src="__PUBLIC__/admin/img/nopic.jpg"{/if} width="30px" height="30px"/></td>
+                                    <td>{if condition="$v['true_name']"}{$v['true_name']}{else/}{$v['user_name']}{/if}</td>
+                                    <td>{if condition="$v['phone']"}{$v.phone}{else/}/{/if}</td>
+                                    <td>{if condition="$v['nick_name']"}{$v.nick_name}{else/}/{/if}</td>
+                                    <td>{if condition="$v['m_true_name']"}{$v.m_true_name}{else/}{$v.m_user_name}{/if}</td>
+                                    <td>{if condition="$v['m_phone']"}{$v.m_phone}{else/}/{/if}</td>
+                                    <td>{$v.price}&nbsp;</td>
+                                    <td>{$v.point_ticket}&nbsp;</td>
+                                    <td>{$v.point_credit}&nbsp;</td>
+                                    <td>{$v.ticket_burn}&nbsp;</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['regtime'])}</td>
+                                    <td>
+                                    {switch name="v.zenren_frozen"}
+                                    {case value="1"}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableValsss({$v.id},'zenren_frozen',this);"><i class="fa fa-times"></i></button>
+                                    {/case}
+                                    {case value="0"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableValsss({$v.id},'zenren_frozen',this);"><i class="fa fa-check"></i></button>
+                                    {/case}
+                                    {/switch}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="bobi({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;拨币</button>
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="edit({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="view({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;详情</button>
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="del({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;删除</button>
+                                        <button type="button" class="btn btn-success btn-xs" onclick="getyhorder({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;查看订单</button>
+                                        <button type="button" class="btn btn-success btn-xs" onclick="collect_money({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;查看收款方式</button>
+                                        <button type="button" class="btn btn-success btn-xs" onclick="trade({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;流水记录</button>
+                                        <button type="button" class="btn btn-success btn-xs" onclick="memberTree({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;查看会员树</button>
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="19" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+
+<script>
+    //修改新窗口打开
+    function changeTableVals(field_id,field_name,obj){
+        if($(obj).hasClass('btn-danger')){
+        		var field_value = 1;
+        	}else if($(obj).hasClass('btn-primary')){
+        		var field_value = 0;
+        	}
+        	layer.load(2);
+        	$.ajax({
+        		url:url+'/gaibian',
+        		type:'POST',
+        		data:{id:field_id,name:field_name,value:field_value},
+        		dataType:'json',
+        		success:function(data){
+        			if(data == 1){
+        				layer.closeAll('loading');
+        			   	if(field_value == 1){
+        		    		$(obj).removeClass('btn-danger').addClass('btn-primary');
+        		    		$(obj).html('<i class="fa fa-check"></i>');
+        			   	}else if(field_value == 0){
+        		    		$(obj).removeClass('btn-primary').addClass('btn-danger');
+        		    		$(obj).html('<i class="fa fa-times"></i>');
+        			   	}
+        			}else{
+        				layer.closeAll('loading');
+        				layer.msg('更新失败，请重试', {icon: 2,time: 1000});
+        			}
+        		},
+        		error:function(){
+        			layer.closeAll('loading');
+        			layer.msg('操作失败或您没有权限，请重试', {icon: 2,time: 1000});
+        		}
+        	});
+    }
+    
+    //修改新窗口打开
+    function changeTableValsssss(field_id,field_name,obj){
+        if($(obj).hasClass('btn-danger')){
+        		var field_value = 1;
+        	}else if($(obj).hasClass('btn-primary')){
+        		var field_value = 0;
+        	}
+        	layer.load(2);
+        	$.ajax({
+        		url:url+'/gaibian',
+        		type:'POST',
+        		data:{id:field_id,name:field_name,value:field_value},
+        		dataType:'json',
+        		success:function(data){
+        			if(data == 1){
+        				layer.closeAll('loading');
+        			   	if(field_value == 0){
+        		    		$(obj).removeClass('btn-primary').addClass('btn-danger');
+        		    		$(obj).html('<i class="fa fa-times"></i>');
+        			   	}else if(field_value == 1){
+        		    		$(obj).removeClass('btn-danger').addClass('btn-primary');
+        		    		$(obj).html('<i class="fa fa-check"></i>');
+        			   	}
+        			}else{
+        				layer.closeAll('loading');
+        				layer.msg('更新失败，请重试', {icon: 2,time: 1000});
+        			}
+        		},
+        		error:function(){
+        			layer.closeAll('loading');
+        			layer.msg('操作失败或您没有权限，请重试', {icon: 2,time: 1000});
+        		}
+        	});
+    }
+    
+    //修改新窗口打开
+    function changeTableValsss(field_id,field_name,obj){
+        if($(obj).hasClass('btn-danger')){
+        		var field_value = 0;
+        	}else if($(obj).hasClass('btn-primary')){
+        		var field_value = 1;
+        	}
+        	layer.load(2);
+        	$.ajax({
+        		url:url+'/gaibian',
+        		type:'POST',
+        		data:{id:field_id,name:field_name,value:field_value},
+        		dataType:'json',
+        		success:function(data){
+        			if(data == 1){
+        				layer.closeAll('loading');
+        			   	if(field_value == 0){
+        		    		$(obj).removeClass('btn-danger').addClass('btn-primary');
+        		    		$(obj).html('<i class="fa fa-check"></i>');
+        			   	}else if(field_value == 1){
+        		    		$(obj).removeClass('btn-primary').addClass('btn-danger');
+        		    		$(obj).html('<i class="fa fa-times"></i>');
+        			   	}
+        			}else{
+        				layer.closeAll('loading');
+        				layer.msg('更新失败，请重试', {icon: 2,time: 1000});
+        			}
+        		},
+        		error:function(){
+        			layer.closeAll('loading');
+        			layer.msg('操作失败或您没有权限，请重试', {icon: 2,time: 1000});
+        		}
+        	});
+    }
+
+    //编辑
+    function view(id,obj){
+        var editUrl = url+'/view/id/'+id;
+        layer.open({
+            type : 2,
+            title : '详情',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['900px','650px'],
+            content : editUrl
+        });
+    }
+
+    function changeCollect(id,obj){
+        var editUrl = url+'/changeCollect/id/'+id;
+        layer.open({
+            type : 2,
+            title : '修改收款方式',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['80%','90%'],
+            content : editUrl
+        });
+    }
+
+    function changejiedian(id,obj){
+        var editUrl = url+'/changejiedian/id/'+id;
+        layer.open({
+            type : 2,
+            title : '更改接点人',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['80%','90%'],
+            content : editUrl
+        });
+    }
+
+    function generatePhone(id,obj){
+        var editUrl = url+'/generatePhone/id/'+id;
+        layer.open({
+            type : 2,
+            title : '生单',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['80%','90%'],
+            content : editUrl
+        });
+    }
+
+    function bobi(id,obj){
+        var editUrl = url+'/bobi/id/'+id;
+        layer.open({
+            type : 2,
+            title : '拨币',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['80%','90%'],
+            content : editUrl
+        });
+    }
+    
+    function del(id, obj){
+        layer.confirm('是否确认删除吗？', {
+            btn: ['删除', '取消']
+        }, function(index){
+            $.ajax({
+                url: "{:url('member/del')}",
+                type: "post",
+                data: {
+                    id: id
+                },
+                success: function(res){
+                    if(res == 1){
+                        layer.msg('删除成功');
+                        
+                        setTimeout(function(){
+                            location.reload();
+                        }, 1000)
+                    }
+                    else{
+                        layer.msg('删除失败');
+                    }
+                }
+            })
+        })
+    }
+
+    function fronzen_jie(id,obj){
+        layer.confirm('是否确认解冻吗？', {
+            btn: ['确定', '取消']
+        },function(index){
+            if(index == 1){
+                $.ajax({
+                    url: "{:url('member/fronzen_jie')}",
+                    type: "post",
+                    data: {
+                        id: id
+                    },
+                    success: function(res){
+                        if(res == 1){
+                            layer.msg('解冻成功');
+                            layer.parent.reload();
+                            location.reload();
+                        }
+                        else{
+                            layer.msg('解冻失败');
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    function collect_money(id,obj){
+        var editUrl = url+'/collect_money/id/'+id;
+        layer.open({
+            type : 2,
+            title : '收款方式',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['80%','90%'],
+            content : editUrl
+        });
+    }
+
+    function memberTree(id,obj){
+        var editUrl = url+'/member_tree/id/'+id;
+        layer.open({
+            type : 2,
+            title : '会员树',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['100%','100%'],
+            content : editUrl
+        });
+    }
+
+    function trade(id,obj){
+        var editUrl = url+'/trade_detail/id/'+id;
+        layer.open({
+            type : 2,
+            title : '交易详情',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['100%','100%'],
+            content : editUrl
+        });
+    }
+    
+    function setVip(id, val, obj){
+        // layer.confirm('是否确定设置VIP专享', {
+        //     btn: ['确定', '取消']
+        // }, function(index){
+            $.ajax({
+                type: 'post',
+                url: '{:url("member/setVip")}',
+                data: {
+                  'id': id,
+                  'val': val
+                },
+                success:function(res){
+                    layer.close(index);
+                    window.location.reload();
+                }
+            })
+        // })
+    }
+
+</script>

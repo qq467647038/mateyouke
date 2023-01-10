@@ -1,0 +1,74 @@
+<div>
+    <div>
+        {if condition="$bank_card != ''"}
+        <div>
+          <fieldset>
+            <legend>银行卡信息</legend>
+            <div style="margin-top:20px;">
+                <label style="display:inline-block;width:100px;" for="">姓名</label>
+                <label for="">{$bank_card['name']}</label>
+            </div>
+            <div style="margin-top:20px;">
+                <label style="display:inline-block;width:100px;" for="">联系方式</label>
+                <label for="">{$bank_card['telephone']}</label>
+            </div>
+            <div style="margin-top:20px;">
+                <label style="display:inline-block;width:100px;" for="">卡号</label>
+                <label for="">{$bank_card['card_number']}</label>
+            </div>
+          </fieldset>
+        </div>
+        {/if}
+        
+        {if condition="$zfb_card != ''"}
+        <div>
+          <fieldset>
+            <legend>支付宝信息</legend>
+            <div style="margin-top:20px;">
+                <label style="display:inline-block;width:100px;" for="">姓名</label>
+                <label for="">{$zfb_card['name']}</label>
+            </div>
+            <div style="margin-top:20px;">
+                <label style="display:inline-block;width:100px;" for="">联系方式</label>
+                <label for="">{$zfb_card['telephone']}</label>
+            </div>
+            <div style="margin-top:20px;">
+                <label style="display:inline-block;width:100px;" for="">卡号</label>
+                <div>
+                    <img style="width:200px;height:200px;" src="{$zfb_card['qrcode']}" alt="" />
+                </div>
+            </div>
+          </fieldset>
+        </div>
+        {/if}
+        
+        {if condition="$wx_card != ''"}
+        <div>
+          <fieldset>
+            <legend>微信信息</legend>
+            <div style="margin-top:20px;">
+                <label style="display:inline-block;width:100px;" for="">姓名</label>
+                <label for="">{$wx_card['telephone']}</label>
+            </div>
+            <div style="margin-top:20px;">
+                <label style="display:inline-block;width:100px;" for="">联系方式</label>
+                <label for="">{$wx_card['telephone']}</label>
+            </div>
+            <div style="margin-top:20px;">
+                <label style="display:inline-block;width:100px;" for="">卡号</label>
+                <div>
+                    <img style="width:200px;height:200px;" src="{$wx_card['qrcode']}" alt="" />
+                </div>
+            </div>
+          </fieldset>
+        </div>
+        {/if}
+        
+        
+        {if condition="$bank_card=='' && $wx_card=='' && $zfb_card==''"}
+        <div style="display:block;height:200px;line-height:200px;color:red;font-size: 34px;text-align:center;">
+            暂未添加收款方式
+        </div>
+        {/if}
+    </div>
+</div>

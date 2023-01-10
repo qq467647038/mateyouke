@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<script>
+//删除url
+var deleteUrl = "{:url('nav_menu/delete')}";
+var url = '/{$Request.module}/nav_menu';
+var sortUrl = "{:url('nav_menu/order')}";
+</script>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5><if condition="$pos_name">{if condition="(isset($nav_name)) AND ($nav_name)"}{$nav_name}{/if}菜单列表</h5>
+                    </div>
+                    <div class="ibox-content">
+						<div class="row">
+						   <div class="col-sm-7 m-b-xs">
+                                <button type="button" class="btn btn-sm btn-primary" id="addar" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;增加菜单</button>
+                                <button type="button" class="btn btn-sm btn-success" style="margin-right:15px;" id="order">更新排序</button>
+                                <button type="button" class="btn btn-sm btn-danger" id="del">批量删除</button>
+                            </div> 
+                        </div>                          
+                        
+                        <div id="ajaxpagetest">
+                        {include file="nav_menu/ajaxpage" /}
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+	<script src="__PUBLIC__/admin/js/common/admin.js"></script>
+
+</body>
+</html>

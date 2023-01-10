@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+</head>
+
+<script>
+var url = "/{$Request.module}/category";
+var deleteUrl = "{:url('category/delete')}";
+var sortUrl = "{:url('category/order')}";
+</script>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+						<div>
+						    {if condition="$uplevel['phone'] != ''"}
+						    上级用户名：{$uplevel['user_name']}   <span style="display:inline-block;width:100px;"></span>   上级手机号：{$uplevel['phone']}
+						    {else /}
+						    没有上级
+						    {/if}
+						    <span class="input-group-btn" style="margin-right:10px;">
+                                        <a href="{:url('Member/export_member_tree')}?keyword={$id}" target="_blank" class="btn btn-sm btn-primary">导出</a>
+                                    </span>  
+						</div>  
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%"></th>                                   
+                                    <th style="width:30%">用户名</th>
+                                    <!--<th style="width:5%">ID</th>-->
+                                    <th style="width:10%">手机号</th>
+                                    <th style="width:10%">激活</th>
+                                    <th style="width:10%">直推数</th>
+                                    <th style="width:10%">团队数</th>
+                                    <th style="width:10%">直推有效数量</th>
+                                    <th style="width:10%">团队有效数量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list"}
+							{foreach name="list" item="v"}
+                                <!--<tr cid="{$v.id}" pid="{$v.one_level}" level="{$v.level}" {if condition="$v['one_level'] neq 0"}style="display:none;"{/if}>-->
+                                <tr cid="{$v.id}" pid="{$v.one_level}" level="{$v.level}" {if condition="$v['level'] neq 0"}style="display:none;"{/if}>
+                                    <td><a href="javascript:;" class="catezk" onclick="cateshow(this);" style="font-size:15px;">[+]</a></td>                                   
+                                    <td>{:str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $v['level'])}{if condition='$v["level"] gt 0'}|{/if}{$v.html}{if condition='$v["one_level"] eq 0'}<b>{$v.user_name}{else/}{$v.user_name}{/if}</a></td>
+                                    <!--<td>{$v.id}</td>-->
+                                    <td>{$v.phone}</td>
+                                    <td>
+                                        {if condition="$v.reg_enable==1"}
+                                        <label style="color:green;">已激活</label>
+                                        {elseif condition="$v.reg_enable==0"}
+                                        <label style="color:red;">未激活</label>
+                                        {/if}
+                                    </td>
+                                    <td>{$v.direct_count}</td>
+                                    <td>{$v.team_count}</td>
+                                    <td>{$v.effective_direct_num}</td>
+                                    <td>{$v.effective_team_num}</td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="8" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}							
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/catecommon.js"></script>
+	<script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+	
+</body>
+</html>

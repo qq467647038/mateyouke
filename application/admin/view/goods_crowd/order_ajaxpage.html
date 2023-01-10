@@ -1,0 +1,57 @@
+<!--
+ * @Descripttion: 
+ * @Copyright: ©版权所有
+ * @Link: www.s1107.com
+ * @Contact: QQ:2487937004
+ * @LastEditors: cbing
+ * @LastEditTime: 2020-05-01 18:40:18
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="!isset($search) && !isset($cate_id)"}
+	var search = 0;
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/goods/lst/filter/"+filter+".html?page="+pnum;
+	{elseif condition="isset($search) && $search" /}
+	var search = {$search};
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/goods/search.html?page="+pnum;
+	{elseif condition="isset($cate_id) && $cate_id" /}
+	var cate_id = {$cate_id};
+	var search = 0;
+	var goUrl = "/{$Request.module}/goods/catelist/cate_id/"+cate_id+"/filter/"+filter+".html?page="+pnum;
+	{/if}
+</script>                           
+                        
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>金额</th>
+                                    <th>类型</th>
+                                    <th>商品</th>
+                                    <th>期号</th>
+                                    <th>众筹时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <td>{$v.price}</td>   
+                                    <td>{if condition="$v.type==1"}预售{elseif condition="$v.type==2"}抢购{/if}</td>
+                                    <td>{$v.goods_name}</td>
+                                    <td>{$v.qi}</td>
+                                    <td>{$v.addtime|date='Y-m-d H:i:s', ###}</td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="8" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}								
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

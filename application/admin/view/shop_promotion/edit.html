@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+</head>
+
+<script>
+var filter = {$filter};
+var pnum = {$pnum};
+
+{if condition="(!isset($search)) OR (!$search)"}
+var url = "/{$Request.module}/shop_promotion/lst/filter/"+filter+".html?page="+pnum;
+{else/}
+var url = "/{$Request.module}/shop_promotion/search.html?page="+pnum;
+{/if}
+
+var checkedUrl = "{:url('shop_promotion/checked')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>编辑商家商品促销活动</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" id="form">
+                              <div class="form-group">
+		                          <label class="col-sm-2 control-label">状态：</label>
+		                          <div class="col-sm-6">
+		                              <div style="font-size:14px; width:500px; height:35px; line-height:35px;">
+			                            {switch name="promos.zhuangtai"}
+	                                    {case value="1"}
+	                                    <span style="color:#1c84c6;">即将开始</span>
+	                                    {/case}
+	                                    {case value="2"}
+	                                    <span style="color:#1c84c6;">活动中</span>                                    
+	                                    {/case}
+	                                    {case value="3"}
+	                                    <span style="color:#1992FC;">已结束</span>                                    
+	                                    {/case}                                                                        
+	                                    {/switch}
+		                              </div>
+		                          </div>
+		                     </div>
+		                     <div class="hr-line-dashed"></div>
+                        
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属商家：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$promos.shop_name}</div>
+                                </div>     
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        
+                        
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">活动名称：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$promos.activity_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">活动类型：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{switch name="promos.type"}{case value="1"}直接打折{/case}{/switch}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="attrgroup">
+                            {foreach name="prom_typeres" item="v" key="k"}
+                            <div class="form-group">
+                            <label class="col-sm-2 control-label">满件数：</label>
+                            <div class="col-sm-1" style="line-height:35px;">
+                            {$v.man_num}件
+                            </div>
+                            <label class="col-sm-1 control-label">折扣：</label>
+                            <div class="col-sm-1" style="line-height:35px;">
+                            {$v['discount']/10}折
+                            </div>
+                            </div>
+                            {/foreach}
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">活动时间：</label>
+                                <div class="col-sm-8">
+                                    <div class="date date1 fl" style="float:left; margin-right:25px;">
+                                           <div style="font-size:14px; width:500px; height:35px; line-height:35px;">开始时间：{:date('Y-m-d H:i:s',$promos['start_time'])}</div>    
+                                    </div>
+                                    <div class="date fr" style="float:left;">
+                                           <div style="font-size:14px; width:500px; height:35px; line-height:35px;">结束时间：{:date('Y-m-d H:i:s',$promos['end_time'])}</div>    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">活动宣传图：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:200px;"><img src="/{$promos.pic_url}" width="200px" height="150px"/></div>
+                                </div>     
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品信息：</label>
+                                <div class="col-sm-8">
+	                            <table class="table table-hover table-bordered">
+	                            <thead class="biaoge">
+                                <tr><th style="width:35%">商品名称</th><th style="width:20%">缩略图</th><th style="width:20%">所属分类</th><th style="width:25%">金额</th></tr>
+	                            </thead>
+                                <tbody id="goods_list">
+                                {foreach name="cominfo" item="v"}
+                                <tr>                      
+                                    <td>{$v.goods_name}</td>
+                                    <td><img src="/{$v.thumb_url}" width="100px" height="100px"/></td>
+                                    <td>{$v.cate_name}</td>
+                                    <td>{$v.shop_price}&nbsp;元</td>                                                                                       
+                                </tr>
+                                {/foreach}                                
+                                </tbody>	
+	                            </table>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">添加时间：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">
+                                    {:date('Y-m-d H:i:s',$promos['addtime'])}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+		                    <div class="form-group" style="margin-top:50px;">
+		                          <label class="col-sm-2 control-label">是否设为推荐：</label>
+		                          <div class="col-sm-6">
+		                              <label class="radio-inline"><input type="radio" name="recommend" {if condition="$promos['recommend'] eq 1"}checked="checked"{/if} value="1">推荐</label>
+		                              <label class="radio-inline"><input type="radio" name="recommend" {if condition="$promos['recommend'] eq 0"}checked="checked"{/if} value="0">不推荐</label>
+		                          </div>
+		                     </div>
+		                     <div class="hr-line-dashed"></div>
+                           
+                            <input name="id" type="hidden" value="{$promos.id}">
+                                                 
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button" id="doSubmit" style="margin-right:100px;">保存设置</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script>
+	
+    	$(function(){   		  
+      	  $('#doSubmit').click(function(){
+    		  var shcanshu = $('input:radio[name=recommend]:checked').val();
+    		  if(shcanshu == null){
+    			  layer.msg('请选择设为推荐或不推荐', {icon: 2,time: 1000});
+    			  return false;
+    		  }
+    			
+    		  if('0,1'.indexOf(shcanshu) == -1){
+    			  layer.msg('参数错误', {icon: 2,time: 1000});
+    			  return false;
+    		  }
+    		  
+    		  if(shcanshu == 1){
+    			  var shuoming = '确定推荐么？';
+    		  }
+    		  
+    		  if(shcanshu == 0){
+    			  var shuoming = '确定不推荐么？';
+    		  }
+    		  
+    		  var id = $('input[name=id]').val();
+    		  
+	  		  layer.confirm(shuoming, {  			  
+				  skin: 'layui-layer-molv',
+				  closeBtn: 0,
+				  shadeClose : true,
+				  btn: ['确定','取消'] //按钮
+			  },function(){
+				  layer.load(2);
+				  
+			      $.ajax({
+				      url:"{:url('shop_promotion/edit')}",
+				      type:'POST',
+				      data:{'id':id,'recommend':shcanshu},
+				      dataType:'json',
+				      success:function(data){
+				    	  if(data.status == 1){
+				    		  layer.closeAll('loading');
+				    		  layer.msg(data.mess, {icon: 1,time: 1000}, function(){
+	                               location.href = url;
+				    		  });
+				    	  }else if(data.status == 0){
+				    		  layer.closeAll('loading');
+				    		  layer.msg(data.mess, {icon: 2,time: 1000});
+				    	  }
+				      },
+				      error:function(){
+				    	  layer.closeAll('loading');
+				    	  layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+				      }
+				  });
+			  });
+    	  });
+      });
+      
+    </script>
+
+</body>
+</html>

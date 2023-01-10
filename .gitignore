@@ -1,0 +1,12 @@
+public/public/
+public/app/
+public/portal/
+public/.user.ini
+public/uploads/
+runtime/
+application/database.php
+.idea/
+/public/upload/
+application/apicloud/controller/wechat.log
+gatewayworker/vendor/workerman/workerman.log
+gatewayworkeralive/vendor/workerman/workerman.log

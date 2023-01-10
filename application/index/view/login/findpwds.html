@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>孝笑好多用户商城系统 - 忘记密码</title>
+<meta name="keywords" content="孝笑好多用户商城系统">
+<meta name="description" content="孝笑好多用户商城系统">
+<meta name="author" content="孝笑好">
+<meta name="copyright" content="孝笑好 Inc. All Rights Reserved">
+<link href="__STATIC__/pc/css/common.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/pc/css/header.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/pc/css/login.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/pc/css/font-awesome.min.css" rel="stylesheet">
+<!--[if lt IE 9]>
+      <script src="__STATIC__/pc/js/html5shiv.js"></script>
+      <script src="__STATIC__/pc/js/respond.min.js"></script>
+<![endif]-->
+<script>
+var COOKIE_PRE = 'B87D_';var _CHARSET = 'utf-8';var SITEURL = 'https://store.cxy365.com';var BASE_SITE_URL = 'https://store.cxy365.com';var STATIC_SITE_URL = 'https://store.cxy365.com/system/static';var STATIC_SITE_URL = 'https://store.cxy365.com/system/static';var SHOP_TEMPLATES_URL = 'https://store.cxy365.com/templets/WoSmart';
+</script>
+<script src="__STATIC__/pc/js/jquery.min.js"></script>
+<script src="__STATIC__/pc/js/jquery.ui.js"></script>
+<script src="__STATIC__/pc/js/common.js"></script>
+<script src="__STATIC__/pc/js/jquery.validation.min.js"></script>
+<script src="__STATIC__/pc/js/dialog.js" id="wt_dialog"></script><link href="__STATIC__/pc/css/dialog.css" rel="stylesheet" type="text/css">
+<script src="__STATIC__/pc/js/taglibs.js"></script>
+<script src="__STATIC__/pc/js/tabulous.js"></script>
+</head>
+<body style="">
+<div class="qt-header-other">
+      <div class="w1200">
+        <div class="qt-logo"><a class="statis" site="1" href="https://store.cxy365.com/" title="孝笑好多用户商城系统"><img src="__STATIC__/pc/images/findpwd/logo.png"></a></div>
+        <div class="header-title">
+                 找回密码
+                </div>
+      </div>
+    </div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="login-main" style="background-color:#1F1F1F;">
+      <div class="w1200"><img class="statis publicPicClick" data-which="register" site="2" src="__STATIC__/pc/images/findpwd/1.jpg">
+		  <!--手机验证码登录-->
+        <div class="login-wrap">
+          <div class="login-hearder">
+			<ul class="tabs-nav">
+        <li class="j-accountLogin"><a href="javascript:;">找回密码<i></i></a></li>
+
+              </ul>   
+			</div>
+          <div class="login-content">
+			  
+			                
+              <div class="account-box" style="display: block;">
+               <form class="wt-login-form" action="{:url('findpwd')}" method="POST" id="find_password_form">
+                   <input type="hidden" name="formhash" value="f1yctFzhOfInYe5dEg1pyeStVRUf4zR">            <input type="hidden" name="form_submit" value="ok">
+                   <input name="wthash" type="hidden" value="f3d29121">
+
+                   <div class="login-form">
+                       <div class="input-inline">
+                           <div class="input-icon i-phone"></div>
+                           <input type="text" class="text" name="phone" id="phone" maxlength="11" autocomplete="off" placeholder="输入已注册手机号"  style="color: rgb(187, 187, 187);">
+                       </div>
+<!--                       <div id="sendcode-captcha" class="captcha input-inline" style="display:block">-->
+<!--                           <input type="text" name="captcha" class="text" id="image_captcha" tipmsg="输入验证码" style="width: 188px; color: rgb(187, 187, 187);" value="输入验证码">-->
+<!--                           <img alt="加载中..." name="codeimage" id="sms_codeimage" onclick="javascript:document.getElementById(&#39;sms_codeimage&#39;).src=&#39;index.php?w=vercode&amp;type=40x100&amp;c=&#39; + Math.random();" src="__STATIC__/pc/js/index.php" style="margin-left: 10px;vertical-align:middle; cursor:pointer;"><a class="img-code-a" onclick="javascript:document.getElementById(&#39;sms_codeimage&#39;).src=&#39;index.php?w=vercode&amp;type=40x100&amp;c=&#39; + Math.random();"></a>-->
+<!--                           <p class="warning-text"></p>-->
+<!--                       </div>-->
+                       <div class="input-inline">
+                           <div class="input-icon i-password"></div>
+                           <input type="password" name="password" id="password" class="text" placeholder="输入新密码"  style="color: rgb(187, 187, 187);">
+                       </div>
+                       <div class="input-inline">
+                           <div class="input-icon i-password"></div>
+                           <input type="password" name="password_confirm" id="password_confirm" class="text" placeholder="请确定密码"  style="color: rgb(187, 187, 187);">
+                       </div>
+                       <div class="input-inline captcha">
+                           <input type="text" name="sms_captcha" autocomplete="off" class="text" id="sms_captcha" tipmsg="短信验证码" style="width: 188px; color: rgb(187, 187, 187);" >
+                           <div class="btn-captcha qt-btn"><a class="statis" site="13" href="javascript:void(0);" id="sms_text" onclick="get_sms_captcha(&#39;3&#39;)">发送验证码</a></div>
+                           <p class="warning-text"></p>
+                       </div>
+
+                       <div class="disabled" id="submit-phone">
+                           <input type="submit" id="submitbtn" class="login-submit qt-btn" value="确认重置">
+                       </div>
+                   </div>
+                 </form>
+              </div>
+			  
+
+			</div>
+              			  <div class="login-footer">
+              <p class="login-type"><a site="7" href="{:url('login/index')}" class="statis" rel="external nofollow">返回登录
+</a><a site="8" href="{:url('register/index')}" class="statis" rel="external nofollow">重新注册</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<script type="text/javascript" src="__STATIC__/pc/js/login.js"></script>
+<script type="text/javascript">
+$(function(){
+	var cotrs = $(".tabs-nav li");
+	cotrs.click(function(){
+	 $(this).addClass("on").siblings().removeClass("on");
+	});
+	//初始化Input的灰色提示信息  
+	$('input[tipMsg]').inputTipText({pwd:'password'});
+    $('.j-phoneLogin,.j-accountLogin').on('click', function() {
+        var oLoginWrap = $(this).closest('.login-wrap');
+        oLoginWrap.find('.phone-box,.account-box').hide();
+        if ($(this).hasClass('j-phoneLogin')) {
+            oLoginWrap.find('.phone-box').show();
+        } else {
+            oLoginWrap.find('.account-box').show()
+        }
+    });
+	
+    $('#Submit').click(function(){
+        if($("#find_password_form").valid()){
+        	ajaxpost('find_password_form', '', '', 'onerror');
+        } else{
+        	document.getElementById('codeimage').src='index.php?w=vercode&type=40x100&c=' + Math.random();
+        }
+    });
+    $('#find_password_form').validate({
+        errorPlacement: function(error, element){
+            var error_td = element.parent('.input-inline');
+            error_td.append(error);
+            element.addClass('error');
+        },
+        success: function(label) {
+            label.removeClass('error').find('label').remove();
+        },
+        rules : {
+            phone : {
+                required : true,
+                minlength: 11,
+                maxlength: 11
+            },
+            password : {
+                required : true,
+                password : true
+            },
+            password_confirm : {
+                required : true,
+                password : true,
+                equalTo  : '#password'
+            },
+            // email : {
+            //     required : true,
+            //     email : true
+            // },
+            captcha : {
+                required : true,
+                minlength: 4,
+                remote   : {
+                    url : 'index.php?w=vercode&t=check',
+                    type: 'get',
+                    data:{
+                        captcha : function(){
+                            return $('#captcha').val();
+                        }
+                    }
+                }
+            } 
+        },
+        messages : {
+            phone : {
+                required : '<i class="icon-exclamation-sign"></i>手机号不能为空',
+                minlength : '<i class="icon-exclamation-sign"></i>手机号长度错误',
+                maxlength : '<i class="icon-exclamation-sign"></i>手机号长度错误',
+            },
+            password : {
+                required : '<i class="icon-exclamation-sign"></i>密码不能为空',
+                minlength : '<i class="icon-exclamation-sign"></i>密码长度应在6-20个字符之间',
+                maxlength : '<i class="icon-exclamation-sign"></i>密码长度应在6-20个字符之间',
+            },
+            password_confirm : {
+                required : '<i class="icon-exclamation-sign"></i>确认密码不能为空',
+                minlength : '<i class="icon-exclamation-sign"></i>确认密码长度应在6-20个字符之间',
+                maxlength : '<i class="icon-exclamation-sign"></i>确认密码长度应在6-20个字符之间',
+                equalTo : '<i class="icon-exclamation-sign"></i>两次密码输入不一致',
+            },
+            // email  : {
+            //     required : '<i class="icon-exclamation-sign"></i>请输入邮箱地址',
+            //     email : '<i class="icon-exclamation-sign"></i>电子邮箱填写错误'
+            // },
+            captcha : {
+                required : '<i class="icon-remove-bbs" title="验证码不能为空"></i>',
+                minlength : '<i class="icon-remove-bbs" title="验证码错误"></i>',
+                remote   : '<i class="icon-remove-bbs" title="验证码错误"></i>'
+            }
+        }
+    });
+});
+</script>
+<script type="text/javascript" src="__STATIC__/pc/js/connect_sms.js" charset="utf-8"></script>
+<script>
+$(function(){
+	$("#post_form").validate({
+        errorPlacement: function(error, element){
+            var error_td = element.parent('.input-inline');
+            error_td.append(error);
+            element.addClass('error');
+        },
+        success: function(label) {
+            label.removeClass('error').find('label').remove();
+        },
+    	submitHandler:function(form){
+    	    ajaxpost('post_form', '', '', 'onerror');
+    	},
+        onkeyup: false,
+		rules: {
+			phone: {
+                required : true,
+                mobile : true
+            },
+			// captcha : {
+            //     required : true,
+            //     minlength: 4,
+            //     remote   : {
+            //         url : 'index.php?w=vercode&t=check',
+            //         type: 'get',
+            //         data:{
+            //             captcha : function(){
+            //                 return $('#image_captcha').val();
+            //             }
+            //         },
+            //         complete: function(data) {
+            //             if(data.responseText == 'false') {
+            //             	document.getElementById('sms_codeimage').src='index.php?w=vercode&type=40x100&c=' + Math.random();
+            //             }
+            //         }
+            //     }
+            // },
+			sms_captcha: {
+                required : function(element) {
+                    return $("#captcha").val().length == 4;
+                },
+                minlength: 6
+            },
+            password : {
+				password : true,
+                required : function(element) {
+                    return $("#sms_captcha").val().length == 6;
+                },
+                minlength: 6,
+				maxlength: 20,
+            },
+            password_confirm : {
+                password : true,
+                required : function(element) {
+                    return $("#sms_captcha").val().length == 6;
+                },
+                minlength: 6,
+                maxlength: 20,
+            }
+		},
+		messages: {
+			phone: {
+                required : '<i class="icon-exclamation-sign"></i>请输入正确的手机号',
+                mobile : '<i class="icon-exclamation-sign"></i>请输入正确的手机号'
+            },
+			// captcha : {
+            //     required : '<i class="icon-remove-bbs" title="请输入正确的验证码"></i>',
+            //     minlength: '<i class="icon-remove-bbs" title="请输入正确的验证码"></i>',
+			// 	remote	 : '<i class="icon-remove-bbs" title="请输入正确的验证码"></i>'
+            // },
+			sms_captcha: {
+ 				required : '<i class="icon-remove-bbs" title="请输入六位短信验证码"></i>',
+                minlength: '<i class="icon-remove-bbs" title="请输入六位短信验证码"></i>'
+            },
+            password  : {
+				password: '<i class="icon-exclamation-sign"></i>6-20位数字,字母,下划线',
+                required : '<i class="icon-exclamation-sign"></i>密码不能为空',
+                minlength: '<i class="icon-exclamation-sign"></i>密码长度应在6-20个字符之间',
+				maxlength: '<i class="icon-exclamation-sign"></i>密码长度应在6-20个字符之间'
+            },
+            password_confirm  : {
+                password_confirm : '<i class="icon-exclamation-sign"></i>6-20位数字,字母,下划线',
+                required : '<i class="icon-exclamation-sign"></i>确认密码不能为空',
+                minlength: '<i class="icon-exclamation-sign"></i>确认密码长度应在6-20个字符之间',
+                maxlength: '<i class="icon-exclamation-sign"></i>确认密码长度应在6-20个字符之间'
+            }
+		}
+	});
+    $("#sms_text").click(function () {
+        var phonenum = $("input[name='phone']").val();
+
+        if (phonenum == ''){
+            alert('手机号不能为空');
+        }else{
+            $.ajax({
+                url: "{:url('register/checkPhone')}",
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    phone: phonenum,
+                },
+                success: function (gid) {
+                    if (gid == true){
+                        alert('您的手机号还未注册请先注册');
+                    }else{
+                        console.log(1);
+                        $.ajax({
+                            url: "{:url('findpwdcode')}",
+                            type: 'post',
+                            dataType: 'json',
+                            data: {
+                                phone: phonenum,
+                            },
+                            success: function (msg) {
+                                console.log(msg);
+                                if (msg.status == 1){
+                                    alert(msg.mess);
+                                }else{
+                                    alert(msg.mess);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+    });
+    $("#submitbtn").click(function () {
+        var phonenum = $("input[name='phone']").val();
+        var pwd = $("input[name='password']").val();
+        var pwdcon = $("input[name='password_confirm']").val();
+        var sms_captcha = $("input[name='sms_captcha']").val();
+       console.log(sms_captcha);
+        if (phonenum == ''){
+            $('body').append('<div class="agreement-handle-message" style=" font-size: 14px;\n' +
+                'display: none;' +
+                'line-height: 1.5;\n' +
+                'padding: 20px 30px;' +
+                'border-radius: 4px;' +
+                '-webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);' +
+                'box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);' +
+                'background: #fff;' +
+                'color: rgba(0, 0, 0, 0.65);\n' +
+                'list-style: none;\n' +
+                'position: fixed;\n' +
+                'z-index: 1010;\n' +
+                'margin-left: -138px;' +
+                'top: 16px;\n' +
+                'left: 50%;"><img src="__STATIC__/pc/images/login/warning-icon.png" style="display: inline-block;vertical-align: middle;margin-right: 15px">手机号不能为空</div>');
+            $('.agreement-handle-message').fadeIn();
+            setTimeout(function () {
+                $('.agreement-handle-message').fadeOut();
+                $('.agreement-handle-message').remove()
+            }, 3000)
+        }else if (pwd == ''){
+            $('body').append('<div class="agreement-handle-message" style=" font-size: 14px;\n' +
+                'display: none;' +
+                'line-height: 1.5;\n' +
+                'padding: 20px 30px;' +
+                'border-radius: 4px;' +
+                '-webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);' +
+                'box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);' +
+                'background: #fff;' +
+                'color: rgba(0, 0, 0, 0.65);\n' +
+                'list-style: none;\n' +
+                'position: fixed;\n' +
+                'z-index: 1010;\n' +
+                'margin-left: -138px;' +
+                'top: 16px;\n' +
+                'left: 50%;"><img src="__STATIC__/pc/images/login/warning-icon.png" style="display: inline-block;vertical-align: middle;margin-right: 15px">密码不能为空</div>');
+            $('.agreement-handle-message').fadeIn();
+            setTimeout(function () {
+                $('.agreement-handle-message').fadeOut();
+                $('.agreement-handle-message').remove()
+            }, 3000)
+        }else if (pwdcon == ''){
+            $('body').append('<div class="agreement-handle-message" style=" font-size: 14px;\n' +
+                'display: none;' +
+                'line-height: 1.5;\n' +
+                'padding: 20px 30px;' +
+                'border-radius: 4px;' +
+                '-webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);' +
+                'box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);' +
+                'background: #fff;' +
+                'color: rgba(0, 0, 0, 0.65);\n' +
+                'list-style: none;\n' +
+                'position: fixed;\n' +
+                'z-index: 1010;\n' +
+                'margin-left: -138px;' +
+                'top: 16px;\n' +
+                'left: 50%;"><img src="__STATIC__/pc/images/login/warning-icon.png" style="display: inline-block;vertical-align: middle;margin-right: 15px">密码不能为空</div>');
+            $('.agreement-handle-message').fadeIn();
+            setTimeout(function () {
+                $('.agreement-handle-message').fadeOut();
+                $('.agreement-handle-message').remove()
+            }, 3000)
+        }else if (pwdcon !== pwd){
+            $('body').append('<div class="agreement-handle-message" style=" font-size: 14px;\n' +
+                'display: none;' +
+                'line-height: 1.5;\n' +
+                'padding: 20px 30px;' +
+                'border-radius: 4px;' +
+                '-webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);' +
+                'box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);' +
+                'background: #fff;' +
+                'color: rgba(0, 0, 0, 0.65);\n' +
+                'list-style: none;\n' +
+                'position: fixed;\n' +
+                'z-index: 1010;\n' +
+                'margin-left: -138px;' +
+                'top: 16px;\n' +
+                'left: 50%;"><img src="__STATIC__/pc/images/login/warning-icon.png" style="display: inline-block;vertical-align: middle;margin-right: 15px">两次密码输入不一致</div>');
+            $('.agreement-handle-message').fadeIn();
+            setTimeout(function () {
+                $('.agreement-handle-message').fadeOut();
+                $('.agreement-handle-message').remove()
+            }, 3000)
+        }else if (sms_captcha == ''){
+            $('body').append('<div class="agreement-handle-message" style=" font-size: 14px;\n' +
+                'display: none;' +
+                'line-height: 1.5;\n' +
+                'padding: 20px 30px;' +
+                'border-radius: 4px;' +
+                '-webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);' +
+                'box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);' +
+                'background: #fff;' +
+                'color: rgba(0, 0, 0, 0.65);\n' +
+                'list-style: none;\n' +
+                'position: fixed;\n' +
+                'z-index: 1010;\n' +
+                'margin-left: -138px;' +
+                'top: 16px;\n' +
+                'left: 50%;"><img src="__STATIC__/pc/images/login/warning-icon.png" style="display: inline-block;vertical-align: middle;margin-right: 15px">验证码输入错误</div>');
+            $('.agreement-handle-message').fadeIn();
+            setTimeout(function () {
+                $('.agreement-handle-message').fadeOut();
+                $('.agreement-handle-message').remove()
+            }, 3000)
+        }else{
+            $.ajax({
+                url: "{:url('register/checkPhone')}",
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    phone: phonenum,
+                    repwd: pwdcon,
+                    phonecode: sms_captcha,
+                    password: pwd,
+                },
+                success: function (gid) {
+                    if (gid == true){
+                        alert('您的手机号还未注册请先注册');
+                    }else{
+                        console.log(1);
+                        $.ajax({
+                            url: "{:url('findpwd')}",
+                            type: 'post',
+                            dataType: 'json',
+                            data: {
+                                phone: phonenum,
+                            },
+                            success: function (msg) {
+                                if (msg.status == 1){
+                                    alert(msg.mess);
+                                }else{
+                                    alert(msg.mess);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+    });
+});
+</script>
+<div class="qt-footer-other login-footer">
+Copyright 2018 <a href="https://store.cxy365.com/" target="_blank">孝笑好</a> All rights reserved.<br>版权所有：<a href="https://store.cxy365.com/" target="_blank">store.cxy365.com</a>  <a href="http://www.miibeian.gov.cn/" rel="nofollow" target="_blank" n=""></a>
+</div>
+
+
+</body></html>

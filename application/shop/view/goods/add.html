@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/Huploadify/Huploadify.css"/>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+</head>
+
+<script>
+{if condition="!isset($cate_id) || !$cate_id"}
+var url = "{:url('goods/lst')}";
+{else/}
+var url = "{:url('goods/catelist',array('cate_id'=>$cate_id))}";
+{/if}
+var insertUrl = "{:url('goods/add')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+        <div class="row">       
+        <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+               <div class="ibox-title">
+               <h5>增加商品</h5>
+               </div>
+               <div class="ibox-content">
+               <form method="post" enctype="multipart/form-data" class="form-horizontal" id="form">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">基本信息</a></li>
+                        <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">商品详情</a></li>
+<!--                        <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">会员价格</a></li>-->
+                        <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">商品属性</a></li>
+                        <li class=""><a data-toggle="tab" href="#tab-5" aria-expanded="false">商品图片</a></li>
+                    </ul>
+                    <div class="tab-content">
+                    
+                        <div id="tab-1" class="tab-pane active">
+                            <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品名称:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="goods_name" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>						
+                            <div class="hr-line-dashed"></div>
+                            
+                           <div class="form-group">
+                                <label class="col-sm-2 control-label">所属分类:</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="cate_id" id="cate_id">
+                                        <option value="">请选择</option>
+                                        {foreach name="cateres" item="v"}
+                                        <option value="{$v.id}" {if condition="$v['tjgd'] eq 0"}disabled="" style="color:#a5a3a3;"{/if} {if condition="isset($cate_id) && $cate_id eq $v['id']"}selected = "selected"{/if}>{:str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $v['level'])}{if condition='$v["level"] gt 0'}|{/if}{$v.html}{$v.cate_name}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>                             
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属品牌:</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="brand_id" id="brand_id">
+                                        <option value="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属店铺分类:</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="shcate_id">
+                                        <option value="">请选择</option>
+                                        {foreach name="shcateres" item="v"}
+                                        <option value="{$v.id}" {if condition="isset($cate_id) && $cate_id eq $v['id']"}selected = "selected"{/if}>{:str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $v['level'])}{if condition='$v["level"] gt 0'}|{/if}{$v.html}{$v.cate_name}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>   
+                            
+                            <div class="form-group">
+							<label  class="col-sm-2 control-label">缩略图:</label>
+							<div class="col-sm-6">
+                            <div style="margin-bottom:7px; margin-top:5px;">
+                            <img id="imageinfo" src="__PUBLIC__/admin/img/nopic.jpg" width="180" height="120" border="0" />
+                            <br/><button type="button" class="btn btn-danger btn-xs del" style="display:none;">删除</button>
+                            </div>
+                            <div id="uploaderInput"></div>
+                            <input type="hidden" name="pic_id" value="" >
+                            </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>                               
+                                                        
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">市场价格:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="market_price" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>						
+                            <div class="hr-line-dashed"></div> 
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">会员价格:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="shop_price" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>						
+                            <div class="hr-line-dashed"></div>  
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">搜索关键字：</label>
+                                <div class="col-sm-6">
+                                    <textarea name="search_keywords" class="form-control"></textarea>
+                                </div>  
+                                <label class="col-sm-2" style="padding-top:7px; color:#333; font-size:12px;">(多个以英文,号隔开)</label>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">关键字:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="keywords" class="form-control">
+                                </div>                    
+                            </div>						
+                            <div class="hr-line-dashed"></div> 
+                            
+                           <div class="form-group">
+                           <label class="col-sm-2 control-label">简单描述:</label>
+                                <div class="col-sm-6">
+                                    <textarea name="goods_brief" class="form-control"></textarea>
+                                </div>  
+                           </div>
+                           <div class="hr-line-dashed"></div>  
+                           
+                           <div class="form-group">
+                                <label class="col-sm-2 control-label">设置服务项：</label>
+                                <div class="col-sm-6">
+                                <ul style="list-style-type:none; padding-left:0px; margin-top:5px;">
+                                {foreach name="sertionres" item="v"}
+                                <li style="margin-bottom:10px; margin-right:15px; float:left;"><input type="checkbox" name="fuwu[]" checked="checked" value="{$v.id}"><b>{$v.ser_name}</b></li>
+                                {/foreach}
+                                </ul>
+                                </div>
+                            </div>   
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否上架:</label>
+                                <div class="col-sm-6">
+                                        <label class="radio-inline"><input type="radio" name="onsale" checked="checked" value="1">是</label>
+                                        <label class="radio-inline"><input type="radio" name="onsale" value="0">否</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>  
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否包邮:</label>
+                                <div class="col-sm-6">
+                                        <label class="radio-inline"><input type="radio" name="is_free" checked="checked" value="1">是</label>
+                                        <label class="radio-inline"><input type="radio" name="is_free" value="0">否</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+ 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">设为新品:</label>
+                                <div class="col-sm-6">
+                                        <label class="radio-inline"><input type="radio" name="is_new" value="1">是</label>
+                                        <label class="radio-inline"><input type="radio" name="is_new" checked="checked" value="0">否</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>  
+                            
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">设为特价:</label>
+                                <div class="col-sm-6">
+                                        <label class="radio-inline"><input type="radio" name="is_special" value="1">是</label>
+                                        <label class="radio-inline"><input type="radio" name="is_special" checked="checked" value="0">否</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">设为热销:</label>
+                                <div class="col-sm-6">
+                                        <label class="radio-inline"><input type="radio" name="is_hot" value="1">是</label>
+                                        <label class="radio-inline"><input type="radio" name="is_hot" checked="checked" value="0">否</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">设为推荐:</label>
+                                <div class="col-sm-6">
+                                        <label class="radio-inline"><input type="radio" name="is_recommend" value="1">是</label>
+                                        <label class="radio-inline"><input type="radio" name="is_recommend" checked="checked" value="0">否</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>  
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">放入回收站:</label>
+                                <div class="col-sm-6">
+                                        <label class="radio-inline"><input type="radio" name="is_recycle" value="1">是</label>
+                                        <label class="radio-inline"><input type="radio" name="is_recycle" checked="checked" value="0">否</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>                                                                                                                                                                                                         
+                            </div>
+                        </div>
+                        
+                        <div id="tab-2" class="tab-pane">
+                            <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-sm-10">
+                                    <textarea id="goods_desc" name="goods_desc"></textarea>
+                                </div>  
+                            </div>
+                            </div>
+                        </div>
+                        
+                        <div id="tab-3" class="tab-pane">
+                            <div class="panel-body">
+                                {foreach name="levres" item="v"}
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label">{$v.level_name}:</label>
+	                                <div class="col-sm-6">
+	                                    <input type="text" name="mp[{$v.id}]" class="form-control">
+	                                </div>
+	                            </div>						
+	                            <div class="hr-line-dashed"></div>
+	                            {/foreach}
+                            </div>
+                        </div>
+                        
+                        <div id="tab-4" class="tab-pane">
+                            <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属类型:</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="type_id" id="type_id">
+                                        <option value="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div id="attr">
+                            
+                            </div>
+
+                            </div>
+                        </div>
+                        
+                        <div id="tab-5" class="tab-pane">
+                            <div class="panel-body">
+                            <div class="form-group">
+							<label  class="col-sm-2 control-label">商品图片:</label>
+							<div class="col-sm-6">
+                            <div class="imglst" style="width:685px; height:100%; overflow:hidden; margin-bottom:7px; margin-top:5px;">
+                            </div>
+                            <div id="uploaderInputs"></div>
+                            </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-2" style="margin-top:20px; margin-left:0%;">
+                         <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:100px;">保存内容</button>
+                         <button type="reset" class="btn btn-default">重置</button>
+                </div>
+                </div>
+                
+                </form>
+                
+                </div>
+                </div>
+            </div>       
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/admin/Huploadify/jquery.Huploadify.js"></script> 
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    
+    <script type="text/javascript">
+		//实例化编辑器
+		//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+		UE.getEditor('goods_desc', {initialFrameWidth:'100%', initialFrameHeight:500});
+	</script>
+
+	<script>
+	
+    	$(function(){
+    		
+            $('select[name=cate_id]').change(function(){
+            	var cate_id = $(this).val();
+				$('#attr').empty();
+            	if(cate_id != ''){
+            		$.ajax({
+         			   url:"{:url('goods/getbrandtype')}",
+         			   type:'POST',
+         			   data:{'cate_id':cate_id},
+         		       dataType:'json',
+         			   success:function(data){
+         				   if(data){
+             				   if(data.brandres){
+                               	   var html = '';
+                              	   html+='<option value="">请选择</option>';
+                                   $.each(data.brandres,function(i,v){
+                                  	   html+='<option value="'+v.id+'">'+v.brand_name+'</option>';
+                                   });
+                               	   $('#brand_id').html(html);
+              				   }else{
+              					   var html='<option value="">请选择</option>';
+              					   $('#brand_id').html(html);
+              				   }
+             				   
+             				   if(data.types){
+                                    var html2 = '';
+                               	    html2+='<option value="">请选择</option>';
+                               	    html2+='<option value="'+data.types.id+'">'+data.types.type_name+'</option>';
+                                	$('#type_id').html(html2);
+               				   }else{
+               					  var html2='<option value="">请选择</option>';
+               					  $('#type_id').html(html2);
+               				   }
+         				   }
+         			   }
+         		    });
+            	}else{
+				    var html='<option value="">请选择</option>';
+ 				    $('#brand_id').html(html);
+ 				    $('#type_id').html(html);
+            	}
+            }); 
+            
+    		//上传缩略图
+	        $('#uploaderInput').Huploadify({
+	            uploader : '{:url("goods/uploadify")}',
+		        method:'post',
+		        formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+		        buttonText : '上传图像', 
+		        removeTimeout: 2000,
+		        fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',  
+		        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;', 
+		        fileObjName: 'filedata', //上传附件$_FILE标识  
+		        fileSizeLimit : 2048,
+		        //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+		        auto : true, //开启,自动上传
+		        multi : false, //开启,多选文件
+		        //开始上传
+				onUploadStart:function(file){
+					layer.load(2);
+				},
+		        onUploadSuccess : function(file, data, response) {
+		        	//解析成json对象
+		        	eval('var data='+data);
+		        	if(data.status == 1){
+		        		var picpath = data.path;
+	    	        	$('#imageinfo').attr('src','/'+picpath.img_url);
+	    	        	$('.del').show();
+	    	        	$('input[name=pic_id]').val(picpath.pic_id);
+		        	}else{
+		        		layer.msg(data.msg, {icon: 2,time: 2000});
+		        	}
+		        },
+		        //上传完成后执行的操作
+		        onUploadComplete:function(file){
+		        	layer.closeAll('loading');
+		        },
+		        //上传错误  
+		        onUploadError : function(file, errorCode, errorMsg, errorString) { 
+		        	layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000}); 
+		        }
+		    });
+    		
+    		$('.del').click(function(){
+    			layer.load(2);
+    			$.ajax({
+    				url:'{:url("goods/delfile")}',
+    				type:'POST',
+    				data:{'zspic_id':$('input[name=pic_id]').val()},
+    				dataType:'json',
+    				success:function(data){
+    					if(data == 1){
+    						layer.closeAll('loading');
+    						$('input[name=pic_id]').val('');
+    						$('#imageinfo').attr('src','__PUBLIC__/admin/img/nopic.jpg');
+    						$('.del').hide();
+    					}else{
+    						layer.closeAll('loading');
+    						layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+    					}
+    				},
+    		        error:function(){
+    		        	layer.closeAll('loading');
+    		        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+    		        }
+    			});
+    		});
+    		
+    		
+    		//批量上传图片
+    	    $('#uploaderInputs').Huploadify({
+	            uploader : '{:url("goods/uploadifys")}',
+		        method:'post',
+		        formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+		        buttonText : '上传图像', 
+		        removeTimeout: 2000,
+		        fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',  
+		        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;', 
+		        fileObjName: 'filedata', //上传附件$_FILE标识  
+		        fileSizeLimit : 2048,
+		        //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+		        auto : true, //开启,自动上传
+		        multi : true, //开启,多选文件
+		        //开始上传
+				onUploadStart:function(file){
+					layer.load(2);
+				},
+		        onUploadSuccess : function(file, data, response) {
+    	        	//解析成json对象
+    	        	eval('var data='+data);
+    	        	if(data.status == 1){
+    	        		var picpath = data.path.pic_url;
+    	        		var pic_id = data.path.id;
+    	        		var img = '<div class="imgli" style="width:170px; height:250px; margin-right:10px; margin-bottom:10px; float:left;"><img class="image" src="/'+picpath+'" width="150" height="100" border="0" /><br/><button type="button" class="btn btn-danger btn-xs" onclick="deletegp(this);">删除</button><input class="pic_id" type="hidden" name="picres_id[]" value="'+pic_id+'"><div style="margin-top:15px;">排序:<input type="text" name="sort2[]"></div></div>';
+    	        		$('.imglst').append(img);
+    	        	}else{
+    	        		layer.msg(data.msg, {icon: 2,time: 2000});
+    	        	}
+		        },
+		        //队列完成后执行的操作
+		        onQueueComplete:function(file){
+		        	layer.closeAll('loading');
+		        },
+		        //上传错误  
+		        onUploadError : function(file, errorCode, errorMsg, errorString) { 
+		        	layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000}); 
+		        }
+    	    });
+    		
+
+    		     		    		    		    		    		
+    		$('select[name=type_id]').change(function(){   	
+    			var typeId = $(this).val();
+    			if(typeId == ''){
+    				$('#attr').empty();
+    				return false;
+    			}
+    			
+    			var cate_id = $('#cate_id option:selected').val();
+    			if(cate_id == ''){
+    				$('#attr').empty();
+    				return false;
+    			}
+    			
+    			$.ajax({
+    				url:'{:url("goods/getshuxingLst")}',
+    				type:'POST',
+    				data:{'typeid':typeId,'cate_id':cate_id},
+    				dataType:'json',
+    				success:function(data){
+    					if(data){
+        					var html = '';
+        					$.each(data,function(index,value){
+        						if(value.attr_type == 0){
+        							if(value.attr_values == ''){
+        								html+='<div class="form-group"><label class="col-sm-2 control-label" style="padding-top:12px;">'+value.attr_name+'</label><div class="col-sm-7"><input type="text" name="goods_attr['+value.id+'][attr_value]" class="form-control"></div></div><div class="hr-line-dashed"></div>';	
+        							}else{
+            							var attrs = value.attr_values.split(',');
+            						    html+='<div class="form-group"><label class="col-sm-2 control-label">'+value.attr_name+'</label><div class="col-sm-7"><select class="form-control m-b" name="goods_attr['+value.id+'][attr_value]"><option value="">请选择</option>';
+                                        for(var i=0; i<attrs.length; i++){
+                                        	html+='<option value="'+attrs[i]+'">'+attrs[i]+'</option>';
+                                        }                                            
+                                        html+='</select></div></div><div class="hr-line-dashed"></div>'; 
+        							}
+        						}else if(value.attr_type == 1){
+        							var attrs = value.attr_values.split(',');
+        						    html+='<div class="attrgroup"><div class="form-group"><label class="col-sm-2 control-label" style="padding-top:12px;"><a href="javascript:;" onclick="attrad(this);">[+]</a>'+value.attr_name+'</label><div class="col-sm-4"><div style="padding:5px;position:relative;" class="col-sm-12"><span style="position:absolute;top:5px;overflow:hidden;width:95%;height:34px;"><select onchange="xzshuxing(this);" class="form-control m-b ceshi" name="xzshuxing['+value.id+'][attr_value][]"><option value="">请选择</option>';
+                                    for(var i=0; i<attrs.length; i++){
+                                    	html+='<option value="'+attrs[i]+'">'+attrs[i]+'</option>';
+                                    }                                            
+                                    html+='</select></span><span style="position:absolute;top:7px;left:10px;margin-top:1px;margin-left:1px;width:80%;height:28px;border-radius:5px;"><input type="text" name="goods_attr['+value.id+'][attr_value][]" class="ccdd" placeholder="可选择也可自定义" style="width:80%;height:24px;border:0pt;border-radius:5px;outline:0"></span></div></div><label class="col-sm-1 control-label" style="width:7%;">价格+</label><div class="col-sm-1" style="width:15%;"><input type="text" name="goods_attr['+value.id+'][attr_price][]" class="form-control" value="0"></div>';
+                                    if(value.is_upload == 1){
+                                    	html+='<div class="col-sm-2 is_upload" style="width:15%;"><img class="attrimg" src="/static/admin/img/nopic.jpg" width="60px" height="60px" border="0" style="float:left;margin-right:10px;" /><div class="uploaderattr"><button type="button" class="btn btn-info btn-sm" onclick="upattrpic(this);">上传图像</button></div><button type="button" class="btn btn-danger btn-xs delpic" onclick="delattrpic(this)" style="display:none;">删除</button><input type="hidden" class="attrpic_id" name="goods_attr['+value.id+'][attrpic_id][]" value=""></div>';
+                                    }
+                                    html+='</div></div><div class="hr-line-dashed"></div>';        
+        						}
+        					});
+        					$('#attr').html(html);
+        					uploadattr();
+    					}else{
+    						layer.msg('获取信息失败', {icon: 2,time: 1000});
+    					}
+    				},
+	      		    error:function(){
+	    		        layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+	    		    }
+    			});
+    		});
+    		
+    		
+    		
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });            
+            
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	            //layer ajax提交表单
+	            submitHandler:function(){
+	               // 序列化 表单数据 后提交 ，太简洁了
+	            	post(insertUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+	                
+	        	rules:{
+	        		goods_name:{required:true},
+	        		cate_id:{required:true},
+	        		shcate_id:{required:true},
+	        		market_price:{required:true},
+	        		shop_price:{required:true},
+	        		search_keywords:{required:true},
+	        		goods_desc:{required:true},
+	        		type_id:{required:true}
+	        	},
+	        		
+	        	messages:{
+	        		goods_name:{required:icon+'必填'},
+	        		cate_id:{required:icon+'必选'},
+	        		shcate_id:{required:icon+'必选'},
+	        		market_price:{required:icon+'必填'},
+	        		shop_price:{required:icon+'必填'},
+	        		search_keywords:{required:icon+'必填'},
+	        		goods_desc:{required:icon+'商品详情必填'},
+	        		type_id:{required:icon+'必选'}
+	        	}
+            });
+      });
+      
+      //删除批量上传临时文件
+      function deletegp(obj){
+    	  var div = $(obj).parent();
+    	  var pic_id = div.find('input[class=pic_id]').val();	
+    	  $.ajax({
+    		  url:'{:url("goods/deletefile")}',
+    		  type:'POST',
+    		  data:{'pic_id':pic_id},
+    		  dataType:'json',
+    		  success:function(data){				  
+    			  if(data == 1){
+    			      div.remove();
+    			  }else{
+    				  layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+    			  }
+    		  },
+    		  error:function(){
+    		      layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+    		  }
+    	   });	 	  
+      }  	
+      
+      function xzshuxing(obj) {
+          var arrValue = $(obj).val();
+          $(obj).parent('span').next('span').children('input.ccdd').val(arrValue);
+      }
+      
+      //商品单选属性设置多个
+	  function attrad(obj){
+		  var div = $(obj).parent().parent();
+		  var group = $(obj).parent().parent().parent();
+		  if($(obj).html() == '[+]'){			  
+			  var newdiv = div.clone();
+			  newdiv.find('a').html('[-]');
+			  if(newdiv.find('.is_upload')){
+				  newdiv.find('.attrimg').attr('src','/static/admin/img/nopic.jpg');
+				  newdiv.find('.uploaderattr').html('<button type="button" class="btn btn-info btn-sm" onclick="upattrpic(this);">上传图像</button>');
+				  newdiv.find('.delpic').hide();
+				  newdiv.find('input[class=attrpic_id]').val('');
+			  }
+			  group.append(newdiv);
+		  }else if($(obj).html() == '[-]'){
+			  div.remove();
+		  }
+	  }
+    	
+      function cl(){
+    	  location.href = url;
+      }
+
+      function upattrpic(obj){
+    	    var div = $(obj).parent().parent();
+    	    var uploaderattr = div.find('.uploaderattr');
+    	    $(obj).remove();
+    	    
+		    //上传缩略图
+	        uploaderattr.Huploadify({
+	            uploader : '{:url("goods/uploadifyattr")}',
+		        method:'post',
+		        formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+		        buttonText : '上传图像', 
+		        removeTimeout: 2000,
+		        fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',  
+		        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;', 
+		        fileObjName: 'filedata', //上传附件$_FILE标识  
+		        fileSizeLimit : 2048,
+		        //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+		        auto : true, //开启,自动上传
+		        multi : false, //开启,多选文件
+		        //开始上传
+				onUploadStart:function(file){
+					layer.load(2);
+				},
+		        onUploadSuccess : function(file, data, response) {
+		        	//解析成json对象
+		        	eval('var data='+data);
+		        	if(data.status == 1){
+		          		var picpath = data.path;
+		          		div.find('.attrimg').attr('src','/'+picpath.img_url);
+		          		div.find('.delpic').show();
+		          		div.find('input[class=attrpic_id]').val(picpath.pic_id);
+		        	}else{
+		        		layer.msg(data.msg, {icon: 2,time: 2000});
+		        	}
+		        },
+		        //上传完成后执行的操作
+		        onUploadComplete:function(file){
+		        	layer.closeAll('loading');
+		        },
+		        //上传错误  
+		        onUploadError : function(file, errorCode, errorMsg, errorString) { 
+		        	layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000}); 
+		        }
+		    });    	  
+      }
+      
+      
+      function delattrpic(obj){
+			layer.load(2);
+			var div = $(obj).parent();
+			var attrzspic_id = div.find('input[class=attrpic_id]').val();
+			$.ajax({
+				url:'{:url("goods/delattrfile")}',
+				type:'POST',
+				data:{'zspic_id':attrzspic_id},
+				dataType:'json',
+				success:function(data){
+					if(data == 1){
+						layer.closeAll('loading');
+						div.find('input[class=attrpic_id]').val('');
+						div.find('.attrimg').attr('src','__PUBLIC__/admin/img/nopic.jpg');
+						$(obj).hide();
+					}else{
+						layer.closeAll('loading');
+						layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+					}
+				},
+		        error:function(){
+		        	layer.closeAll('loading');
+		        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+		        }
+			});
+      }
+      
+    </script>
+
+</body>
+</html>

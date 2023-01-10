@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/Huploadify/Huploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form method="post" enctype="multipart/form-data" class="form-horizontal" id="form" onSubmit="return confirm();">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">审核结果:</label>
+                                <div class="col-sm-6">
+                                    <label class="radio-inline"><input type="radio" name="status" value="1">通过</label>
+                                    <label class="radio-inline"><input type="radio" name="status" checked="checked" value="2">不通过</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                                                        
+                            <div class="form-group checked">
+                            <label class="col-sm-2 control-label">描述:</label>
+                                <div class="col-sm-6">
+                                    <textarea name="tips" class="form-control">{if condition="(isset($kns['tips'])) AND ($kns['tips'])"}{$kns.tips}{/if}</textarea>
+                                </div> 
+                            </div>				
+                            <div class="hr-line-dashed checked"></div>
+
+                            <input name="id" type="hidden" value="">
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:20px;">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/admin/Huploadify/jquery.Huploadify.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+
+    <script type="text/javascript">
+        var val=$('input:radio[name="status"]:checked').val();
+        if(val == 1){
+            $('.checked').css('display','none');
+        }else{
+            $('.checked').css('display','block');
+        }
+
+
+        $('input[name="status"]').on('click',function(){
+            var statusvalue = $(this).val();
+            if(statusvalue == 1){
+                $('.checked').css('display','none');
+            }else{
+                $('.checked').css('display','block');
+            }
+        });
+
+
+
+
+
+    </script>
+
+
+</body>
+</html>

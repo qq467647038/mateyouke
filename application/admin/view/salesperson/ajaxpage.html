@@ -1,0 +1,61 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/salesperson/lst/filter/"+filter+".html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/salesperson/search.html?page="+pnum;
+	{/if}
+</script>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">头像</th>
+                                    <th style="width:10%">姓名</th>
+                                    <th style="width:10%">手机号</th>
+                                    <th style="width:10%">职位</th>
+                                    <th style="width:10%">钱包金额</th>
+                                    <th style="width:15%">添加时间</th>
+                                    <th style="width:10%">开/关</th>
+                                    <th style="width:30%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td><img {if condition="$v['headimgurl']"}src="/{$v.headimgurl}"{else/}src="__PUBLIC__/admin/img/nopic.jpg"{/if} width="30px" height="30px"/></td>
+                                    <td>{if condition="$v['user_name']"}{$v['user_name']}{else/}/{/if}</td>
+                                    <td>{$v.phone}</td>
+                                    <td>{$v.position_name}</td>
+                                    <td>{$v.price}&nbsp;元</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['regtime'])}</td>
+                                    <td>
+                                    {switch name="v.checked"}
+                                    {case value="0"}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal({$v.id},'checked',this);"><i class="fa fa-times"></i></button>
+                                    {/case}
+                                    {case value="1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal({$v.id},'checked',this);"><i class="fa fa-check"></i></button>
+                                    {/case}
+                                    {/switch}
+                                    </td>
+                                    <td>
+                                    <button type="button" class="btn btn-primary btn-xs" onclick="editpic({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-success btn-xs" onclick="personfwqy({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;区域</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-info btn-xs" type="button" onclick="persontg({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;经销商</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-primary btn-xs" onclick="persondetail({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;钱包明细</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button>
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="9" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+    <script src="__PUBLIC__/admin/js/jquery-ui-1.10.4.custom.min.js"></script>
+</head>
+
+<style>
+    tr{cursor: pointer;}
+</style>
+
+<script>
+var url = '/{$Request.module}/getgoods';
+</script>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>商品信息列表</h5>
+                    </div>
+                    <div class="ibox-content">
+
+						<div class="row" style="margin-bottom:10px;">
+                            <form action="{:url('getgoods/search')}" method="post" id="form_search">  
+                            <div class="col-sm-5" style="float:right;">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" placeholder="商品名称" {if condition="(isset($keyword)) AND ($keyword)"}value="{$keyword}"{/if} class="input-sm form-control" />
+                                    <span class="input-group-btn"><button type="submit" class="btn btn-sm btn-primary">搜索</button></span>
+                                </div>
+                            </div> 
+                            
+                            <input name="goods_id" type="hidden" value="{$goods_id}">  
+                            
+                            <div style="float:right; margin-right:10px; font-size:15px;"> 
+                                <input type="text" name="shop_name" placeholder="商家名称" {if condition="(isset($shop_name)) AND ($shop_name)"}value="{$shop_name}"{/if} class="input-sm form-control" /> 
+                            </div>
+                            
+                            <div style="float:right; margin-right:10px; font-size:15px;">
+                                <select style="height:30px; line-height:30px; border:1px solid #e5e6e7;" name="cate_id">
+                                    <option value="0" {if condition="isset($cate_id) && $cate_id eq 0"}selected="selected"{/if}>所有分类</option>
+                                    {foreach name="cateres" item="v"}
+                                    <option value="{$v.id}" {if condition="isset($cate_id) && $cate_id eq $v['id']"}selected="selected"{/if}>{:str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $v['level'])}{if condition='$v["level"] gt 0'}|{/if}{$v.html}{$v.cate_name}</option>
+                                    {/foreach}
+                                </select>
+                            </div>                            
+                            
+                            </form>
+                        </div>                          
+                        
+                        <div id="ajaxpagetest">
+                        {include file="getgoods/ajaxpage" /}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/admin.js"></script>    
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+</head>
+
+<script>
+var filter = {$filter};
+var pnum = {$pnum};
+
+{if condition="(!isset($search)) OR (!$search)"}
+var url = "/{$Request.module}/shop_assemble/lst/filter/"+filter+".html?page="+pnum;
+{else/}
+var url = "/{$Request.module}/shop_assemble/search.html?page="+pnum;
+{/if}
+
+var checkedUrl = "{:url('shop_assemble/checked')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>审核商家拼团活动</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" id="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属商家：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$assembles.shop_name}</div>
+                                </div>     
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        
+                        
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">拼团活动名称：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$assembles.pin_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品缩略图：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:220px;"><img src="/{$assembles.thumb_url}" witdh="200px;" height="200px";/></div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品信息：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:75px; line-height:35px;">{$assembles.goods_name}<br/>{$assembles.goods_attr_str}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品价格：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$assembles.shangpin_price}&nbsp;元</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品拼团价格：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$assembles.price}&nbsp;元</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品库存：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$assembles.goods_number}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">活动时间：</label>
+                                <div class="col-sm-8">
+                                    <div class="date date1 fl" style="float:left; margin-right:25px;">
+                                           <div style="font-size:14px; width:500px; height:35px; line-height:35px;">开始时间：{:date('Y-m-d H:i:s',$assembles['start_time'])}</div>    
+                                    </div>
+                                    <div class="date fr" style="float:left;">
+                                           <div style="font-size:14px; width:500px; height:35px; line-height:35px;">结束时间：{:date('Y-m-d H:i:s',$assembles['end_time'])}</div>    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否推荐展示：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">
+                                    {if condition="$assembles['recommend'] eq 1"}是{elseif condition="$assembles['recommend'] eq 0"/}否{/if}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">申请时间：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">
+                                    {:date('Y-m-d H:i:s',$assembles['apply_time'])}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            {if condition="$assembles['checked_time']"}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">审核时间：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">
+                                    {:date('Y-m-d H:i:s',$assembles['checked_time'])}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            {/if}
+                            
+		                    <div class="form-group" style="margin-top:50px;">
+		                          <label class="col-sm-2 control-label">是否通过审核：</label>
+		                          <div class="col-sm-6">
+		                              <label class="radio-inline"><input type="radio" name="checked" {if condition="$assembles['checked'] eq 1"}checked="checked"{/if} value="1">是</label>
+		                              <label class="radio-inline"><input type="radio" name="checked" {if condition="$assembles['checked'] eq 2"}checked="checked"{/if} value="2">否</label>
+		                          </div>
+		                     </div>
+		                     <div class="hr-line-dashed"></div>
+                           
+                            <input name="id" type="hidden" value="{$assembles.id}">
+                                                 
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button" id="doSubmit" style="margin-right:100px;">保存设置</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script>
+	
+    	$(function(){   		  
+      	  $('#doSubmit').click(function(){
+    		  var shcanshu = $('input:radio[name=checked]:checked').val();
+    		  if(shcanshu == null){
+    			  layer.msg('请选择设为通过审核或不通过审核', {icon: 2,time: 1000});
+    			  return false;
+    		  }
+    			
+    		  if('1,2'.indexOf(shcanshu) == -1){
+    			  layer.msg('参数错误', {icon: 2,time: 1000});
+    			  return false;
+    		  }
+    		  
+    		  if(shcanshu == 1){
+    			  var shuoming = '确定通过审核么？不可撤销';
+    		  }
+    		  
+    		  if(shcanshu == 2){
+    			  var shuoming = '确定不通过么？不可撤销';
+    		  }
+    		  
+    		  var id = $('input[name=id]').val();
+    		  
+	  		  layer.confirm(shuoming, {  			  
+				  skin: 'layui-layer-molv',
+				  closeBtn: 0,
+				  shadeClose : true,
+				  btn: ['确定','取消'] //按钮
+			  },function(){
+				  layer.load(2);
+				  
+			      $.ajax({
+				      url:"{:url('shop_assemble/checked')}",
+				      type:'POST',
+				      data:{'id':id,'checked':shcanshu},
+				      dataType:'json',
+				      success:function(data){
+				    	  if(data.status == 1){
+				    		  layer.closeAll('loading');
+				    		  layer.msg(data.mess, {icon: 1,time: 1000}, function(){
+	                               location.href = url;
+				    		  });
+				    	  }else if(data.status == 0){
+				    		  layer.closeAll('loading');
+				    		  layer.msg(data.mess, {icon: 2,time: 1000});
+				    	  }
+				      },
+				      error:function(){
+				    	  layer.closeAll('loading');
+				    	  layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+				      }
+				  });
+			  });
+    	  });
+      });
+      
+    </script>
+
+</body>
+</html>

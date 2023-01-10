@@ -1,0 +1,52 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/shop_coupon/lst/filter/"+filter+".html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/shop_coupon/search.html?page="+pnum;
+	{/if}
+</script>    
+
+                  
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%">状态</th>
+                                    <th style="width:10%">上架/下架</th>
+                                    <th style="width:10%">满金额</th>
+                                    <th style="width:10%">减金额</th>
+                                    <th style="width:15%">所属商家</th>
+                                    <th style="width:10%">开始日期</th>
+                                    <th style="width:10%">结束日期</th>
+                                    <th style="width:15%">添加时间</th>
+                                    <th style="width:10%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"}
+                                <tr>
+                                    <td>{switch name="v.checked"}{case value="1"}<font style="color:#1992FC;">正常</font>{/case}{case value="2"}<font style="color:#F00;">违规</font>{/case}{/switch}</td>
+                                    <td>{if condition="$v['onsale'] eq 1"}<font style="color:#1992FC;">上架</font>{elseif condition="$v['onsale'] eq 0" /}<font style="color:#F00;">下架</font>{/if}</td>
+                                    <td>{$v.man_price}&nbsp;元</td>
+                                    <td>{$v.dec_price}&nbsp;元</td>
+                                    <td>{$v.shop_name}</td>
+                                    <td>{:date('Y-m-d',$v['start_time'])}</td>
+                                    <td>{:date('Y-m-d',$v['end_time'])}</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['addtime'])}</td>
+                                    <td>
+                                    <button type="button" class="btn btn-primary btn-xs" onclick="coupon_checked({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;审核</button>
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="9" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}				
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

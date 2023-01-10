@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/chat/css/reset.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/chat/css/style.css" rel="stylesheet">
+</head>
+<style>
+
+</style>
+<body>
+<div class="wrapper">
+    <div class="container">
+        <div class="left">
+            <div style="margin-top:50px;"></div>
+            <ul class="people">
+
+                {volist name="member" id="vo"}
+                <li class="person" data-chat="person{$vo.id}" data-name="{$vo.user_name}" data-id="{$vo.id}" data-token="{$vo.token}" data-toid="{$vo.toid}" data-cid="{$cid}">
+                    <img src="{$vo.headimgurl}" alt="" />
+                    <span class="name">{$vo.user_name}</span>
+                    <!--<span class="time">2:09 PM</span>-->
+                    <span class="preview">{$vo.summary}</span>
+                </li>
+                {/volist}
+            </ul>
+        </div>
+        <div id="div1" class="right ">
+
+        </div>
+
+    </div>
+</div>
+</body>
+<!-- 全局js -->
+<script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+<script src="__PUBLIC__/chat/js/index.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.person').on('click', function() {
+            var token = $(this).attr('data-token');
+            var cid = $(this).attr('data-cid');
+            var dataid = $(this).attr('data-id');
+            var user_name = $(this).attr('data-name');
+            var toid = $(this).attr('data-toid');
+            console.log(dataid)
+            getData(token,cid,dataid,user_name,toid);
+
+        })
+    })
+
+    function getData(token,cid,dataid,user_name,toid) {
+        var url="{:url('getmessage')}";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {token:token,cid:cid,user_name:user_name,toid:toid},
+            success: function(msg){
+                console.log(msg);
+                if(msg.status == 1){
+                    $('.right').html(msg.data);
+                    // var classname = ".chat"+dataid;
+                    // console.log(classname)
+                    // $(classname).html(msg.data);
+                }
+            }
+        });
+    }
+</script>
+</html>

@@ -1,0 +1,39 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/nav/lst.html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/nav/search.html?page="+pnum;
+	{/if}
+	$(function(){
+		$("#checkAll").click(function () {
+	        $("input[class='text_id']:checkbox").prop("checked", this.checked);
+	    }); 
+	});
+</script>
+                        
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:60%">导航位名称</th>
+                                    <th style="width:10%">id</th>
+                                    <th style="width:30%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td><a style="color:#676a6c;" href="{:url('nav_menu/navlist',array('nav_id'=>$v['id']))}">{$v.nav_name}</a></td>
+                                    <td>{$v.id}</td>
+                                    <td><button type="button" class="btn btn-success btn-xs" onclick="navmenu({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;菜单信息</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs" onclick="edit({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="3" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}							
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

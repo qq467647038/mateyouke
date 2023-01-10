@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/Huploadify/Huploadify.css"/>
+</head>
+
+<script>
+var addUrl = "{:url('config/config')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                       <h5>系统配置</h5>
+                    </div>
+                    <div class="ibox-content">
+                    <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                    {foreach name="cationres" item="v" key="k"}
+                        <li {if condition="$k eq 0"}class="active"{/if}><a data-toggle="tab" href="#tab-{$k+1}" {if condition="$k eq 0"}aria-expanded="true"{else/}aria-expanded="false"{/if}>{$v.ca_name}</a></li>
+                    {/foreach}
+                    </ul>
+                    <div class="tab-content">
+                    {foreach name="cationres" item="v" key="k"}
+                    <div id="tab-{$k+1}" {if condition="$k eq 0"}class="tab-pane active"{else/}class="tab-pane"{/if}>
+                    <div class="panel-body">
+                        <form method="post" class="form-horizontal" id="form{$k+1}"> 
+                        {foreach name="v['configres']" item="val"}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{$val.cname}：</label>
+                                <div class="col-sm-6">
+                                    {switch name="val.type"}
+                                    {case value="0"}
+                                    <input type="text" name="{$val.ename}" value="{$val.value}" class="form-control">
+                                    {/case}
+                                    {case value="1"}
+                                    <textarea name="{$val.ename}" class="form-control">{$val.value}</textarea>
+                                    {/case}
+                                    {case value="2"}
+                                    <?php $values = explode(',',$val['values']); foreach($values as $v2): ?>
+                                    <label class="radio-inline"><input type="radio" name="<?php echo $val['ename']; ?>" <?php if($val['value'] == $v2): ?>checked="checked"<?php endif; ?> value="<?php echo $v2; ?>"><?php echo $v2; ?></label>
+                                    <?php endforeach; ?>                                    
+                                    {/case}
+                                    {case value="3"}
+                                    <?php $values = explode(',',$val['values']); foreach($values as $v2): ?>
+                                    <input type="checkbox" name="<?php echo $val['ename']; ?>" <?php if($val['value'] == $v2): ?>checked="checked"<?php endif; ?> value="<?php echo $v2 ?>"><?php echo $v2; ?>&nbsp;&nbsp;&nbsp;
+                                    <?php endforeach; ?>
+                                    {/case} 
+                                    {case value="4"}
+                                    <select class="form-control m-b" name="{$val.ename}">
+                                    <?php $values = explode(',',$val['values']); foreach($values as $v2): ?>
+                                         <option value="<?php echo $v2 ?>" <?php if($val['value'] == $v2): ?>selected="selected"<?php endif; ?>><?php echo $v2; ?></option> 
+                                    <?php endforeach; ?>                                                                                                                    
+                                    </select>
+                                    {/case} 
+									{case value="5"}
+									
+									<div style="margin-bottom:7px; margin-top:5px;">
+									<img id="imageinfo" {if condition="$val.value"}src="{$val.value}"{else/}src="__PUBLIC__/admin/img/nopic.jpg"{/if} width="180" height="" border="0" />
+									<br/><button type="button" class="btn btn-danger btn-xs del" style="display:none;">删除</button>
+									</div>
+									<div id="uploaderInput"></div>
+									<input type="hidden" name="{$val.ename}" id="pic" value="" >
+									<div class="repicm" style="display:none;">{$val.value}</div>
+									
+									{/case}
+                                    {case value="18"}
+                                    <div id="tab-2" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <div class="col-sm-10" style="width: 150%;">
+                                                    <textarea id="company_desc" name="company_desc">{$val.value}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/case}
+									 
+                                    {/switch}                                
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        {/foreach}  
+                        
+                        <input type="hidden" name="ca_id" value="{$v.id}"/>
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button" id="doSubmit{$k+1}" style="margin-right:100px;">保存内容</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                        </div>
+                        </div>
+                 {/foreach}
+                        
+                 </div>
+                </div>                
+                </div>
+                        
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" charset="utf-8" src="/static/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript">
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    UE.getEditor('company_desc', {initialFrameWidth:'100%', initialFrameHeight:500});
+</script>
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>    
+	
+	<!-- 上传图片js --> 
+	<script type="text/javascript" src="__PUBLIC__/admin/Huploadify/jquery.Huploadify.js"></script>
+    
+	<script>
+    	$(function(){ 	                                    
+            {foreach name="cationres" item="v" key="k"}
+        	$('#doSubmit{$k+1}').click(function(){
+            	post(addUrl,'POST',$('#form{$k+1}').serialize(),1);
+                return false;
+        	});
+        	{/foreach}
+      });    
+
+	  function cl(){
+	     location.reload();
+	  }
+	  
+	  $(function(){
+	  	//上传图片
+	      $('#uploaderInput').Huploadify({
+	          uploader : '{:url("pay_type/uploadify")}',
+	          method:'post',
+	          formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+	          buttonText : '上传图像',
+	          removeTimeout: 2000,
+	          fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',  
+	          fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;', 
+	          fileObjName: 'filedata', //上传附件$_FILE标识  
+	          fileSizeLimit : 2048,
+	          //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+	          auto : true, //开启,自动上传
+	          multi : false, //开启,多选文件
+	          //开始上传
+	  		onUploadStart:function(file){
+	  			layer.load(2);
+	  		},
+	          onUploadSuccess : function(file, data, response) {
+	          	//解析成json对象
+	          	eval('var data='+data);
+	          	if(data.status == 1){
+	          		var picpath = data.path;
+	  	        	$('#imageinfo').attr('src',picpath.img_url);
+	  	        	$('.del').show();
+	  	        	//$('#pic').val(picpath.pic_id);
+					$('#pic').val(picpath.img_url);
+	          	}else{
+	          		layer.msg(data.msg, {icon: 2,time: 2000});
+	          	}
+	          },
+	          //上传完成后执行的操作
+	          onUploadComplete:function(file){
+	          	layer.closeAll('loading');
+	          },
+	          //上传错误  
+	          onUploadError : function(file, errorCode, errorMsg, errorString) { 
+	          	layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000}); 
+	          }
+	      }); 
+	  	
+			$('.del').click(function(){
+				layer.load(2);
+				$.ajax({
+					url:'{:url("pay_type/delfile")}',
+					type:'POST',
+					data:{'zspic_id':$('#pic').val()},
+					dataType:'json',
+					success:function(data){
+						if(data == 1){
+							layer.closeAll('loading');
+							$('#pic').val('');
+							$('#imageinfo').attr('src','__PUBLIC__/admin/img/nopic.jpg');
+							$('.del').hide();
+						}else{
+							layer.closeAll('loading');
+							layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+						}
+					},
+					error:function(){
+						layer.closeAll('loading');
+						layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+					}
+				});
+			});
+		})
+		
+	  
+    </script>
+
+</body>
+</html>

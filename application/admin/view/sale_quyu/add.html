@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<script>
+var url = "{:url('sale_quyu/lst',array('user_id'=>$sales['id']))}";
+var insertUrl = "{:url('sale_quyu/add')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>增加区域</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" id="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">姓名：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$sales.user_name}</div>
+                                    <input type="hidden" name="user_id" value="{$sales.id}">
+                                </div>
+                                 <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">手机号：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$sales.phone}</div>
+                                </div>
+                                 <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">职位：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$sales.position_name}</div>
+                                </div>
+                                 <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            {switch name="quyu_level"}
+                            
+                            {case value="0"}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">管理区域：</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="pro_id">
+                                        <option value="0">全国</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            {/case}
+                            
+                            {case value="1"}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">管理省份：</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="pro_id">
+                                        <option value="">请选择</option>
+                                        {foreach name="prores" item="v"}
+                                        <option value="{$v.id}">{$v.zm}.{$v.pro_name}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            {/case}
+                            
+                            {case value="2"}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">管理省份：</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="pro_id">
+                                        <option value="">请选择</option>
+                                        {foreach name="prores" item="v"}
+                                        <option value="{$v.id}">{$v.zm}.{$v.pro_name}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">管理城市：</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="city_id" id="cityname">
+                                    <option value="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>  
+                            
+                            <div class="fzquyu" style="display:none;">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">管理区县：</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="area_id" id="areaname">
+                                        <option value="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            </div>
+                            {/case}
+                            
+                            {case value="3"}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">管理省份：</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="pro_id">
+                                        <option value="">请选择</option>
+                                        {foreach name="prores" item="v"}
+                                        <option value="{$v.id}">{$v.zm}.{$v.pro_name}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">管理城市：</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="city_id" id="cityname">
+                                    <option value="">请选择</option>
+                                    {if condition="isset($cityres) && $cityres"}
+                                    {foreach name="cityres" item="v"}
+                                    <option value="{$v.id}">{$v.zm}.{$v.city_name}</option>
+                                    {/foreach}
+                                    {/if}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>  
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">管理区县：</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="area_id" id="areaname">
+                                        <option value="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            {/case}
+                            {/switch} 
+                                                                                                     
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:20px;">保存内容</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script>
+    	$(function(){
+    		{switch name="quyu_level"}
+    		{case value="2"}
+            $('select[name=pro_id]').change(function(){
+            	var pro_id = $(this).val();
+            	if(pro_id != '' && pro_id != 0){
+            		$.ajax({
+         			   url:"{:url('sale_quyu/getcitylist')}",
+         			   type:'POST',
+         			   data:{'pro_id':pro_id},
+         		       dataType:'json',
+         			   success:function(data){
+         				   if(data){
+                         	   var html = '';
+                         	   var html='<option value="">请选择</option>';
+                               $.each(data,function(i,v){
+                             	  html+='<option value="'+v.id+'">'+v.zm+'.'+v.city_name+'</option>';
+                               });
+                          	   $('#cityname').html(html);
+                          	   var html2='<option value="">请选择</option>';
+                          	   $('#areaname').html(html2);
+                      		   $('.fzquyu').hide();
+         				   }else{
+         					   var html='<option value="">请选择</option>';
+         					   $('#cityname').html(html);
+         					   $('#areaname').html(html);
+         	            	   $('.fzquyu').hide();
+         				   }
+         			   }
+         		    });
+            	}else{
+					var html='<option value="">请选择</option>';
+				    $('#cityname').html(html);
+				    $('#areaname').html(html);
+            		$('.fzquyu').hide();
+            	}
+            });
+            
+            $('select[name=city_id]').change(function(){
+            	var city_id = $(this).val();
+            	if(city_id == 324){
+            		$('.fzquyu').show();
+            		$.ajax({
+         			   url:"{:url('sale_quyu/getarealist')}",
+         			   type:'POST',
+         			   data:{'city_id':city_id},
+         		       dataType:'json',
+         			   success:function(data){
+         				   if(data){
+                         	   var html = '';
+                         	   var html='<option value="">请选择</option>';
+                               $.each(data,function(i,v){
+                             	  html+='<option value="'+v.id+'">'+v.zm+'.'+v.area_name+'</option>';
+                               });
+                          	   $('#areaname').html(html);
+         				   }else{
+         					   var html='<option value="">请选择</option>';
+         					   $('#areaname').html(html);
+         				   }
+         			   }
+         		    });
+            	}else{
+					var html='<option value="">请选择</option>';
+ 					$('#areaname').html(html);
+            		$('.fzquyu').hide();
+            	}
+            });
+            {/case}
+            
+            {case value="3"}
+            
+            {if condition="!isset($cityres)"}
+            $('select[name=pro_id]').change(function(){
+            	var pro_id = $(this).val();
+            	if(pro_id != '' && pro_id != 0){
+            		$.ajax({
+         			   url:"{:url('sale_quyu/getcitylist')}",
+         			   type:'POST',
+         			   data:{'pro_id':pro_id},
+         		       dataType:'json',
+         			   success:function(data){
+         				   if(data){
+                         	  var html = '';
+                         	  var html='<option value="">请选择</option>';
+                              $.each(data,function(i,v){
+                             	 html+='<option value="'+v.id+'">'+v.zm+'.'+v.city_name+'</option>';
+                              });
+                          	  $('#cityname').html(html);
+                          	  var html2='<option value="">请选择</option>';
+                          	  $('#areaname').html(html2);
+         				   }else{
+         					  var html='<option value="">请选择</option>';
+         					  $('#cityname').html(html);
+         					  $('#areaname').html(html);
+         				   }
+         			   }
+         		    });
+            	}else{
+					var html='<option value="">请选择</option>';
+				    $('#cityname').html(html);
+				    $('#areaname').html(html);
+            	}
+            });            
+            {/if}
+            
+            $('select[name=city_id]').change(function(){
+            	var city_id = $(this).val();
+            	if(city_id != '' && city_id != 0){
+            		$.ajax({
+         			   url:"{:url('sale_quyu/getarealist')}",
+         			   type:'POST',
+         			   data:{'city_id':city_id},
+         		       dataType:'json',
+         			   success:function(data){
+         				   if(data){
+                         	    var html = '';
+                         	    var html='<option value="">请选择</option>';
+                                $.each(data,function(i,v){
+                             	   html+='<option value="'+v.id+'">'+v.zm+'.'+v.area_name+'</option>';
+                                });
+                          	   $('#areaname').html(html);
+         				   }else{
+         					   var html='<option value="">请选择</option>';
+         					   $('#areaname').html(html);
+         				   }
+         			   }
+         		    });
+            	}else{
+					var html='<option value="">请选择</option>';
+					$('#areaname').html(html);
+            	}
+            });
+            {/case}
+            {/switch}
+            
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	            //layer ajax提交表单
+	            submitHandler:function(){
+	                // 序列化 表单数据 后提交 ，太简洁了
+	                post(insertUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+	                
+	        	rules:{
+	        	},
+	        		
+	        	messages:{
+	        	}
+            });
+      });
+    	
+      function cl(){
+    	  location.href = url;
+      }
+    </script>
+
+</body>
+</html>

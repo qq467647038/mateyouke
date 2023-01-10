@@ -1,0 +1,59 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/admin/lst.html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/admin/search.html?page="+pnum;
+	{/if}
+	$(function(){
+		$("#checkAll").click(function () {
+	        $("input[class='text_id']:checkbox").prop("checked", this.checked);
+	    }); 
+	});
+</script>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%"><input type="checkbox" id="checkAll"/></th>
+                                    <th style="width:10%">管理员昵称</th>
+                                    <th style="width:10%">管理员账号</th>
+                                    <th style="width:10%">管理员级别</th>
+                                    <th style="width:15%">注册时间</th>
+                                    <th style="width:15%">登录IP</th>
+                                    <th style="width:15%">登录时间</th>
+                                    <th style="width:5%">状态</th>
+                                    <th style="width:10%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td><input type="checkbox" class="text_id" name="id" value="{$v.id}" /></td>
+                                    <td>{$v.en_name}</td>
+                                    <td>{$v.username}</td>
+                                    <td>{$v.rolename}</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['addtime'])}</td>
+                                    <td>{$v.login_ip}</td>
+                                    <td>{$v['login_time']? date('Y-m-d H:i:s',$v['login_time']) : ''}</td>
+                                    <td>
+                                    {switch name="v.suo"}
+                                    {case value="0"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableValadmin({$v.id},'suo',this);"><i class="fa fa-check"></i></button>
+                                    {/case}
+                                    {case value="1"}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableValadmin({$v.id},'suo',this);"><i class="fa fa-times"></i></button>
+                                    {/case}
+                                    {/switch}
+                                    </td>
+                                    <td><button type="button" class="btn btn-primary btn-xs" onclick="edit({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="9" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

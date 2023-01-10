@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+</head>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                <h5>系统提示</h5>
+                </div>
+                <div class="ibox-content">
+                <p style="width:100%; text-align:center; font-size:15px;">请使用微信扫一扫扫描下图二维码完成支付</p>
+                 <div style="width:100%; text-align:center">
+                 <img src="__PUBLIC__/admin/img/1550467148.png"/>
+                 </div>
+                 <div class="form-group" style="width:100%;text-align:center;margin-top:25px;">
+                 <a href="{:url('login/loginout')}" class="btn btn-danger">退出登录</a>
+                 </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+layer.load(2);
+setTimeout(function(){
+	layer.closeAll('loading');
+	layer.msg('您已完成支付', {icon: 1,time: 2000},function(){
+		location.href="{:url('apply_info/waitcomplete')}";
+	});
+},5000);
+</script>
+
+</body>
+</html>

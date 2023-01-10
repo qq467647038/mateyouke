@@ -1,0 +1,96 @@
+                    <div class="ibox-content">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">状态：</label>
+                                <div class="col-sm-6">
+                                <div style="font-size:14px; width:200px; height:35px; line-height:35px;">
+                                {if condition="($txs['checked'] eq 0) AND ($txs['complete'] eq 0)"}
+                                                                                         待审核
+                                {elseif condition="($txs['checked'] eq 1) AND ($txs['complete'] eq 0)"/}
+                                                                                        待打款
+                                {elseif condition="($txs['checked'] eq 1) AND ($txs['complete'] eq 1)"/}
+                                                                                        已打款
+                                {elseif condition="($txs['checked'] eq 1) AND ($txs['complete'] eq 2)"/}
+                                                                                        打款失败
+                                {elseif condition="($txs['checked'] eq 2) AND ($txs['complete'] eq 0)"/}
+                                                                                        审核未通过
+                                {/if}
+                                </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            {if condition="($txs['checked'] eq 1) AND ($txs['complete'] eq 2)"}
+                            <div class="form-group">
+                            <label class="col-sm-2 control-label">失败原因:</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$txs.remarks}</div>
+                                </div> 
+                            </div>				
+                            <div class="hr-line-dashed"></div> 
+                            {/if}
+                        
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户姓名：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$txs.user_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户手机号：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$txs.phone}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">钱包余额：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$txs.wallet_price}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">提现金额：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$txs.price}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">银行卡号：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$txs.card_number}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属银行：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$txs.bank_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属支行：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$txs.branch_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">真实姓名：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$txs.zs_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                    </div>

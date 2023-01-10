@@ -1,0 +1,258 @@
+<!--
+ * @Descripttion:
+ * @Author: cbing
+ * @Date: 2019-09-15 16:11:04
+ * @LastEditors: cbing
+ * @LastEditTime: 2019-09-15 16:12:15
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+<script>
+    var url = "{:url('member/lst')}";
+    var updateUrl = "{:url('member/bobi')}";
+    var checkUsername = "{:url('member/checkUsername')}";
+    var checkPhone = "{:url('member/checkPhone')}";
+</script>
+
+<body class="gray-bg">
+<style>
+    input.error{
+        border:1px solid red;
+    }
+    span.error{
+        padding-top:10px;
+        color: #f00;
+        font-size:12px;
+    }
+</style>
+<div>
+    <div style="overflow-x:scroll;">
+        <style>
+            table{
+                border: 1px solid #EBEBEB;
+            }
+            tr{
+                border-bottom: 1px solid #EBEBEB;
+                padding: 2px;
+                text-align: center;
+                line-height: 1.8;
+            }
+            td{
+                border-right: 1px solid #EBEBEB;
+                padding: 2px;
+                text-align: center;
+                line-height: 1.8;
+            }
+        </style>             
+        <form action="{:url('WineSale/pipei')}" method="get" id="form_search">
+            <input type="hidden" name="id" id="id" value="{$get['id']}" />
+            <input type="hidden" name="single" id="single" value="{$get['single']}" />
+            <div class="col-sm-3" style="float:right;">
+                <div class="input-group">
+                    <input type="text" name="keyword" placeholder="请输入会员手机号" {if condition="isset($keyword) && $keyword"}value="{$keyword}"{/if} class="input-sm form-control"> <span class="input-group-btn">
+                    <button type="submit" class="btn btn-sm btn-primary" id="submit_search2">搜索</button></span>
+                </div>
+            </div>   
+        </form>
+        <table style="width: 100%;text-align: center;">
+            <thead style="width: 100%;">
+            <tr style="width: 100%;background: #ccc;height: 50px;line-height: 50px;">
+                <td style="width: 1%;">商品名称</td>
+                <td style="width: 1%;">单号</td>
+                <td style="width: 1%;">缩略图</td>
+                <td style="width: 1%;">购买者</td>
+                <td style="width: 1%;">价值范围</td>
+                <td style="width: 1%;">预定时间</td>
+                <td style="width: 1%;">匹配时间</td>
+                <td style="width: 1%;">状态</td>
+                <td style="width: 1%;">冻结</td>
+                <td style="width:1%">订银行卡姓名</td>
+                <td style="width:1%">订银行卡卡号</td>
+                <td style="width:1%">订银行卡手机</td>
+                <td style="width:1%">订微信姓名</td>
+                <td style="width:1%">订微信二维码</td>
+                <td style="width:1%">订微信手机</td>
+                <td style="width:1%">订支付宝姓名</td>
+                <td style="width:1%">订支付宝二维码</td>
+                <td style="width:1%">订支付宝手机</td>
+                <td style="width:1%">订库存</td>
+                <td style="width:1%">订品牌使用费</td>
+                <td style="width:1%">信用值</td>
+                <td style="width: 2%">预定数</th>
+                <td style="width:3%;">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            {if condition="$list->isEmpty() == false"}
+            {foreach name="list" item="v"}
+            <tr>
+                <td>{$v.goods_name}</td>
+                <td>{$v.odd}</td>
+                <td><img style="width: 50px;height: 50px;padding: 10px 0;-webkit-box-sizing: content-box;-moz-box-sizing: content-box;box-sizing: content-box;" src="{$v.goods_thumb}" alt=""></td>
+                <td>{$v.phone}</td>
+                <td>{$v.value}</td>
+                <td>{$v.addtime|date="Y-m-d H:i:s", ###}</td>
+                <td  style="color:red;font-weight:bold;">{$v.adopt}</td>
+                <td>
+                    {if condition="$v.status == 0"}
+                    待匹配
+                    {else if condition="$v.status == 1"}
+                    已匹配
+                    {/if}
+                </td>
+                <td>{$v.checked==0 ? '<label style="color:red;">冻结</label>' : '<label style="color:green;">正常</label>'}</td>
+                <td>{$v.bank_name}</td>
+                <td>{$v.bank_card_number}</td>
+                <td>{$v.bank_telephone}</td>
+                <td>{$v.wx_name}</td>
+                <td><img style="width:100px;height:!00px;" src="{$v.wx_qrcode}" alt="" /></td>
+                <td>{$v.wx_telephone}</td>
+                <td>{$v.zfb_name}</td>
+                <td><img style="width:100px;height:!00px;" src="{$v.zfb_qrcode}" alt="" /></td>
+                <td>{$v.zfb_telephone}</td>
+                <td>{$v.total_stock}</td>
+                <td>{$v.brand}</td>
+                <td><label style="color: red;">{$v.credit_value}</label></td>
+                <td>
+                    {if condition="count($v.wine_distribution) > 0"}
+                        <label style="color:green;">{:count($v.wine_distribution)}单</label><br/>
+                        {foreach name="v.wine_distribution" item="v2"}
+                            <label style="color:green;">{$v2.goods_name}</label>
+                            <br />
+                            -
+                        {/foreach}
+                    {/if}
+                    
+                    {if condition="count($v.wine_bespoke) > 0"}
+                    <label style="color:red;">{:count($v.wine_bespoke)}单</label><br/>
+                    {foreach name="v.wine_bespoke" item="v2"}
+                        {$v2.goods_name}
+                        <br />
+                        -
+                    {/foreach}
+                    {/if}
+                </td>
+                <td>
+                    <button type="botton" onclick="kkk({$v.id}, '{$v.value}')">匹配</button>
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr><td colspan="23" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="row" style="margin-top: 100px;"><div class="pagination">{$page}</div></div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+<script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 自定义js -->
+<script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+<!-- iCheck -->
+<script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+<script>
+    var wine_order_saler_id = "{$wine_order_saler_id}";
+    function kkk(wine_order_record_id, value){
+        layer.prompt({
+            formType: 0,
+            value: '',
+            title: '请输入匹配金额'+value
+        }, function (price, index, elem) {
+            var value_scope = value.split('-');
+            if (value_scope[0]<=price<=value_scope[1]){
+                $.ajax({
+                    type: "post",
+                    url: "{:url('WineSale/pppei')}",
+                    data: {
+                        wine_order_saler_id: wine_order_saler_id,
+                        price: price,
+                        wine_order_record_id: wine_order_record_id
+                    },
+                    success: function (res) {
+                        layer.msg(res.mess);
+
+                        if (res.status == 200){
+                            setTimeout(function () {
+                                // layer.parent.reload();
+                                // layer.reload();
+                                // parent.layer.close()
+                                // layer.close(index);
+                                window.location.reload();
+                            }, 2000)
+                        }
+                    }
+                })
+            }else{
+                alert('ds');
+                layer.msg('你输入的金额有误');
+            }
+        })
+    }
+
+    $(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+        var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        $('#form').validate({
+            errorElement : 'span',
+            debug: true,//只验证不提交表单
+            //layer ajax提交表单
+            submitHandler:function(){
+                // 序列化 表单数据 后提交 ，太简洁了
+                post(updateUrl,'POST',$('#form').serialize(),1);
+                return false;
+            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+
+            rules:{
+                // user_name:{
+                //     required:true,
+                // },
+                // phone:{
+                //     required:true,
+                // },
+
+            },
+
+            messages:{
+                user_name:{
+                    required:icon+'必填',
+                    remote:icon+'已存在'
+                },
+                phone:{
+                    required:icon+'必填',
+                    remote:icon+'已存在'
+                },
+            }
+        });
+    });
+
+    function cl(){
+        window.location.reload();
+    }
+</script>
+
+</body>
+</html>

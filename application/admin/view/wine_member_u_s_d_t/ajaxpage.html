@@ -1,0 +1,66 @@
+<!--
+ * @Descripttion: 
+ * @Author: cbing
+ * @Date: 2019-06-10 14:42:00
+ * @LastEditors: cbing
+ * @LastEditTime: 2019-08-24 18:15:04
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/WineMemberUSDT/lst.html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/WineMemberUSDT/search.html?page="+pnum;
+	{/if}
+</script>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">ID</th>
+                                    <th style="width:%">USDT账号</th>
+                                    <th style="width:%">时间</th>
+                                    <th style="width:%">用户名</th>
+                                    <th style="width:%">手机号</th>
+                                    <th style="width:%">分配时间</th>
+                                    <th style="width:20%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <td>{$v.address}</td>
+                                    <td>{$v.addtime|date='Y-m-d H:i:s', ###}</td>
+                                    <td>{$v.user_name}</td>
+                                    <td>{$v.phone}</td>
+                                    <td>{if condition="$v.updatetime"}{$v.updatetime|date='Y-m-d H:i:s', ###}{else/}/{/if}</td>
+                                    <td>
+                                        {if condition="$v.status==0"}
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="dispatch_user({$v['id']}, this)">&nbsp;分配用户</button>
+                                        {/if}
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="14" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+
+<script>
+    function dispatch_user(id,obj){
+        var editUrl = url+'/dispatchUser/id/'+id;
+        layer.open({
+            type : 2,
+            title : '分配用户',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['900px','650px'],
+            content : editUrl
+        });
+    }
+</script>

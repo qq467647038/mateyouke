@@ -1,0 +1,63 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) AND (!isset($shop_id))"}
+	var search = 0;
+	var shop_id = 0;
+	var goUrl = "/{$Request.module}/shop_admin/lst.html?page="+pnum;
+	{elseif condition="(isset($search)) AND ($search)"/}
+	var search = {$search};
+	var shop_id = 0;
+	var goUrl = "/{$Request.module}/shop_admin/search.html?page="+pnum;
+	{elseif condition="(isset($shop_id)) AND ($shop_id)"/}
+	var shop_id = {$shop_id};
+	var search = 0;
+	var goUrl = "/{$Request.module}/shop_admin/shoplist/shop_id/"+shop_id+".html?page="+pnum;
+	{/if}
+	$(function(){
+		$("#checkAll").click(function () {
+	        $("input[class='text_id']:checkbox").prop("checked", this.checked);
+	    }); 
+	});
+</script>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%">联系手机</th>
+                                    <th style="width:20%">商铺名称</th>
+                                    <th style="width:15%">注册时间</th>
+                                    <th style="width:15%">登录IP</th>
+                                    <th style="width:15%">登录时间</th>
+                                    <th style="width:10%">正常/关闭</th>
+                                    <th style="width:10%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.phone}</td>
+                                    <td>{$v.shop_name}</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['addtime'])}</td>
+                                    <td>{$v.login_ip}</td>
+                                    <td>{$v['login_time']? date('Y-m-d H:i:s',$v['login_time']) : ''}</td>
+                                    <td>
+                                    {switch name="v.open_status"}
+                                    {case value="1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal({$v.id},'open_status',this);"><i class="fa fa-check"></i></button>
+                                    {/case}
+                                    {case value="0"}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal({$v.id},'open_status',this);"><i class="fa fa-times"></i></button>
+                                    {/case}
+                                    {/switch}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="edit({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="8" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

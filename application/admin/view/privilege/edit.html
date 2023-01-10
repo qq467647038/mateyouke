@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<script>
+var url = "{:url('privilege/lst')}";
+var updateUrl = "{:url('privilege/edit')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>编辑权限</h5>
+                    </div>
+                    <div class="ibox-content">
+                    <form method="post" class="form-horizontal" id="form"> 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">权限名称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="pri_name" value="{$pris.pri_name}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>							
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">上级权限</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="pid">
+                                        <option {if condition="$pris['pid'] eq 0"}selected="selected"{/if} value="0">顶级权限</option>
+                                        {foreach name="prires" item="v"}
+                                        <option value="{$v.id}" {if condition="$pris['pid'] eq $v['id']"}selected="selected"{/if}>{:str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $v['level'])}{if condition='$v["level"] gt 0'}|{/if}{$v.html}{$v.pri_name}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">模块名称</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="mname" value="{$pris.mname}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">控制器名称</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="cname" value="{$pris.cname}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">方法名称</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="aname" value="{$pris.aname}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">控制器访问别名</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="fwname" value="{$pris.fwname}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">icon图标</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="icon" class="form-control" value="{$pris.icon}">
+                                </div>
+                                <label class="col-sm-3" style="padding-top:7px; color:gray; font-weight: normal; font-size:14px;">例如：fa fa-home</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">排序</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="sort" value="{$pris.sort}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否显示</label>
+                                <div class="col-sm-6">
+                                    <select name="status" class="form-control">
+                                        <option value="0" {if condition="$pris['status'] eq 0"}selected="selected"{/if}>不显示</option>
+                                        <option value="1" {if condition="$pris['status'] eq 1"}selected="selected"{/if}>显示</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <input type="hidden" name="id" value="{$pris.id}" />
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:20px;">保存内容</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	 <script>	
+    	$(function(){  		
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	        	//layer ajax提交表单
+	            submitHandler:function(){
+	               // 序列化 表单数据 后提交 ，太简洁了
+                   post(updateUrl,'POST',$('#form').serialize(),1);
+	               return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+
+	        	rules:{
+		           pri_name:{required:true},
+		           mname:{required:true},
+		           cname:{required:true},
+		           aname:{required:true},
+		           fwname:{required:true},
+	        	   sort:{
+		        	   required:true,
+		        	   digits:true
+		           }
+		        },
+
+	        	messages:{
+		           pri_name:{required:icon+'必填'},
+		           mname:{required:icon+'必填'},
+		           cname:{required:icon+'必填'},
+		           aname:{required:icon+'必填'},
+		           fwname:{required:icon+'必填'},
+	               sort:{
+		               required:icon+'必填',
+		               digits:icon+'排序必须是整数'
+		           }
+	        	}
+        	});
+      });  	  	
+    </script>
+
+    <script>
+		function cl(){
+			parent.location.href = url;
+		}
+    </script>
+
+</body>
+
+</html>

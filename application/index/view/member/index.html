@@ -1,0 +1,496 @@
+{extend name="common/layout" /}
+
+{block name="style"}
+    <style type="text/css">
+        .wt-nav .nav{
+            overflow: inherit;
+        }
+    </style>
+{/block}
+
+
+{block name="insertjs"}
+<link href="__STATIC__/pc/css/member.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/pc/js/member.js"></script>
+<script type="text/javascript" src="__STATIC__/pc/js/ToolTip.js"></script>
+<script>
+    //sidebar-menu
+    $(document).ready(function() {
+        $.each($(".side-menu > a"), function() {
+            $(this).click(function() {
+                var ulNode = $(this).next("ul");
+                if (ulNode.css('display') == 'block') {
+                    $.cookie(COOKIE_PRE+'Mmenu_'+$(this).attr('key'),1);
+                } else {
+                    $.cookie(COOKIE_PRE+'Mmenu_'+$(this).attr('key'),null);
+                }
+                ulNode.slideToggle();
+                if ($(this).hasClass('shrink')) {
+                    $(this).removeClass('shrink');
+                } else {
+                    $(this).addClass('shrink');
+                }
+            });
+        });
+        $.each($(".side-menu-quick > a"), function() {
+            $(this).click(function() {
+                var ulNode = $(this).next("ul");
+                ulNode.slideToggle();
+                if ($(this).hasClass('shrink')) {
+                    $(this).removeClass('shrink');
+                } else {
+                    $(this).addClass('shrink');
+                }
+            });
+        });
+    });
+    $(function() {
+        //展开关闭常用菜单设置
+        $('.set-btn').bind("click",
+            function() {
+                $(".set-container-arrow").show("fast");
+                $(".set-container").show("fast");
+            });
+        $('[wttype="closeCommonOperations"]').bind("click",
+            function() {
+                $(".set-container-arrow").hide("fast");
+                $(".set-container").hide("fast");
+            });
+
+        $('dl[wttype="checkcCommonOperations"]').find('input').click(function(){
+            var _this = $(this);
+            var _dd = _this.parents('dd:first');
+            var _type = _this.is(':checked') ? 'add' : 'del';
+            var _value = _this.attr('name');
+            var _operations = $('[wttype="commonOperations"]');
+
+            // 最多添加5个
+            if (_operations.find('li').length >= 5 && _type == 'add') {
+                showError('最多只能添加5个常用选项。');
+                return false;
+            }
+            $.getJSON('https://store.cxy365.com/index.php?w=member&t=common_operations', {type : _type, value : _value}, function(data){
+                if (data) {
+                    if (_type == 'add') {
+                        _dd.addClass('checked');
+                        if (_operations.find('li').length == 0) {
+                            _operations.fadeIn('slow');
+                        }
+                        _operations.find('ul').append('<li style="display : none;" wttype="' + _value + '"><a href="' + _this.attr('data-value') + '">' + _this.attr('data-name') + '</a></li>');
+                        _operations.find('li[style]').fadeIn('slow');
+                    } else {
+                        _dd.removeClass('checked');
+                        _operations.find('li[wttype="' + _value + '"]').fadeOut('slow', function(){
+                            $(this).remove();
+                            if (_operations.find('li').length == 0) {
+                                _operations.fadeOut('slow');
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+{/block}
+
+
+
+{block name="nav"}
+<!--导航开始-->
+<ul class="nav">
+    {include file="common/membernav"}
+</ul>
+<!--导航结束-->
+{/block}
+
+
+
+
+{block name="main"}
+<div class="wtm-container">
+    <div class="left-box">
+        <ul id="sidebarMenu" class="wtm-sidebar">
+            <li class="side-menu"><a href="javascript:void(0)" key="trade">
+                <h3>交易中心</h3>
+            </a>
+                <ul>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_order&t=index">实物交易订单</a></li>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_order_vr&t=index">虚拟兑码订单</a></li>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_evaluate&t=list">交易评价/晒单</a></li>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_appoint&t=list">预约/到货通知</a></li>
+                </ul>
+            </li>
+            <li class="side-menu"><a href="javascript:void(0)" key="follow">
+                <h3>关注中心</h3>
+            </a>
+                <ul>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_favorite_goods&t=index">商品收藏</a></li>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_favorite_store&t=index">店铺收藏</a></li>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_goodsbrowse&t=list">我的足迹</a></li>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_flea&t=index">我的闲置</a></li>
+                </ul>
+            </li>
+            <li class="side-menu"><a href="javascript:void(0)" key="client">
+                <h3>客户服务</h3>
+            </a>
+                <ul>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_refund&t=index">退款及退货</a></li>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_complain&t=index">交易投诉</a></li>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_consult&t=my_consult">商品咨询</a></li>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_inform&t=index">违规举报</a></li>
+                    <li><a href="https://store.cxy365.com/index.php?w=member_mallconsult&t=index">平台客服</a></li>
+                </ul>
+            </li>
+            <li class="side-menu"><a href="javascript:void(0)" key="info">
+                <h3>会员资料</h3>
+            </a>
+                <ul>
+                    <li><a href="https://store.cxy365.com/home/index.php?w=member_information&t=member">账户信息</a></li>
+                    <li><a href="https://store.cxy365.com/home/index.php?w=member_address&t=address">收货地址</a></li>
+                </ul>
+            </li>
+            <li class="side-menu"><a href="javascript:void(0)" key="property">
+                <h3>财产中心</h3>
+            </a>
+                <ul>
+                    <li><a href="https://store.cxy365.com/home/index.php?w=predeposit&t=pd_log_list">账户余额</a></li>
+                    <li><a href="https://store.cxy365.com/home/index.php?w=member_voucher&t=index">我的代金券</a></li>
+                    <li><a href="https://store.cxy365.com/home/index.php?w=member_coupon&t=index">我的优惠券</a></li>
+                    <li><a href="https://store.cxy365.com/home/index.php?w=member_invite&t=index">我的推广</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="right-box">
+        <div class="wtm-header">
+            <div class="wtm-header-top">
+                <div class="wtm-member-info">
+                    <div class="avatar"><a href="https://store.cxy365.com/home/index.php?w=member_information&t=avatar"
+                                           title="修改头像"><img src="__STATIC__/pc/images/default_user_portrait.gif">
+                        <div class="frame"></div>
+                    </a>
+                    </div>
+                    <dl>
+                        <dt><a href="https://store.cxy365.com/home/index.php?w=member_information&t=member" title="修改资料">mb9225</a>
+                        </dt>
+                        <dd>会员等级：
+                            <div class="wt-grade-mini" style="cursor:pointer;"
+                                 onclick="javascript:go('https://store.cxy365.com/grade.html');">V0会员</div>
+                        </dd>
+                        <dd>账户安全：
+                            <div class="SAM"><a href="https://store.cxy365.com/home/index.php?w=member_security&t=index" title="安全设置">
+                                <div id="low" class="SAM-info"><span><em></em></span><strong>低</strong></div>
+                            </a> </div>
+                        </dd>
+                        <dd>用户财产：
+                            <div class="user-account">
+                                <ul>
+                                    <li id="pre-deposit"><a href="https://store.cxy365.com/home/index.php?w=predeposit&t=pd_log_list"
+                                                            title="我的余额：￥0.00"> <span class="icon"></span> </a> </li>
+                                    <li id="points"><a href="https://store.cxy365.com/home/index.php?w=member_points&t=index"
+                                                       title="我的积分：80分"> <span class="icon"></span></a> </li>
+                                    <li id="voucher"><a href="https://store.cxy365.com/home/index.php?w=member_voucher&t=index"
+                                                        title="我的代金券：0张"> <span class="icon"></span></a> </li>
+                                    <li id="envelope"><a href="https://store.cxy365.com/home/index.php?w=member_coupon&t=index"
+                                                         title="我的优惠券：0张"> <span class="icon"></span></a></li>
+                                </ul>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="wtm-trade-menu">
+                    <div class="line-bg"></div>
+                    <dl class="trade-step-01">
+                        <dt>关注中</dt>
+                        <dd></dd>
+                    </dl>
+                    <ul class="trade-function-01">
+                        <li><a href="https://store.cxy365.com/index.php?w=member_favorite_goods&t=index"><span class="tf01"></span>
+                            <h5>商品</h5>
+                        </a> </li>
+                        <li><a href="https://store.cxy365.com/index.php?w=member_favorite_store&t=index"><span class="tf02"></span>
+                            <h5>店铺</h5>
+                        </a> </li>
+                        <li><a href="https://store.cxy365.com/index.php?w=member_goodsbrowse&t=list"><span class="tf03"></span>
+                            <h5>足迹</h5>
+                        </a> </li>
+                    </ul>
+                    <dl class="trade-step-02">
+                        <dt>交易进行</dt>
+                        <dd></dd>
+                    </dl>
+                    <ul class="trade-function-02">
+                        <li><a href="https://store.cxy365.com/index.php?w=member_order&t=index&state_type=state_new">
+                            <sup>1</sup>
+                            <span class="tf04"></span>
+                            <h5>待付款</h5>
+                        </a> </li>
+                        <li><a href="https://store.cxy365.com/index.php?w=member_order&t=index&state_type=state_send">
+                            <span class="tf05"></span>
+                            <h5>待收货</h5>
+                        </a> </li>
+                        <li><a href="https://store.cxy365.com/index.php?w=member_order&t=index&state_type=state_notakes">
+                            <span class="tf06"></span>
+                            <h5>待自提</h5>
+                        </a> </li>
+                        <li><a href="https://store.cxy365.com/index.php?w=member_order&t=index&state_type=state_noeval">
+                            <span class="tf07"></span>
+                            <h5>待评价</h5>
+                        </a> </li>
+                    </ul>
+                    <dl class="trade-step-03">
+                        <dt>售后服务</dt>
+                        <dd></dd>
+                    </dl>
+                    <ul class="trade-function-03">
+                        <li><a href="https://store.cxy365.com/index.php?w=member_refund&t=index"><span class="tf08"></span>
+                            <h5>退款</h5>
+                        </a> </li>
+                        <li><a href="https://store.cxy365.com/index.php?w=member_return&t=index"><span class="tf09"></span>
+                            <h5>退货</h5>
+                        </a> </li>
+                        <li><a href="https://store.cxy365.com/index.php?w=member_complain&t=index&select_complain_state=1"><span
+                                class="tf10"></span>
+                            <h5>投诉</h5>
+                        </a> </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="member_center_box" class="wtm-index-container">
+            <div id="member_center_box" class="wtm-index-container">
+            <style type="text/css">
+                .wtm-container .left-box { border-color: transparent; }
+            </style>
+            
+            <div id="transaction" class="double">
+                <div class="outline">
+                    <div class="title">
+                        <h3>交易提醒</h3>
+                        <ul>
+                            <li>
+                                {if($dfk_ordernum)}
+                                    <a href="{:url('member_order/index', array('filter' => 1))}">待付款<em>{$dfk_ordernum}</em></a>
+                                {else/}
+                                    待付款<em>0</em>
+                                {/if}
+                            </li>
+                            <li>
+                                {if($dsh_ordernum)}
+                                    <a href="{:url('member_order/index', array('filter' => 3))}">待收货<em>{$dsh_ordernum}</em></a>
+                                {else/}
+                                    待收货<em>0</em>
+                                {/if}
+                            </li>
+                            <li>
+                                {if($dpj_ordernum)}
+                                    <a href="{:url('member_order/index', array('filter' => 4))}">待评价<em>{$dpj_ordernum}</em></a>
+                                {else/}
+                                    待评价<em>0</em>
+                                {/if}
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    {if($orderes)}
+                    {foreach name='orderes' item='order'}
+                        {foreach name='$order.goodsinfo' item='goods'}
+                        <div class="order-list">
+                            <ul>
+                                <li>
+                                    <div class="wtm-goods-thumb">
+                                        <a target="_blank" href="{:url('member_order/orderinfo', array('order_num' => $order.ordernumber))}">
+                                            <img src="{$goods.thumb_url}">
+                                        </a>
+                                    </div>
+                                    <dl class="wtm-goods-content">
+                                        <dt>
+                                            <a href="{:url('member_order/orderinfo', array('order_num' => $order.ordernumber))}" target="_blank">{$goods.goods_name}</a>
+                                        </dt>
+                                        <dd>
+                                            <span class="order-date">下单时间：{$order.addtime}</span>
+                                            <span class="wtm-order-price">订单金额：<em>￥{$order.total_price}</em></span>
+                                        </dd>
+                                        <dd>
+                                            <span class="order-state">订单状态：{$order.order_zt}</span>
+                                        </dd>
+                                    </dl>
+                                    <a href="{:url('pay/orderpay', array('order_number' => $order.zong_number))}" target="_blank" class="wtbtn wtbtn-bittersweet"><i class="icon-shield"></i>订单支付</a>
+                                </li>
+                            </ul>
+                        </div>
+                        {/foreach}
+                    {/foreach}
+                    {else/}
+                    <dl class="null-tip">
+                        <dt></dt>
+                        <dd>
+                            <h4>您好久没在商城购物了</h4>
+                            <h5>交易提醒可帮助您了解订单状态和物流情况</h5>
+                        </dd>
+                    </dl>
+                    {/if}
+                </div>
+            </div>
+            
+            
+            
+            <div id="shopping" class="normal">
+                <div class="outline">
+                    <div class="title">
+                        <h3>购物车</h3>
+                    </div>
+                    <dl class="null-tip">
+                        <dt></dt>
+                        <dd>
+                            <h4>您的购物车还是空的</h4>
+                            <h5>将想买的商品放进购物车，一起结算更轻松</h5>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div id="favoritesGoods" class="double">
+                <div class="outline">
+                    <div class="title">
+                        <h3>商品收藏</h3>
+                    </div>
+                    <dl class="null-tip">
+                        <dt></dt>
+                        <dd>
+                            <h4>您还没有收藏商品</h4>
+                            <h5>收藏的商品将显示最新的促销活动和降价情况</h5>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div id="favoritesStore" class="normal">
+                <div class="outline">
+                    <div class="title">
+                        <h3>店铺收藏</h3>
+                    </div>
+                    <dl class="null-tip">
+                        <dt></dt>
+                        <dd>
+                            <h4>您还没有收藏店铺</h4>
+                            <h5>收藏店铺可获知店铺最新商品和促销活动</h5>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div id="friendsShare" class="normal">
+                <div class="outline">
+                    <div class="title">
+                        <h3>好友动态</h3>
+                    </div>
+                    <dl class="null-tip">
+                        <dt></dt>
+                        <dd>
+                            <h4>您的好友最近没有什么动静</h4>
+                            <h5>关注其他用户成为好友可将您的动态进行分享</h5>
+                            <p><a target="_blank" href="https://store.cxy365.com/home/index.php?w=member_snsfriend&amp;t=follow" class="wtbtn-mini">查看我的全部好友</a></p>
+                        </dd>
+                    </dl>
+
+                </div>
+            </div>
+            <div id="bbs" class="normal">
+                <div class="outline">
+                    <div class="title">
+                        <h3>我的社区</h3>
+                    </div>
+                    <dl class="null-tip">
+                        <dt></dt>
+                        <dd>
+                            <h4>您还没有自己的社区</h4>
+                            <h5>您可以创建或加入感兴趣的社交社区</h5>
+                            <p><a target="_blank" href="https://store.cxy365.com/bbs/index.php?w=index&amp;t=add_group" class="wtbtn-mini">创建社区</a></p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div id="browseMark" class="normal">
+                <div class="outline">
+                    <div class="title">
+                        <h3>我的足迹</h3>
+                    </div>
+                    <dl class="null-tip">
+                        <dt></dt>
+                        <dd>
+                            <h4>您的商品浏览记录为空</h4>
+                            <h5>赶紧去商城看看促销活动吧</h5>
+                            <p><a target="_blank" href="https://store.cxy365.com" class="wtbtn-mini">浏览商品</a></p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+        </div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                var INFO_TYPE = ['member_info', 'order_info', 'goods_content', 'sns_info'];
+
+                function _ajax_load(type) {
+                    $.ajax({
+                        url: 'index.php?w=member&t=ajax_load_' + type,
+                        success: function (html) {
+                            INFO_TYPE.shift();
+                            if (INFO_TYPE[0]) {
+                                _ajax_load(INFO_TYPE[0]);
+                            }
+                            $('#member_center_box').append(html);
+                        }
+                    });
+                }
+                _ajax_load(INFO_TYPE[0])
+            });
+        </script>
+    </div>
+    <div class="clear"></div>
+</div>
+<link href="__STATIC__/pc/css/chat.css" rel="stylesheet" type="text/css">
+<div style="clear: both;"></div>
+<div id="web_chat_dialog" style="display: none;float:right;">
+</div>
+<a id="chat_login" href="javascript:void(0)" style="display: none;"></a>
+<script type="text/javascript">
+    var LOGIN_SITE_URL = 'https://store.cxy365.com/home';
+    var CHAT_SITE_URL = 'https://store.cxy365.com/api/im';
+    var BASE_SITE_URL = 'https://store.cxy365.com';
+    var connect_url = "http://211.149.249.207:33";
+
+    var layout = "layout/member_layout.php";
+    var w_t = "member_home";
+    var chat_goods_id = "0";
+    var user = {};
+
+    user['u_id'] = "757";
+    user['u_name'] = "mb9225";
+    user['s_id'] = "";
+    user['s_name'] = "";
+    user['s_avatar'] = "__STATIC__/pc/images/default_store_avatar.png";
+    user['avatar'] = "__STATIC__/pc/images/default_user_portrait.gif";
+
+    $("#chat_login").wt_login({
+        wthash: '0b4e9be4',
+        formhash: 'RIa3Fqs_BDLiuQO0B0SIa5Eaby8D7qp'
+    });
+</script>
+<script type="text/javascript" src="__STATIC__/pc/js/jquery.charCount.js" charset="utf-8">
+</script>
+<script type="text/javascript" src="__STATIC__/pc/js/jquery.smilies.js" charset="utf-8">
+</script>
+<script type="text/javascript" src="__STATIC__/pc/js/user.js" charset="utf-8"></script>
+
+<style type="text/css">
+    .wtm-header-nav ul.nav-menu{
+        margin:0px 0px 0px 0px;
+    }
+</style>
+{/block}

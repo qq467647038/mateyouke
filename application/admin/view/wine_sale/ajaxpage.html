@@ -1,0 +1,124 @@
+<!--
+ * @Descripttion: 
+ * @Copyright: ©版权所有
+ * @Link: www.s1107.com
+ * @Contact: QQ:2487937004
+ * @LastEditors: cbing
+ * @LastEditTime: 2020-05-01 18:40:18
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="!isset($search) && !isset($cate_id)"}
+	var search = 0;
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/integral_goods/lst/filter/"+filter+".html?page="+pnum;
+	{elseif condition="isset($search) && $search" /}
+	var search = {$search};
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/integral_goods/search.html?page="+pnum;
+	{elseif condition="isset($cate_id) && $cate_id" /}
+	var cate_id = {$cate_id};
+	var search = 0;
+	var goUrl = "/{$Request.module}/integral_goods/catelist/cate_id/"+cate_id+"/filter/"+filter+".html?page="+pnum;
+	{/if}
+</script>                      
+                 <style type="text/css" media="all">
+                     .table.table-hover th, .table.table-hover td{
+                         padding: 2px;
+                         text-align: center;
+                         line-height: 1.8;
+                     }
+                 </style>       
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <!--<th>-->
+                                    <!--    <input type="checkbox" name="" id="" />-->
+                                    <!--</th>-->
+                                    <th>ID</th>
+                                    <th>编号</th>
+                                    <th>商品图片</th>
+                                    <th>商品名称</th>
+                                    <th>商品分类</th>
+                                    <th>销售价格</th>
+                                    <th>拍卖状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <!--<td>-->
+                                    <!--    <input type="checkbox" name="" id="" />-->
+                                    <!--</td>-->
+                                    <td>{$v.id}</td>
+                                    <td>{$v.odd}</td>
+                                    <td><img src="{$v.goods_thumb}" width="80px" height="80px"/></td>
+                                    <td>{$v.goods_name}</td>   
+                                    <td>{$v.desc}</td>
+                                    <td>{$v.sale_amount}</td>
+                                    <td>
+                                        {if condition="$v.status == 0"}
+                                        <label style="color:red;font-weight: bold;" for="">待销售</label>
+                                        {elseif condition="$v.status == 1"}
+                                        <label style="color:blue;font-weight: bold;" for="">销售中</label>
+                                        {elseif condition="$v.status == 3" /}
+                                        <label style="color:red;font-weight: bold;" for="">申述中</label>
+                                        {elseif condition="$v.status == 2" /}
+                                        <label style="color:green;font-weight: bold;" for="">已成单</label>
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-xs" onclick="del({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button>
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="25" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}								
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+
+    <script src="/static/admin/js/jquery.min.js?v=2.1.4"></script>  
+    <script type="text/javascript" charset="utf-8">
+        $('.table').on("click", "img", function(){
+            var src = $(this).attr('src');
+            
+            layer.open({
+                content: '<img src="'+src+'" style="max-width:305px;max-height: 600px;" />'
+            });
+        });
+        
+        function del(id, obj){
+            layer.confirm('是否确认删除吗？', {
+                btn: ['删除', '取消']
+            }, function(index){
+                $.ajax({
+                    url: "{:url('WineSale/del')}",
+                    type: "post",
+                    data: {
+                        id: id
+                    },
+                    success: function(res){
+                        if(res == 1){
+                            layer.msg('删除成功');
+                            
+                            setTimeout(function(){
+                                location.reload();
+                            }, 1000)
+                        }
+                        else{
+                            layer.msg('删除失败');
+                        }
+                    }
+                })
+            })
+        }
+        
+    </script>
+    

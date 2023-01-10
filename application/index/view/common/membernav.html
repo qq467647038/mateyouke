@@ -1,0 +1,89 @@
+<ul class="nav-menu">
+    <li class="ml10"><a href="{:url('member/index')}" class="current">我的商城</a></li>
+    <li class="set"><a href="https://store.cxy365.com/home/index.php?w=member&amp;t=home">用户设置<i></i></a>
+        <div class="sub-menu">
+            <dl>
+                <dt><a href="https://store.cxy365.com/home/index.php?w=member_security&amp;t=index" style="color: #3AAC8A;">安全设置</a></dt>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_security&amp;t=auth&amp;type=modify_pwd">修改登录密码</a></dd>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_security&amp;t=auth&amp;type=modify_mobile">手机绑定</a></dd>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_security&amp;t=auth&amp;type=modify_email">邮件绑定</a></dd>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_security&amp;t=auth&amp;type=modify_paypwd">支付密码</a></dd>
+            </dl>
+            <dl>
+                <dt><a href="https://store.cxy365.com/home/index.php?w=member_information&amp;t=member" style="color: #EA746B">个人资料</a></dt>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_address&amp;t=address">收货地址</a></dd>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_information&amp;t=avatar">修改头像</a></dd>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_message&amp;t=setting">消息接受设置</a></dd>
+            </dl>
+            <dl>
+                <dt><a href="https://store.cxy365.com/home/index.php?w=predeposit&amp;t=pd_log_list" style="color: #FF7F00">账户财产</a></dt>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=predeposit&amp;t=recharge_add">余额充值</a></dd>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_voucher&amp;t=voucher_binding">领取代金券</a></dd>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_coupon&amp;t=rp_binding">领取优惠券</a></dd>
+            </dl>
+            <dl>
+                <dt><a href="https://store.cxy365.com/home/index.php?w=member_bind&amp;t=qqbind" style="color: #398EE8">账号绑定</a></dt>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_bind&amp;t=qqbind">QQ绑定</a></dd>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_bind&amp;t=sinabind">微博绑定</a></dd>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_bind&amp;t=weixinbind">微信绑定</a></dd>
+                <dd><a href="https://store.cxy365.com/home/index.php?w=member_sharemanage&amp;t=index">分享绑定</a></dd>
+            </dl>
+        </div>
+    </li>
+    <li><a href="https://store.cxy365.com/index.php?w=member_snshome&amp;t=index">个人主页<i></i></a>
+        <div class="sub-menu">
+            <dl>
+                <dd><a href="https://store.cxy365.com/index.php?w=member_snshome&amp;t=index">新鲜事</a></dd>
+                <dd><a href="https://store.cxy365.com/index.php?w=sns_album&amp;t=index">个人相册</a></dd>
+                <dd><a href="https://store.cxy365.com/index.php?w=member_snshome&amp;t=shareglist">分享商品</a></dd>
+                <dd><a href="https://store.cxy365.com/index.php?w=member_snshome&amp;t=storelist">分享店铺</a></dd>
+            </dl>
+        </div>
+    </li>
+    <li><a href="javascript:;">其他应用<i></i></a>
+        <div class="sub-menu">
+            <dl>
+                <dd><a href="https://store.cxy365.com/news/index.php?w=member_article&amp;t=article_list">我的投稿</a></dd>
+                <dd><a href="https://store.cxy365.com/bbs/index.php?w=p_center&amp;t=index">我的社区</a></dd>
+                <dd><a href="https://store.cxy365.com/what/index.php?w=home&amp;t=index&amp;member_id=773">我的买什么</a></dd>
+            </dl>
+        </div>
+    </li>
+    <li class="fenxiao"><a href="https://store.cxy365.com/fenxiao">分销中心<i></i></a>
+        <div class="sub-menu">
+            <dl>
+                <dd><a href="https://store.cxy365.com/fenxiao/index.php?w=search&amp;t=index">分销商品</a></dd>
+                <dd><a href="https://store.cxy365.com/fenxiao/index.php?w=search&amp;t=store">分销店铺</a></dd>
+                <dd><a href="https://store.cxy365.com/fenxiao/index.php?w=fx_join&amp;t=index">成为分销员</a></dd>
+            </dl>
+        </div>
+    </li>
+</ul>
+<div class="notice">
+    <ul class="line">
+    </ul>
+</div>
+<script>
+    $(function() {
+        var _wrap = $('ul.line');
+        var _interval = 2000;
+        var _moving;
+        _wrap.hover(function() {
+                clearInterval(_moving);
+            },
+            function() {
+                _moving = setInterval(function() {
+                        var _field = _wrap.find('li:first');
+                        var _h = _field.height();
+                        _field.animate({
+                                marginTop: -_h + 'px'
+                            },
+                            600,
+                            function() {
+                                _field.css('marginTop', 0).appendTo(_wrap);
+                            })
+                    },
+                    _interval)
+            }).trigger('mouseleave');
+    });
+</script>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>{$details.user_name}的收入支出详细</h5>
+                    </div>
+                    <div class="ibox-content">
+                    <div class="form-horizontal">
+                    
+            {if condition="$details['de_type'] eq 1"}
+            <div class="form-group">
+            <label class="col-sm-2 control-label">明细类型：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">收入</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>
+            
+            <div class="form-group">
+            <label class="col-sm-2 control-label">金额：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">￥{$details.price}</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>
+            
+            <div class="form-group">
+            <label class="col-sm-2 control-label">时间：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">{:date('Y-m-d H:i:s',$details['time'])}</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>
+            
+            {switch name="details.sr_type"}
+            {case value="1"}
+            <div class="form-group">
+            <label class="col-sm-2 control-label">收入类型：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">订单分成</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>
+            
+            <div class="form-group">
+            <label class="col-sm-2 control-label">安装订单号：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">{$details.az_number}</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>
+            {/case}
+            
+            {case value="2"}
+            <div class="form-group">
+            <label class="col-sm-2 control-label">收入类型：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">订单退款</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>
+            
+            <div class="form-group">
+            <label class="col-sm-2 control-label">退款流水号：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">{$details.th_number}</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>
+            {/case}           
+            {/switch}
+            
+            {elseif condition="$details['de_type'] eq 2"/} 
+            <div class="form-group">
+            <label class="col-sm-2 control-label">明细类型：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">支出</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>
+            
+            <div class="form-group">
+            <label class="col-sm-2 control-label">金额：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">￥{$details.price}</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>
+            
+            <div class="form-group">
+            <label class="col-sm-2 control-label">时间：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">{:date('Y-m-d H:i:s',$details['time'])}</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>
+            
+            {switch name="details.zc_type"}
+            {case value="1"}
+            <div class="form-group">
+            <label class="col-sm-2 control-label">支出类型：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">提现</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>
+            
+            <div class="form-group">
+            <label class="col-sm-2 control-label">提现流水号：</label>
+            <div class="col-sm-6">
+            <p class="form-control" style="border:none;">{$details.tx_number}</p>
+            </div>
+            </div>						
+            <div class="hr-line-dashed"></div>					
+            {/case}      
+            {/switch} 
+            {/if}  
+      			
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+</body>
+</html>

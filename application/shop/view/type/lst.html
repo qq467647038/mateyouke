@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+</head>
+
+<script>
+//删除url
+var url = "/{$Request.module}/type";
+var deleteUrl = "{:url('type/delete')}";
+</script>
+
+<body class="gray-bg" >
+<style>
+.qiehuan{
+width:120px; height:40px; line-height:40px; font-size:14px; font-weight:bold; color:#333; background-color:#F5F5F6; float:left; margin-right:10px; text-align:center; cursor:pointer;
+}
+</style>
+
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>类型列表</h5>
+                    </div>
+                    <div class="ibox-content">
+                        
+                        <div class="row" style="margin-top:10px;">
+						    <div class="col-sm-3 m-b-xs">
+                                 <a href="{:url('type/add')}"><button type="button" class="btn btn-sm btn-primary" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;添加类型</button></a>
+                            </div>
+                        </div>
+                    
+                        <div class="row" style="margin-top:10px; margin-bottom:20px;">    
+                            <form action="{:url('type/search')}" method="post" id="form_search">          
+                            <div class="col-sm-3" style="float:right;">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" placeholder="请输入类型名称" {if condition="(isset($keyword)) AND ($keyword)"}value="{$keyword}"{/if} class="input-sm form-control" /><span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary">搜索</button></span>
+                                </div>
+                            </div>
+                                                   
+                           </form>  
+                                           
+                        </div>
+                        <div id="ajaxpagetest">
+                        {include file="type/ajaxpage" /}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/admin.js"></script>    
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+
+<script>
+	//添加类型的属性
+	function attr(id,obj){
+	    window.location.href='/{$Request.module}/attr/lst/typeid/'+id;
+	}
+</script>
+
+</body>
+</html>

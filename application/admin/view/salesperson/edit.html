@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+</head>
+
+<script>
+var pnum = {$pnum};
+var filter = {$filter};
+{if condition="(!isset($search)) OR (!$search)"}
+var url = "/{$Request.module}/salesperson/lst/filter/"+filter+".html?page="+pnum;
+{else/}
+var url = "/{$Request.module}/salesperson/search.html?page="+pnum;
+{/if}
+var updateUrl = "{:url('salesperson/edit')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>编辑销售员</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" enctype="multipart/form-data" class="form-horizontal" id="form"> 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属职位：</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="wz_id">
+                                         <option value="">请选择</option>
+                                         {foreach name="positionres" item="v"}
+                                         <option value="{$v.id}" {if condition="$sales['wz_id'] eq $v['id']"}selected="selected"{/if}>{$v.position_name}</option>
+                                         {/foreach}                                                                             
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">姓名:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="user_name" value="{$sales.user_name}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">手机号:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="phone" value="{$sales.phone}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">email:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="email" value="{$sales.email}" class="form-control">
+                                </div>   
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">微信号:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="wxnum" value="{$sales.wxnum}" class="form-control">
+                                </div>   
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">qq号:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="qqnum" value="{$sales.qqnum}" class="form-control">
+                                </div>   
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">密码:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="password" readonly="readonly" class="form-control">
+                                </div>
+                                <button class="btn btn-info" type="button" id="scpwd">生成密码</button>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+							<label  class="col-sm-2 control-label">头像:</label>
+							<div class="col-sm-6">
+                            <div style="margin-bottom:7px; margin-top:5px;">
+                            <img id="imageinfo" {if condition="$sales['headimgurl']"}src="/{$sales.headimgurl}"{else/}src="__PUBLIC__/admin/img/nopic.jpg"{/if} width="180" height="120" border="0" />
+                            <br/><button type="button" class="btn btn-danger btn-xs del" style="display:none;">删除</button>
+                            </div>
+                            <input id="file_upload" type="file" multiple="true">
+                            <input type="hidden" name="pic_id" value="" >
+                            <div class="repicm" style="display:none;">{$sales.headimgurl}</div>
+                            </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">状态：</label>
+                                <div class="col-sm-6" id="atype">
+                                        <label class="radio-inline"><input type="radio" name="checked" {if condition="$sales['checked'] eq 1"}checked="checked"{/if} value="1">开启</label>
+                                        <label class="radio-inline"><input type="radio" name="checked" {if condition="$sales['checked'] eq 0"}checked="checked"{/if} value="0">关闭</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                            
+                            
+                            <input type="hidden" name="id" value="{$sales.id}" />
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit">保存内容</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script>
+    	$(function(){
+    		$('#scpwd').click(function(){
+    			layer.load(2);
+    			$.ajax({
+    				url:'{:url("salesperson/scpwd")}',
+    				type:'POST',
+    				data:{'aa':1},
+    				dataType:'json',
+    				success:function(data){
+    					if(data.status == 1){
+    						layer.closeAll('loading');
+    						$('input[name=password]').val(data.password);
+    					}else{
+    						layer.closeAll('loading');
+    						layer.msg('生成密码失败，请重试', {icon: 2,time: 1000});
+    					}
+    				},
+    		        error:function(){
+    		        	layer.closeAll('loading');
+    		        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+    		        }
+    			});    			
+    		});
+    		
+    		
+    		//上传头像
+    	    $('#file_upload').uploadify({
+    	        swf : '__PUBLIC__/uploadify/uploadify.swf',
+    	        uploader : '{:url("salesperson/uploadify")}',
+    	        buttonText : '上传图像',
+    	        fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;',  
+    	        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;', 
+    	        fileObjName: 'filedata', //上传附件$_FILE标识  
+    	        fileSizeLimit : '2048KB',
+    	        auto : true, //开启,自动上传
+    	        multi : true, //开启,多选文件
+    	        uploadLimit : 0, //允许上传文件个数 
+    	        onUploadSuccess : function(file, data, response){
+    	        	//解析成json对象
+    	        	eval('var data='+data);
+    	        	if(data.status == 1){
+    	        		var picpath = data.path;
+        	        	$('#imageinfo').attr('src','__ROOT__/'+picpath.img_url);
+        	        	$('.del').show();
+        	        	$('input[name=pic_id]').val(picpath.pic_id);
+    	        	}else{
+    	        		layer.msg(data.msg, {icon: 2,time: 2000});
+    	        	}
+    	        },
+                //上传错误  
+                onUploadError : function(file, errorCode, errorMsg, errorString) {
+                    alert('文件' + file.name + '上传失败:' + errorString);  
+                }
+    	    });
+    	    
+    		
+    		$('.del').click(function(){
+    			layer.load(2);
+    			$.ajax({
+    				url:'{:url("salesperson/delfile")}',
+    				type:'POST',
+    				data:{'zspic_id':$('input[name=pic_id]').val()},
+    				dataType:'json',
+    				success:function(data){
+    					if(data == 1){  
+    						layer.closeAll('loading');
+    						$('input[name=pic_id]').val('');
+    						var picval = $('.repicm').text();
+    						if(picval != ''){
+        						$('#imageinfo').attr('src','/'+picval);
+    						}else{
+    							$('#imageinfo').attr('src','__PUBLIC__/admin/img/nopic.jpg');
+    						}
+    						$('.del').hide();
+    					}else{
+    						layer.closeAll('loading');
+    						layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+    					}
+    				},
+    		        error:function(){
+    		        	layer.closeAll('loading');
+    		        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+    		        }
+    			});
+    		});
+    		
+    		//手机号验证
+        	jQuery.validator.addMethod("phone", function(value, element){   
+        	    var tel = /^1[34578]\d{9}$/;
+        	    return this.optional(element) || (tel.test(value));
+        	}, "手机格式不正确");
+            
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	        	//layer ajax提交表单
+	            submitHandler:function(){
+	               // 序列化 表单数据 后提交 ，太简洁了
+	            	post(updateUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+	                
+	        	rules:{
+	        		user_name:{required:true},
+	        		wz_id:{required:true},
+	        	    phone:{
+	        	    	required:true,
+	        	    	phone:true
+	        	    },
+	        		sort:{
+	        			required:true,
+	        			digits:true
+	        	    }
+	        	},
+	        		
+	        	messages:{
+	        		user_name:{required:icon+'必填'},
+	        		wz_id:{required:icon+'必选'},
+	        		phone:{
+	        			required:icon+'必填',
+	        			phone:icon+'手机号格式不正确'
+	        		},
+	                sort:{
+	                	required:icon+'必填',
+	                	digits:icon+'排序必须是整数'
+	                }
+	        	}
+        	});
+      });
+    </script>
+    
+    
+    <script>
+	    function cl(){
+	        parent.location.href = url;
+	    }
+    </script>
+
+</body>
+</html>

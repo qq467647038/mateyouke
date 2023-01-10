@@ -1,0 +1,1585 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>孝笑好多用户商城系统</title>
+  <meta name="keywords" content="孝笑好多用户商城系统" />
+  <meta name="description" content="孝笑好多用户商城系统" />
+  <meta name="author" content="孝笑好">
+  <meta name="copyright" content="孝笑好 Inc. All Rights Reserved">
+  <style type="text/css">
+    body {
+      .wt-appbar-tabs a.compare {
+        display: none !important;
+      }
+      
+  </style>
+  <link href="__STATIC__/pc/css/common.css" rel="stylesheet" type="text/css">
+  <link href="__STATIC__/pc/css/cart.css" rel="stylesheet" type="text/css">
+  <link href="__STATIC__/pc/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css" />
+  <link href="__STATIC__/pc/css/font-awesome.min.css" rel="stylesheet" />
+  <script>
+    var PRICE_FORMAT = '&yen;%s';
+    var COOKIE_PRE = 'B87D_';
+    var _CHARSET = 'utf-8';
+    var SITEURL = 'http://https://store.cxy365.com';
+    var MEMBER_SITE_URL = 'http://https://store.cxy365.com/home';
+    var STATIC_SITE_URL = 'http://https://store.cxy365.com/system/static';
+    var STATIC_SITE_URL = 'http://https://store.cxy365.com/system/static';
+    var SHOP_TEMPLATES_URL = 'http://https://store.cxy365.com/templets/WoSmart';
+    Number.prototype.toFixed = function (d) {
+      var s = this + "";
+      if (!d) d = 0;
+      if (s.indexOf(".") == -1) s += ".";
+      s += new Array(d + 1).join("0");
+      if (new RegExp("^(-|\\+)?(\\d+(\\.\\d{0," + (d + 1) + "})?)\\d*$").test(s)) {
+        var s = "0" + RegExp.$2,
+          pm = RegExp.$1,
+          a = RegExp.$3.length,
+          b = true;
+        if (a == d + 2) {
+          a = s.match(/\d/g);
+          if (parseInt(a[a.length - 1]) > 4) {
+            for (var i = a.length - 2; i >= 0; i--) {
+              a[i] = parseInt(a[i]) + 1;
+              if (a[i] == 10) {
+                a[i] = 0;
+                b = i != 1;
+              } else break;
+            }
+          }
+          s = a.join("").replace(new RegExp("(\\d+)(\\d{" + d + "})\\d$"), "$1.$2");
+        }
+        if (b) s = s.substr(1);
+        return (pm + s).replace(/\.$/, "");
+      }
+      return this + "";
+    };
+  </script>
+  <script src="__STATIC__/pc/js/jquery.min.js"></script>
+  <script src="__STATIC__/pc/js/common.js"></script>
+  <script src="__STATIC__/pc/js/jquery.ui.js"></script>
+  <script src="__STATIC__/pc/js/jquery.validation.min.js"></script>
+  <script src="__STATIC__/pc/js/jquery.poshytip.min.js"></script>
+  <script type="text/javascript" src="__STATIC__/pc/js/perfect-scrollbar.min.js"></script>
+  <script type="text/javascript" src="__STATIC__/pc/js/jquery.mousewheel.js"></script>
+  <script type="text/javascript" src="__STATIC__/pc/js/dialog.js" id="wt_dialog" charset="utf-8"></script>
+  <script src="__STATIC__/pc/js/jquery.scrollLoading-min.js" charset="utf-8"></script>
+  <script src="__STATIC__/pc/js/goods_cart.js"></script>
+  
+  <script type="text/javascript">
+    $(function () {
+      $("img[rel='lazy']").scrollLoading();
+    });
+  </script>
+</head>
+
+<body>
+    <div id="append_parent"></div>
+    <div id="ajaxwaitid"></div>
+  <div class="wt-topbar w">
+    <div class="topbar wrapper">
+      <div class="service fl">
+        <div class="home"><a href="http://https://store.cxy365.com" title="孝笑好多用户商城系统" target="_self">商城首页</a></div>
+        <div class="tel">服务热线：<b>400-000-0000</b></div>
+        <div class="m-mx"> <span><i></i><a href="http://https://store.cxy365.com/mobile">手机逛商城</a></span>
+          <div>
+            <dl class="down_app">
+              <dd>
+                <div class="qrcode"><img src="__STATIC__/pc/images/loading.gif"
+                    data-url="__STATIC__/pc/images/mb_app.png" width="120" height="120"
+                    rel="lazy" /></div>
+                <div class="hint">
+                  <h4>手机扫一扫下载</h4>
+                </div>
+                <div class="addurl">
+                  <a href="http://app.33hao.com/down/2094" target="_blank"><i class="icon-android"></i>Android</a>
+                  <a href="http://app.33hao.com/down/2094" target="_blank"><i class="icon-apple"></i>iPhone</a>
+                </div>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="left">
+          <div id="TopCity"></div>
+        </div>
+      </div>
+      <div class="right-menu">
+        <dl>
+          <dt>客户服务<i></i></dt>
+          <dd>
+            <ul>
+              <li><a href="http://https://store.cxy365.com/help-cate-2.html">帮助中心</a></li>
+              <li><a href="http://https://store.cxy365.com/help-cate-5.html">售后服务</a></li>
+              <li><a href="http://https://store.cxy365.com/help-cate-6.html">客服中心</a></li>
+            </ul>
+          </dd>
+        </dl>
+        <dl>
+          <dt><a href="https://store.cxy365.com/index.php?w=show_joinin&t=index" title="商家管理">商家管理</a><i></i></dt>
+          <dd>
+            <ul>
+              <li><a href="https://store.cxy365.com/index.php?w=show_joinin&t=index" title="招商入驻">招商入驻</a></li>
+              <li><a href="https://store.cxy365.com/index.php?w=seller_login&t=show_login" target="_blank"
+                  title="商家登录">商家登录</a></li>
+            </ul>
+          </dd>
+        </dl>
+      </div>
+      <div class="head-user-mall">
+        <dl class="my-mall">
+          <dt>
+              <span class="ico"></span>
+              <a href="{:url('member/index')}" title="我的商城">我的商城</a>
+              <i class="arrow"></i>
+          </dt>
+          <dd>
+            <div class="my-top-menu">
+              <ul>
+                <li><a href="https://store.cxy365.com/home/index.php?w=member_message&t=message">站内消息(<span>0</span>)</a>
+                </li>
+                <li><a href="{:url('member_order/index')}" class="arrow">我的订单<i></i></a></li>
+                <li><a href="https://store.cxy365.com/index.php?w=member_consult&t=my_consult">咨询回复(<span
+                      id="member_consult">0</span>)</a></li>
+                <li><a href="https://store.cxy365.com/index.php?w=member_favorite_goods&t=fglist"
+                    class="arrow">我的收藏<i></i></a></li>
+                <li><a href="https://store.cxy365.com/home/index.php?w=member_voucher&t=index">代金券(<span
+                      id="member_voucher">0</span>)</a></li>
+                <li><a href="https://store.cxy365.com/home/index.php?w=member_points&t=index"
+                    class="arrow">我的积分<i></i></a></li>
+              </ul>
+            </div>
+            <div class="my-history">
+              <div class="part-title">
+                <h4>最近浏览的商品</h4>
+                <span style="float:right;"><a
+                    href="https://store.cxy365.com/index.php?w=member_goodsbrowse&t=list">全部浏览历史</a></span>
+              </div>
+              <ul>
+                <li class="no-goods"><img class="loading"
+                    src="__STATIC__/pc/images/loading.gif" /></li>
+              </ul>
+            </div>
+          </dd>
+        </dl>
+      </div>
+      <div class="user-entry">
+        您好, <span> <a href="https://store.cxy365.com/index.php?w=member&t=home">mb9225</a>
+          <div class="wt-grade-mini" style="cursor:pointer;"
+            onclick="javascript:go('https://store.cxy365.com/grade.html');">V0</div>
+        </span><span class="wr"><a href="https://store.cxy365.com/home/index.php?w=login&t=logout">退出</a></span>
+        <span><a href="https://store.cxy365.com/index.php?w=invite">邀请返利</a></span>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var getcity = '全国';
+    //登录开关
+    var connect_qq = "1";
+    var connect_sn = "1";
+    var connect_wx = "1";
+    var connect_wx_appid = "1";
+
+    $(function () {
+      if (($.cookie("wt0"))) {
+        tCity = $.cookie("wt0").split(',');
+        $("#tbarea").html(tCity[2]);
+      } else {
+        $("#tbarea").html(getcity);
+      }
+      $('#gotop').click(function () {
+        $('html, body').animate({
+          scrollTop: 0
+        }, 500);
+      });
+      var wtkey = getCookie('wtkey');
+      if (wtkey) {
+        $("#top-banner").hide();
+      } else {
+        $("#top-banner").slideDown(800);
+      }
+      $("#top-banner .close").click(function () {
+        setCookie('wtkey', 'yes', 1);
+        $("#top-banner").hide();
+      });
+      $(".head-user-mall dl").hover(function () {
+          $(this).addClass("hover");
+        },
+        function () {
+          $(this).removeClass("hover");
+        });
+      $('.head-user-mall .my-mall').mouseover(function () {
+        load_history_information();
+        $(this).unbind('mouseover');
+      });
+
+      $('#activator').click(function () {
+        $('#content-cart').animate({
+          'right': '-250px'
+        });
+        $('#content-compare').animate({
+          'right': '-250px'
+        });
+        $('#vToolbar').animate({
+            'right': '-60px'
+          }, 300,
+          function () {
+            $('#wtHideBar').animate({
+              'right': '59px'
+            }, 300);
+          });
+        $('div[wttype^="bar"]').hide();
+      });
+      $('#wtHideBar').click(function () {
+        $('#wtHideBar').animate({
+            'right': '-86px'
+          },
+          300,
+          function () {
+            $('#content-cart').animate({
+              'right': '-250px'
+            });
+            $('#content-compare').animate({
+              'right': '-250px'
+            });
+            $('#vToolbar').animate({
+              'right': '6px'
+            }, 300);
+          });
+      });
+      $("#compare").click(function () {
+        if ($("#content-compare").css('right') == '-250px') {
+          loadCompare(false);
+          $('#content-cart').animate({
+            'right': '-250px'
+          });
+          $("#content-compare").animate({
+            right: '0px'
+          });
+        } else {
+          $(".close").click();
+          $(".chat-list").css("display", 'none');
+        }
+      });
+      $("#rtoolbar_cart").click(function () {
+        if ($("#content-cart").css('right') == '-250px') {
+          $('#content-compare').animate({
+            'right': '-250px'
+          });
+          $("#content-cart").animate({
+            right: '0px'
+          });
+          if (!$("#rtoolbar_cartlist").html()) {
+            $("#rtoolbar_cartlist").load('https://store.cxy365.com/index.php?w=cart&t=ajax_load&type=html');
+          }
+        } else {
+          $(".close").click();
+          $(".chat-list").css("display", 'none');
+        }
+      });
+      $(".close").click(function () {
+        $(".content-box").animate({
+          right: '-250px'
+        });
+      });
+
+      $(".right-menu dl").hover(function () {
+          $(this).addClass("hover");
+        },
+        function () {
+          $(this).removeClass("hover");
+        });
+
+      // 右侧bar用户信息
+      $('div[wttype="a-barUserInfo"]').click(function () {
+        $('div[wttype="barUserInfo"]').toggle();
+      });
+      // 右侧bar登录
+      $('div[wttype="a-barLoginBox"]').click(function () {
+        $('div[wttype="barLoginBox"]').toggle();
+        document.getElementById('codeimage').src = 'https://store.cxy365.com/index.php?w=vercode&type=30x92&c=' +
+          Math.random();
+      });
+      $('a[wttype="close-barLoginBox"]').click(function () {
+        $('div[wttype="barLoginBox"]').toggle();
+      });
+    });
+
+    (function () {
+      var ReplaceTpl = function (str, o, regexp) {
+        return str.replace(regexp || /\\?\{([^{}]+)\}/g, function (match, name) {
+          return (o[name] === undefined) ? '' : o[name];
+        });
+      };
+      $.ReplaceTpl = ReplaceTpl;
+      String.prototype.wtReplaceTpl = function (option) {
+        return ReplaceTpl(this, option);
+      };
+    })();
+    window.WoSmart = {},
+      ["Array", "Object", "Function", "String", "Number", "Date", "Boolean", "regexp"].forEach(function (e) {
+        WoSmart["is" + e] = function (t) {
+          return jQuery.type(t) === e.toLowerCase()
+        }
+      }),
+      jQuery.extend(WoSmart, {
+        isEmpty: function (e) {
+          return WoSmart.isBoolean(e) ? !e : null == e ? !0 : WoSmart.isNumber(e) ? 0 >= e : WoSmart.isArray(e) ||
+            WoSmart.isString(e) || e instanceof jQuery ? 0 === e.length : 0 === Object.keys(e).length
+        },
+      });
+    var topMyCity = function ($) {
+      "use strict";
+      var areaUrl = SITEURL + '/index.php?w=index&t=area_list&area_id=0';
+      var $element = {};
+      var tmpl =
+        '<a href="javascript:;" class="area"><span class="icon-map-marker"></span><span id="shortCutAreaName" title="{areaName}" data-id="{areaId}">{areaName}</span> <i></i></a>'
+
+      function _init() {
+        $element.TopCity = $("#TopCity");
+        _getAreaList();
+        "MjJTaG9wTkMySW5jMjIy";
+      }
+
+      function _getAreaIdByCookie() {
+        return $.cookie("wt0");
+      }
+
+      function _setAreaIdByCookie(value) {
+        return $.cookie("wt0", value, {
+          expires: 30,
+          path: '/'
+        });
+      }
+
+      function _getAreaList() {
+        $.getJSON(areaUrl, function (data) {
+          if (data.code == "200") {
+            _buildElement(data.data.areaList)
+          }
+        })
+      }
+
+      function _buildElement(data) {
+        var myCookie = _getAreaIdByCookie(),
+          myCity = !WoSmart.isEmpty(myCookie) ? myCookie.split(",") : "";
+        var a = $.map(data, function (n, index) {
+          //5.3	
+          if (WoSmart.isEmpty($.cookie("wt0"))) {
+            $.each(data, function (i) {
+              if (getcity == this.areaName) {
+                $.cookie("wt0", [this.areaId, this.areaDeep, this.areaName].join(","), {
+                  expires: 30,
+                  path: '/'
+                });
+              }
+            });
+          }
+          return '<div class="item"><a href="javascript:;" data-deep="' + n.areaDeep + '" data-id="' + n.areaId +
+            '" class="' +
+            ((myCity.length && n.areaId == myCity[0]) ? "selected" : "") + '">' + n.areaName + '</a></div>';
+        });
+        if (a.length) {
+          a.splice(0, 0, '<div class="item"><a href="javascript:;" data-deep="1" data-id="0" class="">全国</a></div>');
+        }
+        $element.TopCity
+          .append(tmpl.wtReplaceTpl(myCity ? {
+            areaId: myCity[0],
+            areaName: myCity[2]
+          } : {
+            areaId: 0,
+            areaName: getcity
+          }))
+          .append(
+            a.length ? '<div id="shortCutAreaList" class="area-list">' + a.join('') + '</div>' : '');
+      }
+
+      //更换当前URL
+      function changeURLPar(destiny, par, par_value) {
+        var pattern = par + '=([^&]*)';
+        var replaceText = par + '=' + par_value;
+        if (destiny.match(pattern)) {
+          var tmp = '/\\' + par + '=[^&]*/';
+          tmp = destiny.replace(eval(tmp), replaceText);
+          return (tmp);
+        } else {
+          if (destiny.match('[\?]')) {
+            return destiny + '&' + replaceText;
+          } else {
+            return destiny + '?' + replaceText;
+          }
+        }
+        return destiny + '\n' + par + '\n' + par_value;
+      }
+
+      function bindEvents() {
+        $element.TopCity.on("click", "a[data-id]", function () {
+          var $this = $(this);
+          $("#shortCutAreaList a").removeClass("selected");
+          $this.addClass("selected");
+          $("#shortCutAreaName")
+            .html($this.html())
+            .attr({
+              title: $this.html(),
+              "data-id": $this.data("id") ? $this.data("id") : 0
+            });
+          //修改cookie
+          _setAreaIdByCookie([$this.data("id"), $this.data("deep"), $this.html()].join(","));
+          $('.region').html("请选择地区");
+          $.cookie('dregion', '', {
+            expires: -1
+          });
+          var geturl = changeURLPar(window.location.href, 'area_id', $this.data("id"));
+          location.replace(geturl);
+          //location.reload(geturl);
+        })
+      }
+
+      return {
+        init: function () {
+          _init();
+          bindEvents();
+        },
+        getAreaIdByCookie: _getAreaIdByCookie
+      };
+    }(jQuery);
+    $(function () {
+//      topMyCity.init();
+
+    });
+  </script>
+  <header class="wtc-head-box">
+    <div class="site-logo"><a href="https://store.cxy365.com"><img
+          src="__STATIC__/pc/images/logo.png" class="pngFix"></a></div>
+    <ul class="wtc-flow">
+      <li class=""><i class="step1"></i>
+        <p>我的购物车</p>
+        <sub></sub>
+        <div class="hr"></div>
+      </li>
+      <li class="current"><i class="step2"></i>
+        <p>确认订单</p>
+        <sub></sub>
+        <div class="hr"></div>
+      </li>
+      <li class=""><i class="step3"></i>
+        <p>支付提交</p>
+        <sub></sub>
+        <div class="hr"></div>
+      </li>
+      <li class=""><i class="step4"></i>
+        <p>订单完成</p>
+        <sub></sub>
+        <div class="hr"></div>
+      </li>
+    </ul>
+  </header>
+  <div class="wtc-wrapper">
+
+    <script type="text/javascript">
+      //是否允许表单提交
+      var SUBMIT_FORM = true;
+      //记录无货的店铺ID数组
+      var no_send_tpl_ids = [];
+      //当前可用的优惠券
+      var rpt_list_json = $.parseJSON('[]');
+      //记录选中的门店自提ID，查询库存需要
+      var chain_id = '';
+      var chain_store_id = '';
+      //哪 些商品ID不可以门店自提
+      var no_chain_goods_ids = [];
+
+      //如果商品详细页选择了门店后，保存选择的信息
+
+      function iniRpt(order_total) {
+        var _tmp, _hide_flag = true;
+        $('#rpt').empty();
+        $('#rpt').append('<option value="|0.00">-选择使用平台优惠券-</option>');
+        for (i = 0; i < rpt_list_json.length; i++) {
+          _tmp = parseFloat(rpt_list_json[i]['coupon_limit']);
+          order_total = parseFloat(order_total);
+          if (order_total > 0 && order_total >= _tmp.toFixed(2)) {
+            $('#rpt').append("<option value='" + rpt_list_json[i]['coupon_t_id'] + '|' + rpt_list_json[i][
+              'coupon_price'] + "'>" + rpt_list_json[i]['desc'] + "</option>")
+            _hide_flag = false;
+          }
+        }
+        if (_hide_flag) {
+          $('#rpt_panel').hide();
+        } else {
+          $('#rpt_panel').show();
+        }
+      }
+
+
+      function calcPoint(inObj) {
+        $(inObj).val($(inObj).val().replace(/[^0-9]/g, ''));
+        var points_money_parity = 0.01;
+        var member_points = 50;
+        if ($(inObj).val() > member_points) {
+          $(inObj).val(member_points);
+        }
+        //1.判断输入的数字有没有大于可用积分
+        var number = $(inObj).val() * points_money_parity;
+        $('#J_Discharge').text(number.toFixed(2));
+        //2.换算抵用金钱数
+        //3.改变J_Discharge的值
+        //4.计算抵用后订单价格,改变订单总金额
+        calcOrder();
+        //alert($(this).val());
+      }
+
+      $(function () {
+        $('select[wttype="voucher"]').on('change', function () {
+          if ($(this).val() == '') {
+            $('#eachStoreVoucher_' + items[1]).html('-0.00');
+          } else {
+            var items = $(this).val().split('|');
+            $('#eachStoreVoucher_' + items[1]).html('-' + number_format(items[2], 2));
+          }
+          calcOrder();
+        });
+
+        $('#rpt').on('change', function () {
+          if (typeof allTotal == 'undefined') {
+            alert('系统正忙，请稍后再试');
+            return false
+          }
+          if ($(this).val() == '') {
+            $('#orderRpt').html('-0.00');
+            $('#orderTotal').html(allTotal.toFixed(2));
+          } else {
+            var items = $(this).val().split('|');
+            $('#orderRpt').html('-' + number_format(items[1], 2));
+            var paytotal = allTotal - parseFloat(items[1]);
+            if (paytotal < 0) paytotal = 0;
+            $('#orderTotal').html(paytotal.toFixed(2));
+          }
+        });
+
+        if (rpt_list_json.length == 0) {
+          $('#rpt_panel').remove();
+        }
+
+        //积分抵用
+        $('input[id="isPoint"]').on('change', function () {
+
+          if ($(this).attr('checked')) {
+
+            $('#J_PointInput').val('');
+            $('.buy-point-input').show();
+          } else {
+            $('#J_PointInput').val(0);
+            calcPoint($('#J_PointInput'));
+            $('.buy-point-input').hide();
+          }
+        });
+        $('#J_PointInput').bind('input propertychange', function () {
+          calcPoint(this)
+        });
+
+      });
+
+      function disableOtherEdit(showText) {
+        $('a[wt_type="buy_edit"]').each(function () {
+          if ($(this).css('display') != 'none') {
+            $(this).after('<font color="#B0B0B0">' + showText + '</font>');
+            $(this).hide();
+          }
+        });
+        disableSubmitOrder();
+      }
+
+      function ableOtherEdit() {
+        $('a[wt_type="buy_edit"]').show().next('font').remove();
+        ableSubmitOrder();
+
+      }
+
+      function ableSubmitOrder() {
+        $('#submitOrder').on('click', function () {
+          submitNext()
+        }).addClass('ok');
+      }
+
+      function disableSubmitOrder() {
+        $('#submitOrder').unbind('click').removeClass('ok');
+      }
+    </script>
+    <style type="text/css">
+        .moren_address{
+            padding-left: 5px;
+        }
+    </style>
+      <div class="wtc-main">
+        <div class="wtc-title">
+          <h3>确认订单</h3>
+          <h5>请仔细核对填写收货、发票等信息，以确保物流快递及时准确投递。</h5>
+        </div>
+
+        <div class="wtc-receipt-info">  <!-- current_box -->
+            <div class="wtc-receipt-info-title">
+              <h3>收货人信息</h3>
+              <a href="javascript:void(0)" wt_type="buy_edit" id="edit_reciver">[修改]</a>
+            </div>
+            <div id="addr_list" class="wtc-candidate-items">
+                <ul id="moren_addre">
+                    <li>
+                        <span class="true-name">{$morenAddress.contacts}</span>
+                        <span class="address">{$morenAddress.pro_name} {$morenAddress.city_name} {$morenAddress.area_name} {$morenAddress.address}</span>
+                        <span class="phone"><i class="icon-mobile-phone"> {$morenAddress.phone}</i></span>
+                    </li>
+                </ul>
+              
+                <ul id="address_list" style="display: none">
+                    {foreach name='addressList' item='v'}
+                    <li class="receive_add address_item {if ($v.moren)}wtc-selected-item{/if}">
+                        <input id="{$v.id}" type="radio" name="addr_radio" {if($v.moren)}checked{/if}>
+                        <label for="addr_{$v.id}" address_id="{$v.id}">
+                            <span class="true-name">{$v.contacts}</span>
+                            <span class="address">{$v.pro_name} {$v.city_name} {$v.area_name} {$v.address}</span>
+                            <span class="phone"><i class="icon-mobile-phone"></i> {$v.phone}</span>
+                        </label>
+                        <a href="javascript:void(0);" onclick="delAddr('{$v.id}');" class="del">[ 删除 ]</a>
+                        <span id="moren_addr_{$v.id}" class="moren_address">{if($v.moren)}[当前为默认收货地址]{/if}</span>
+                    </li>
+                    {/foreach}
+                    
+                    <li class="receive_add addr_item">
+                        <input id="" type="radio" name="addr_radio" {if(!$morenAddress)}checked{/if}>
+                        <label for="add_addr">添加新地址</label>
+                    </li>
+                    <div id="add_addr_box" style="display: none">
+                        <div class="wtc-form-default">
+                          <dl>
+                            <dt><i class="required">*</i>收货人姓名：</dt>
+                            <dd>
+                              <input type="text" class="text w100" name="contacts" maxlength="20" id="phone" value="">
+                            </dd>
+                          </dl>
+                          <dl>
+                            <dt><i class="required">*</i>所在地区：</dt>
+                            <dd>
+                              <div style="display: inline-flex;">
+                                  <div id="pro_select">
+                                      <select id="pro" onchange="getCityList();">
+                                          <option value="">-请选择-</option>
+                                          {foreach name='province' item='v'}
+                                          <option value="{$v.id}">{$v.pro_name}</option>
+                                          {/foreach}
+                                      </select>
+                                  </div>
+                                  <div id="city_select"></div>
+                                  <div id="area_select"></div>
+                              </div>
+                            </dd>
+                          </dl>
+                          <dl>
+                            <dt><i class="required">*</i>详细地址：</dt>
+                            <dd>
+                              <input type="text" class="text w500" name="address" id="address" maxlength="80" value="">
+                              <p class="hint">请填写真实地址，不需要重复填写所在地区</p>
+                            </dd>
+                          </dl>
+                          <dl>
+                            <dt> <i class="required">*</i>手机号码：</dt>
+                            <dd>
+                              <input type="text" class="text w200" name="phone" id="phone" maxlength="15" value="">
+                            </dd>
+                          </dl>
+                        </div>
+                        <div class="hr16"> <a id="save_address" class="wtbtn wtbtn-grapefruit" href="javascript:void(0);">保存收货人信息</a></div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript">
+            
+        $(function () {
+            var is_moren = '{$is_moren}';
+            var has_address = '{$has_address}';
+            if (!is_moren) {
+                $("#moren_addre").hide();
+                $("#address_list").show();
+                $("#edit_reciver").hide();
+                $("#addr_list").parent().addClass('current_box');
+            }
+            if (!has_address) {
+                $("#add_addr_box").show();
+            }
+        });
+            
+        //根据省获取市
+        function getCityList() {
+            var url = "{:url('buy/get_city_list')}";
+            var pro_id = $("#pro").val();
+            if (!pro_id) {
+                $("#city_select").html('');
+                $("#area_select").html('');
+                return;
+            }
+            $.post(url, {pro_id: pro_id}, function(res) {
+                if (res.status) {
+                    if ($("#area_select").children().length) {
+                        $("#area_select").html('');
+                    }
+                    selectCityList(res.data);
+                } else {
+                    console.log(res.mess);
+                }
+            }, 'json');
+        }
+            
+        //根据市获取区域
+        function getAreaList() {
+            var url = "{:url('buy/get_area_list')}";
+            var city_id = $("#city").val();
+            if (!city_id) {
+                $("#area_select").html('');
+                return;
+            }
+            $.post(url, {city_id: city_id}, function(res) {
+                if (res.status) {
+                    selectAreaList(res.data);
+                } else {
+                    console.log(res.mess);
+                }
+            }, 'json');
+        }
+            
+        function selectCityList(data) {
+            var city_html = "<select id='city' onchange='getAreaList();'><option value=''>-请选择-</option>";
+            for (var key in data) {
+                city_html += "<option value='"+ data[key].id +"'>" + data[key].city_name + "</option>";
+            }
+            city_html += "</select>";
+            $("#city_select").html(city_html);
+        }
+
+        function selectAreaList(data) {
+            var area_html = "<select id='area'><option value=''>-请选择-</option>";
+            for (var key in data) {
+                area_html += "<option value='"+ data[key].id +"'>" + data[key].area_name + "</option>";
+            }
+            area_html += "</select>";
+            $("#area_select").html(area_html);
+        }
+            
+        $("#addr_list li label").bind("click", function() {
+            $("#addr_list li").siblings('li').removeClass('wtc-selected-item');
+            $(this).parent().addClass('wtc-selected-item');
+            $('input:radio[name="addr_radio"]').removeAttr('checked');
+            $(this).parent().children("input").attr('checked', 'true');
+            if ($("#add_addr_box").css("display") == "none" && $(this).attr('for') == "add_addr") {
+                $("#add_addr_box").show();
+            } 
+            if ($(this).attr('for') != "add_addr") {
+                $("#add_addr_box").hide();
+                var address_id = $(this).attr("address_id");
+                updateMorenAddress(address_id, this);
+            }
+        });
+        
+        function checkChoiceAddress() {
+            var has_address = '{$has_address}';
+            if (!has_address) {
+                showDialog('请填写收货地址');
+                return false;
+            }
+            var addr_radio = $('input:radio[name="addr_radio"]:checked').attr('id');
+            if (!addr_radio) {
+                showDialog('请选择一个地址');
+                return false;
+            }
+            return true;
+        }
+            
+        function updateMorenAddress(address_id, that) {
+            if (!address_id) {
+                return;
+            }
+            layer.load(2);
+            $.ajax({
+                url:'{:url("buy/update_morem_address")}',
+                type:'POST',
+                data:{'address_id': address_id},
+                dataType:'json',
+                success:function(data){
+                    layer.closeAll('loading');
+                    if(data.status){
+                        $(".moren_address").html("");
+                        $("#moren_addr_"+address_id).html("[当前为默认收货地址]");
+                        $("input[name='dz_id']").val(address_id);
+                        changeMorenShow(that);
+                    }else{
+                        showDialog(data.mess);
+                    }
+                },
+                error:function(){
+                    layer.closeAll('loading');
+                    showDialog('操作失败，请重试', 'error', '', '', '', '', '', '', '', '', 2);
+                }
+            });
+        }
+            
+        function changeMorenShow(that) {
+            var contacts = $(that).find('.true-name').text();
+            var address = $(that).find('.address').text();
+            var phone = $(that).find('.phone').text();
+            $("#moren_addre .true-name").text(contacts);
+            $("#moren_addre .address").text(address);
+            $("#moren_addre .phone .icon-mobile-phone").text(phone);
+        }
+            
+        $("#save_address").bind('click', function() {
+            layer.load(2);
+            var contacts = $("input[name='contacts']").val();
+            var pro_id = $("#pro").val();
+            var city_id = $("#city").val();
+            var area_id = $("#area").val();
+            var address = $("input[name='address']").val();
+            var phone = $("input[name='phone']").val();
+            var addre_data = {contacts: contacts, pro_id: pro_id, city_id: city_id, area_id: area_id, address: address, phone: phone};
+            $.ajax({
+                url:'{:url("buy/add_address")}',
+                type:'POST',
+                data:addre_data,
+                dataType:'json',
+                success:function(data){
+                    layer.closeAll('loading');
+                    if(data.status){
+                        window.location.reload();
+                    }else{
+                        showDialog(data.mess);
+                    }
+                },
+                error:function(){
+                    layer.closeAll('loading');
+                    showDialog('操作失败，请重试', 'error', '', '', '', '', '', '', '', '', 2);
+                }
+            });
+        });
+            
+        function delAddr(address_id) {
+            showDialog('确认删除吗?', 'confirm', '', function(){
+                layer.load(2);
+                $.ajax({
+                    url:'{:url("buy/del_address")}',
+                    type:'POST',
+                    data: {address_id: address_id},
+                    dataType:'json',
+                    success:function(data){
+                        layer.closeAll('loading');
+                        if(data.status){
+                            window.location.reload();
+                        }
+                    },
+                    error:function(){
+                        layer.closeAll('loading');
+                        showDialog('操作失败，请重试', 'error', '', '', '', '', '', '', '', '', 2);
+                    }
+                });
+            });
+        }
+            
+        //隐藏收货地址列表
+        function hideAddrList(addr_id, true_name, address, phone) {
+            $('#edit_reciver').show();
+            $("#address_id").val(addr_id);
+            $("#addr_list").html('<ul><li><span class="true-name">' + true_name + '</span><span class="address">' +
+              address + '</span><span class="phone"><i class="icon-mobile-phone"></i>' + phone + '</span></li></ul>');
+            $('.current_box').removeClass('current_box');
+            ableOtherEdit();
+            $('#edit_payment').click();
+        }
+          
+          //加载收货地址列表
+        $('#edit_reciver').on('click', function () {
+            $(this).hide();
+            $(this).parent().parent().addClass('current_box');
+            $("#moren_addre").hide();
+            $("#address_list").show();
+        });
+        
+          //异步显示每个店铺运费 city_id计算运费area_id计算是否支持货到付款
+          function showShippingPrice(city_id, area_id) {
+            $('#buy_city_id').val('');
+            $.post(SITEURL + '/index.php?w=buy&t=change_addr', {
+              'freight_hash': 'ouuUqwwbnQC_ufgxmioc-vRTT7xZMskLd6uM6lYVk3g6Sw0d8sqwHB4vEbZmF45h7u3xwY0gr5t-YRqphd2_OW2y9voxfS7QIujmZ4yw3X3yF5vjHds-3Dg3x-pRfz4EFxnzOEzu0Bb4tI3Onu3hESzB_G5AokhJJX2CrHwDFjoz2BsxMcnG0-vR_ppTpp5T7yyeM1lIZc1Bjm4UFGrBGF2v08qWd85Pe_FxgQf',
+              city_id: city_id,
+              'area_id': area_id
+            }, function (data) {
+              if (data.state == 'success') {
+                $('#buy_city_id').val(city_id ? city_id : area_id);
+                $('#allow_offpay').val(data.allow_offpay);
+                if (data.allow_offpay_batch) {
+                  var arr = new Array();
+                  $.each(data.allow_offpay_batch, function (k, v) {
+                    arr.push('' + k + ':' + (v ? 1 : 0));
+                  });
+                  $('#allow_offpay_batch').val(arr.join(";"));
+                }
+                $('#offpay_hash').val(data.offpay_hash);
+                $('#offpay_hash_batch').val(data.offpay_hash_batch);
+                var content = data.content;
+                var tpl_ids = data.no_send_tpl_ids;
+                no_send_tpl_ids = [];
+                no_chain_goods_ids = [];
+                for (var i in content) {
+                  if (content[i] !== false) {
+                    $('#eachStoreFreight_' + i).html(number_format(content[i], 2));
+                  } else {
+                    no_send_store_ids[i] = true;
+                  }
+                }
+                for (var i in tpl_ids) {
+                  no_send_tpl_ids[tpl_ids[i]] = true;
+                }
+                calcOrder();
+              } else {
+                showDialog('系统出现异常', 'error', '', '', '', '', '', '', '', '', 2);
+              }
+
+            }, 'json');
+          }
+
+          //根据门店自提站ID计算商品是否有库存（有库存即支持自提）
+          function showProductChain(city_id) {
+            $('#buy_city_id').val('');
+            var product = [];
+            $('input[name="goods_id[]"]').each(function () {
+              product.push($(this).val());
+            });
+            $.post(SITEURL + '/index.php?w=buy&t=change_chain', {
+              chain_id: chain_id,
+              product: product.join('-')
+            }, function (data) {
+              if (data.state == 'success') {
+                $('#buy_city_id').val(city_id);
+                $('em[wt_type="eachStoreFreight"]').html('0.00');
+                no_send_tpl_ids = [];
+                no_chain_goods_ids = [];
+                if (data.product.length > 0) {
+                  for (var i in data.product) {
+                    no_chain_goods_ids[data.product[i]] = true;
+                  }
+                }
+                calcOrder();
+              } else {
+                showDialog('系统出现异常', 'error', '', '', '', '', '', '', '', '', 2);
+              }
+            }, 'json');
+          }
+          
+        </script>
+
+        <script type="text/javascript">
+          $(function () {
+
+            var hybrid = 0;
+
+            var failInPage = false;
+
+            // 重新调整在线支付/到付的商品展示
+            var setCodGoodsShow = function () {
+              var j = $('#allow_offpay_batch').val();
+              var arr = {};
+              if (j) {
+                $.each(j.split(';'), function (k, v) {
+                  vv = v.split(':');
+                  arr[vv[0]] = vv[1] == '1' ? true : false;
+                });
+              }
+
+              $.each(arr, function (k, v) {
+                //console.log(''+k+':'+v);
+                if (v) {
+                  $("[data-cod-type='online'] [data-cod-store='" + k + "']").appendTo(
+                    "[data-cod-type='offline']");
+                  $("[data-cod-type='online'] [data-cod-store='" + k + "']").remove();
+
+                  $("[data-cod2-type='online'] [data-cod2-store='" + k + "']").appendTo(
+                    "[data-cod2-type='offline']");
+                  $("[data-cod2-type='online'] [data-cod2-store='" + k + "']").remove();
+                } else {
+                  $("[data-cod-type='offline'] [data-cod-store='" + k + "']").appendTo(
+                    "[data-cod-type='online']");
+                  $("[data-cod-type='offline'] [data-cod-store='" + k + "']").remove();
+
+                  $("[data-cod2-type='offline'] [data-cod2-store='" + k + "']").appendTo(
+                    "[data-cod2-type='online']");
+                  $("[data-cod2-type='offline'] [data-cod2-store='" + k + "']").remove();
+                }
+              });
+
+              var off = $("[data-cod2-type='offline'] [data-cod2-store]").length;
+              var on = $("[data-cod2-type='online'] [data-cod2-store]").length;
+
+              $("[data-hideshow='offline']")[off ? 'show' : 'hide']();
+              $("[data-hideshow='online']")[on ? 'show' : 'hide']();
+
+              $("span[data-cod-nums='offline']").html(off);
+              $("span[data-cod-nums='online']").html(on);
+
+              failInPage = !off;
+              hybrid = off && on;
+
+            };
+
+            //点击修改支付方式
+            $('#edit_payment').on('click', function () {
+                if (!checkChoiceAddress()) {
+                    return false;
+                }
+                $("#address_list").hide();
+                $("#moren_addre").show();
+                $("#addr_list").parent().removeClass('current_box');
+                $('#edit_payment').parent().next().remove();
+                $(this).hide();
+                $('#paymentCon').addClass('current_box');
+                $('#payment_list').show();
+                if (chain_id != '') {
+                  $('#payment_type_offline').parent().hide();
+                  $('#payment_type_chain').parent().show();
+                } else {
+                  $('#payment_type_online').attr('checked', true);
+                  $('#payment_type_chain').parent().hide();
+                  $('#payment_type_offline').parent().show();
+                }
+                disableOtherEdit('如需要修改，请先保存支付方式');
+            });
+            //保存支付方式
+            $('#hide_payment_list').on('click', function () {
+              var payment_type = $('input[name="payment_type"]:checked').val();
+              if ($('input[name="payment_type"]:checked').size() == 0) return;
+
+              setCodGoodsShow();
+
+              //判断该地区(县ID)是否能货到付款
+              if (payment_type == 'offline' && ($('#allow_offpay').val() == '0' || failInPage)) {
+                showDialog('您目前选择的收货地区不支持货到付款!', 'error', '', '', '', '', '', '', '', '', 2);
+                return;
+              }
+              $('#payment_list').hide();
+              $('#edit_payment').show();
+              $('.current_box').removeClass('current_box');
+              if (payment_type == 'chain') {
+                var content = '门店支付';
+              } else {
+                var content = (payment_type == 'online' ? '在线支付' : '货到付款');
+              }
+
+              $('#pay_name').val(payment_type);
+
+              if (payment_type == 'offline') {
+                //如果混合支付（在线+货到付款）
+                if (hybrid) {
+                  content = $('#show_goods_list').clone().html();
+                  $('#edit_payment').parent().after(
+                    '<div class="wtc-candidate-items"><ul><li>您选择货到付款 + 在线支付完成此订单<br/><a href="javsacript:void(0);" id="show_goods_list" class="wtc-payment-showgoods">' +
+                    content + '</a></li></ul></div>');
+                  $('#show_goods_list').hover(function () {
+                    showPayGoodsList(this)
+                  }, function () {
+                    $('#wtc-payment-showgoods-list').fadeOut()
+                  });
+                } else {
+                  $('#edit_payment').parent().after('<div class="wtc-candidate-items"><ul><li>' + content +
+                    '</li></ul></div>');
+                }
+              } else {
+                $('#edit_payment').parent().after('<div class="wtc-candidate-items"><ul><li>' + content +
+                  '</li></ul></div>');
+              }
+              ableOtherEdit();
+            });
+            $('#show_goods_list').hover(function () {
+              showPayGoodsList(this)
+            }, function () {
+              $('#wtc-payment-showgoods-list').fadeOut()
+            });
+
+            function showPayGoodsList(item) {
+              var pos = $(item).position();
+              var pos_x = pos.left + 0;
+              var pos_y = pos.top + 25;
+              $("#wtc-payment-showgoods-list").css({
+                'left': pos_x,
+                'top': pos_y,
+                'position': 'absolute',
+                'display': 'block'
+              });
+              $('#wtc-payment-showgoods-list').addClass('wtc-payment-showgoods-list').fadeIn();
+            }
+            $('input[name="payment_type"]').on('change', function () {
+              if ($(this).val() == 'online') {
+                $('#show_goods_list').hide();
+              } else {
+                if ($(this).val() == 'offline') {
+                  setCodGoodsShow();
+                  //判断该地区(县ID)是否能货到付款
+                  if (($('#allow_offpay').val() == '0') || failInPage) {
+                    $('#payment_type_online').attr('checked', true);
+                    showDialog('您目前选择的收货地区不支持货到付款', 'error', '', '', '', '', '', '', '', '', 2);
+                    return;
+                  }
+                  html_form('confirm_pay_type', '请确认支付方式', $('#confirm_offpay_goods_list').html(), 500, 1);
+                  $('#show_goods_list').show();
+                } else {}
+              }
+            });
+
+            $('body').on('click', '#close_confirm_button', function () {
+              DialogManager.close('confirm_pay_type');
+            });
+          })
+        </script>
+        <div class="wtc-receipt-info">
+          <div class="wtc-receipt-info-title">
+            <h3>发票信息</h3>
+            <!--<a href="javascript:void(0)" wt_type="buy_edit" id="edit_invoice">[修改]</a>-->
+          </div>
+          <div id="invoice_list" class="wtc-candidate-items">
+            <ul>
+              <li>不需要发票</li>
+            </ul>
+          </div>
+        </div>
+        <script type="text/javascript">
+          //隐藏发票列表
+          function hideInvList(content) {
+            $('#edit_invoice').show();
+            $("#invoice_list").html('<ul><li>' + content + '</li></ul>');
+            $('.current_box').removeClass('current_box');
+            ableOtherEdit();
+            //重新定位到顶部
+            $("html, body").animate({
+              scrollTop: 0
+            }, 0);
+          }
+          //加载发票列表
+          $('#edit_invoice').on('click', function () {
+            $(this).hide();
+            disableOtherEdit('如需修改，请先保存发票信息');
+            $(this).parent().parent().addClass('current_box');
+            $('#invoice_list').load(SITEURL +
+              '/index.php?w=buy&t=load_inv&vat_hash=ScaOVsyWHWkbqLkjGgbOy_feeSUuD1sr-aI');
+          });
+        </script>
+
+        <div class="wtc-receipt-info">
+          <div class="wtc-receipt-info-title">
+            <h3>商品清单</h3>
+          </div>
+          <table class="wtc-table-style">
+            <thead>
+              <tr>
+                <th class="w50"></th>
+                <th></th>
+                <th>商品</th>
+                <th class="w150">单价(元)</th>
+                <th class="w100">数量</th>
+                <th class="w150">小计(元)</th>
+              </tr>
+            </thead>
+            
+            <tbody>
+                {foreach name='$pur_goods.goodinfo' item='v'}
+                <tr>
+                    <th colspan="20">
+                        <div class="wtc-store-name">店铺：<a href="{:url('shops/shopinfo', array('shop_id' => $v.goodres.0.shop_id))}">{$v.goodres.0.shop_name}</a> </div>
+                        {if($v.coupon_str)}
+                        <div class="wtc-store-sale ms"> <span></span>{$v.coupon_str}</div>
+                        {/if}
+                        {if($v.cxhuodong)}
+                        <div class="wtc-store-sale"> <span></span>{$v.cxhuodong|implode='。'}</div>
+                        {/if}
+                    </th>
+                </tr>
+                {foreach name='$v.goodres' item='g'}
+                <tr id="cart_item_321" class="shop-list ">
+                  <td class="td-border-left"> 
+                  </td>
+                  <td class="w100"><a href="{:url('goods/goodsinfo', array('goods_id' => $g.id))}" target="_blank"
+                      class="wtc-goods-thumb"><img src="{$g.thumb_url}" alt="{$g.goods_name}" /></a></td>
+                  <td class="tl">
+                    <dl class="wtc-goods-content">
+                      <dt>
+                        <a href="{:url('goods/goodsinfo', array('goods_id' => $g.id))}" target="_blank">{$g.goods_name}</a></dt>
+                      <dd class="goods-spec">{$g.goods_attr_str}</dd>
+                    </dl>
+                  </td>
+                  <td>
+                    <em class="goods-price">{$g.shop_price}</em><!-- E 商品单价 -->
+                  </td>
+                  <td>{$g.goods_num}</td>
+                  <td class="td-border-right"> <em cart_id="321" goods_id="219" wt_type="eachGoodsTotal3" tpl_id="0"
+                      class="goods-subtotal">{$g.shop_price*$g.goods_num|number_format=2}</em> <span id="no_send_tpl_0"
+                      style="color: #F00;display:none">无货</span>
+                  </td>
+                </tr>
+                <tr><td colspan="20"></td></tr>
+                {/foreach}
+                <tr>
+                    <td colspan="20" style="border-top: none">
+                      <div class="wtc-msg">买家留言：
+                        <textarea name="beizhu" class="wtc-msg-textarea" placeholder="选填：对本次交易的说明（建议填写已经和商家达成一致的说明）"
+                          title="选填：对本次交易的说明（建议填写已经和商家达成一致的说明）" maxlength="150"></textarea>
+                      </div>
+                      <div class="wtc-store-account">
+                        <dl>
+                          <dt>商品金额：</dt>
+                          <dd class="rule"></dd>
+                          <dd class="sum"><em id="eachStoreGoodsTotal_3">{$v.xiaoji_price}</em></dd>
+                        </dl>
+                        <dl class="total">
+                          <dt>本店合计：</dt>
+                          <dd class="rule"></dd>
+                          <dd class="sum"><em store_id="3" wt_type="eachStoreTotal">{$v.xiaoji_price}</em>元</dd>
+                        </dl>
+                      </div>
+                    </td>
+                </tr>
+                {/foreach}
+                
+            </tbody>
+            <tfoot>
+              <!-- S rpt list -->
+              <tr id="rpt_panel" style="display: none">
+                <td class="pd-account" colspan="20">
+                  <div class="wtc-store-account">
+                    <dl>
+                      <dt>平台优惠券：</dt>
+                      <dd class="rule">
+                        <select wttype="rpt" id="rpt" name="rpt" class="select">
+                        </select>
+                      <dd class="sum"><em id="orderRpt" class="subtract">-0.00</em></dd>
+                    </dl>
+                  </div>
+                </td>
+              </tr>
+              <!-- E rpt list -->
+              <!-- S 积分抵用 -->
+              <tr>
+              </tr>
+              <!-- E 积分抵用 -->
+              <tr>
+                <td colspan="20"> 
+                    <!--<a href="index.php?w=cart" class="wtc-prev-btn"><i class="icon-angle-left"></i>返回购物车</a>-->
+                  <div class="wtc-all-account">订单总金额：<em id="orderTotal">{$pur_goods.zsprice}</em>元</div>
+                  {notempty name='$pur_goods.pur_id'}
+                  <input type="hidden" name="pur_id" value="{$pur_goods.pur_id}">
+                  {/notempty}
+                  {notempty name='$pur_goods.cart_idres'}
+                  <input type="hidden" name="cart_idres" value="{$pur_goods.cart_idres}">
+                  {/notempty}
+                  <input type="hidden" name="dz_id" value="{$pur_goods.address.id}">
+                  <a href="javascript:void(0)" id='orderSubmit' class="wtc-next-submit ok">提交订单</a>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <script>
+            
+            $("#orderSubmit").bind('click', function() {
+                if (!checkChoiceAddress()) {
+                    return false;
+                }
+                var pur_id = $("input[name='pur_id']").val();
+                var cart_idres = $("input[name='cart_idres']").val();
+                var dz_id = $("input[name='dz_id']").val();
+                var beizhu = $("textarea[name='beizhu']").val();
+                var url = "";
+                var data = {};
+                if (pur_id) {
+                    url = '{:url("order/puraddorder")}';
+                    data = {pur_id: pur_id, dz_id: dz_id, beizhu: beizhu};
+                } 
+                if (cart_idres) {
+                    url = '{:url("order/addorder")}';
+                    data = {cart_idres: cart_idres, dz_id: dz_id};
+                }
+                
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: data,
+                    dataType:'json',
+                    success:function(data) {
+                        if(data.status == 200){
+                            window.location.href = "/{$Request.module}/pay/orderpay/order_number/" + data.data.order_number;
+                        } else {
+                            showDialog(data.mess);
+                        }
+                    },
+                    error:function() {
+                        showDialog('操作失败，请重试', 'error', '', '', '', '', '', '', '', '', 2);
+                    }
+                });
+            });
+            
+          function submitNext() {
+            if (!SUBMIT_FORM) return;
+
+            if ($('input[name="cart_id[]"]').size() == 0) {
+              showDialog('所购商品无效', 'error', '', '', '', '', '', '', '', '', 2);
+              return;
+            }
+            if ($('#address_id').val() == '') {
+              showDialog('请先设置收货地址', 'error', '', '', '', '', '', '', '', '', 2);
+              return;
+            }
+            if ($('#buy_city_id').val() == '') {
+              showDialog('正在计算运费,请稍后！', 'error', '', '', '', '', '', '', '', '', 2);
+              return;
+            }
+            if ($('input[name="fcode"]').size() == 1 && $('#fcode_callback').val() != '1') {
+              showDialog('请输入并使用F码！', 'error', '', '', '', '', '', '', '', '', 2);
+              return;
+            }
+            if (no_send_tpl_ids.length > 0 || no_chain_goods_ids.length > 0) {
+              showDialog('有部分商品配送范围无法覆盖您选择的地址，请更换其它商品！', 'error', '', '', '', '', '', '', '', '', 4);
+              return;
+            }
+            SUBMIT_FORM = false;
+            $('#order_form').submit();
+          }
+
+          //计算总运费和每个店铺小计
+          function calcOrder() {
+            allTotal = 0;
+            $('em[wt_type="eachStoreTotal"]').each(function () {
+              store_id = $(this).attr('store_id');
+              var eachTotal = 0;
+              $('em[wt_type="eachGoodsTotal' + store_id + '"]').each(function () {
+                if (no_send_tpl_ids[$(this).attr('tpl_id')]) {
+                  $(this).next().show();
+                  $('#cart_item_' + $(this).attr('cart_id')).addClass('item_disabled');
+                } else {
+                  if (no_chain_goods_ids[$(this).attr('goods_id')]) {
+                    $(this).next().show();
+                    $('#cart_item_' + $(this).attr('cart_id')).addClass('item_disabled');
+                  } else {
+                    $(this).next().hide();
+                    $('#cart_item_' + $(this).attr('cart_id')).removeClass('item_disabled');
+                  }
+                }
+              });
+              if ($('#eachStoreGoodsTotal_' + store_id).length > 0) {
+                eachTotal += parseFloat($('#eachStoreGoodsTotal_' + store_id).html());
+              }
+              if ($('#eachStoreManSong_' + store_id).length > 0) {
+                eachTotal += parseFloat($('#eachStoreManSong_' + store_id).html());
+              }
+              if ($('#eachStoreVoucher_' + store_id).length > 0) {
+                eachTotal += parseFloat($('#eachStoreVoucher_' + store_id).html());
+              }
+              if ($('#eachStoreFreight_' + store_id).length > 0) {
+                eachTotal += parseFloat($('#eachStoreFreight_' + store_id).html());
+              }
+              allTotal += eachTotal;
+              $(this).html(eachTotal.toFixed(2));
+            });
+
+
+            var pm_parity = 0.01;
+            var pm_rate = 50;
+
+            var pm_allow = parseInt((pm_rate * allTotal * 0.01) / pm_parity);
+            var m_points = 50;
+            if (pm_allow > m_points) {
+              pm_allow = m_points;
+            }
+            $('#ismaxallow').html(pm_allow);
+
+            if ($('#J_Discharge').length > 0) {
+              if (parseInt($('#J_PointInput').val()) > pm_allow) {
+                showDialog('超过当前最多可抵用积分！', 'error', '', '', '', '', '', '', '', '', 4);
+                $('#J_PointInput').val(pm_allow);
+                var pnumber = pm_allow * pm_parity;
+                $('#J_Discharge').text(pnumber.toFixed(2));
+              }
+              allTotal -= parseFloat($('#J_Discharge').text());
+            }
+            if ($('#orderRpt').length > 0) {
+              iniRpt(allTotal.toFixed(2));
+              $('#orderRpt').html('-0.00');
+            }
+            $('#orderTotal').html(allTotal.toFixed(2));
+            $('#submitOrder').on('click', function () {
+              submitNext()
+            }).addClass('ok');
+          }
+          $(function () {
+            var tpl = $('#jjg-valid-skus-tpl').html();
+            var jjgValidSkus = [];
+
+            $footers = {};
+            $('[data-jjg]').each(function () {
+              var id = $(this).attr('data-jjg');
+              if (!$footers[id]) {
+                var $footer = $('<tr><td colspan="20"></td></tr>');
+                $footers[id] = $footer;
+                $("tr[data-jjg='" + id + "']:last").after($footer);
+              }
+            });
+
+            $.each(jjgValidSkus || {}, function (k, v) {
+              $.each(v || {}, function (kk, vv) {
+                var s = tpl.replace(/%(\w+)%/g, function ($m, $1) {
+                  return vv[$1];
+                });
+                var $s = $(s);
+                $s.find('img[data-src]').each(function () {
+                  this.src = $(this).attr('data-src');
+                });
+                $footers[k].before($s);
+              });
+            });
+          });
+        </script>
+
+        <input value="buy" type="hidden" name="w">
+        <input value="buy_step2" type="hidden" name="t">
+        <!-- 来源于购物车标志 -->
+        <input value="1" type="hidden" name="ifcart">
+
+        <!-- offline/online -->
+        <input value="online" name="pay_name" id="pay_name" type="hidden">
+
+        <!-- 是否保存增值税发票判断标志 -->
+        <input value="ScaOVsyWHWkbqLkjGgbOy_feeSUuD1sr-aI" name="vat_hash" type="hidden">
+
+        <!-- 收货地址ID -->
+        <input value="" name="address_id" id="address_id" type="hidden">
+
+        <!-- 城市ID(运费) -->
+        <input value="" name="buy_city_id" id="buy_city_id" type="hidden">
+
+        <!-- 自提门店 -->
+        <input value="" name="chain[id]" id="input_chain_id" type="hidden">
+        <input value="" name="chain[buyer_name]" id="input_chain_buyer_name" type="hidden">
+        <input value="" name="chain[tel_phone]" id="input_chain_tel_phone" type="hidden">
+        <input value="" name="chain[mob_phone]" id="input_chain_mob_phone" type="hidden">
+
+        <!-- 记录所选地区是否支持货到付款 第一个前端JS判断 第二个后端PHP判断 -->
+        <input value="" id="allow_offpay" name="allow_offpay" type="hidden">
+        <input value="" id="allow_offpay_batch" name="allow_offpay_batch" type="hidden">
+        <input value="" id="offpay_hash" name="offpay_hash" type="hidden">
+        <input value="" id="offpay_hash_batch" name="offpay_hash_batch" type="hidden">
+
+        <!-- 默认使用的发票 -->
+        <input value="" name="invoice_id" id="invoice_id" type="hidden">
+        <input value="https://store.cxy365.com/index.php?w=cart" name="ref_url" type="hidden">
+      </div>
+
+  </div>
+  <link href="__STATIC__/pc/css/chat.css" rel="stylesheet" type="text/css">
+  <div style="clear: both;"></div>
+  <div id="web_chat_dialog" style="display: none;float:right;">
+  </div>
+  <a id="chat_login" href="javascript:void(0)" style="display: none;"></a>
+  <script type="text/javascript">
+    var LOGIN_SITE_URL = 'https://store.cxy365.com/home';
+    var CHAT_SITE_URL = 'https://store.cxy365.com/api/im';
+    var BASE_SITE_URL = 'https://store.cxy365.com';
+    var connect_url = "http://211.149.249.207:33";
+
+    var layout = "layout/buy_layout.php";
+    var w_t = "buy_buy_step1";
+    var chat_goods_id = "0";
+    var user = {};
+
+    user['u_id'] = "757";
+    user['u_name'] = "mb9225";
+    user['s_id'] = "";
+    user['s_name'] = "";
+    user['s_avatar'] = "__STATIC__/pc/images/default_store_avatar.png";
+    user['avatar'] = "__STATIC__/pc/images/default_user_portrait.gif";
+
+    $("#chat_login").wt_login({
+      wthash: 'b81b3387',
+      formhash: '8BGl_npQ1IDdUeRHAv9BGmP_XgsKDBl'
+    });
+  </script>
+  <script type="text/javascript" src="https://store.cxy365.com/system/static/js/jquery.charCount.js" charset="utf-8">
+  </script>
+  <script type="text/javascript" src="https://store.cxy365.com/system/static/js/jquery.smilies.js" charset="utf-8">
+  </script>
+  <script type="text/javascript" src="https://store.cxy365.com/api/im/static/js/user.js" charset="utf-8"></script>
+  <div class="slogen">
+    <div class="wrapper">
+      <ul>
+        <li><span class="line"></span> <span class="icon"> <img style="width: 60px;"
+              src="__STATIC__/pc/images/loading.gif"
+              data-url="https://store.cxy365.com/system/upfiles/shop/contracticon/7day_60.gif" rel="lazy" /> </span> <span
+            class="name"> 7天退货 </span> </li>
+        <li><span class="line"></span> <span class="icon"> <img style="width: 60px;"
+              src="__STATIC__/pc/images/loading.gif"
+              data-url="https://store.cxy365.com/system/upfiles/shop/contracticon/pz_60.gif" rel="lazy" /> </span> <span
+            class="name"> 品质承诺 </span> </li>
+        <li><span class="line"></span> <span class="icon"> <img style="width: 60px;"
+              src="__STATIC__/pc/images/loading.gif"
+              data-url="https://store.cxy365.com/system/upfiles/shop/contracticon/psbf_60.gif" rel="lazy" /> </span> <span
+            class="name"> 破损补寄 </span> </li>
+        <li><span class="line"></span> <span class="icon"> <img style="width: 60px;"
+              src="__STATIC__/pc/images/loading.gif"
+              data-url="https://store.cxy365.com/system/upfiles/shop/contracticon/jswl_60.gif" rel="lazy" /> </span> <span
+            class="name"> 急速物流 </span> </li>
+      </ul>
+    </div>
+  </div>
+  <div class="faq">
+    <div class="wrapper">
+    </div>
+  </div>
+  <div class="footer">
+    <p><a href="https://store.cxy365.com">首页</a>
+      | <a href="https://store.cxy365.com/index.php?w=article&amp;article_id=24">招聘英才</a>
+      | <a href="https://store.cxy365.com/index.php?w=article&amp;article_id=25">合作及洽谈</a>
+      | <a href="https://store.cxy365.com/index.php?w=article&amp;article_id=23">联系我们</a>
+      | <a href="https://store.cxy365.com/since">物流自取</a>
+      | <a href="https://store.cxy365.com/link.html">友情链接</a>
+      | <a href="https://store.cxy365.com/home/index.php?w=article&amp;article_id=22">关于我们</a>
+    </p>
+    Copyright 2018 <a href="https://store.cxy365.com" target="_blank">孝笑好</a> All rights reserved.<br />版权所有：<a
+      href="https://store.cxy365.com" target="_blank">store.cxy365.com</a> <a href="http://www.miibeian.gov.cn"
+      rel="nofollow" target="_blank"></a>
+  </div>
+  <div id="task"></div>
+  <script type="text/javascript">
+    document.getElementById('task').innerHTML =
+      '<iframe src="https://store.cxy365.com/system/task/cj_index.php?w=task&run=js" width="0" height="0" frameborder="0" style="display:none;"></iframe>';
+  </script>
+  <script type="text/javascript" src="__STATIC__/pc/js/jquery.cookie.js"></script>
+  <link href="__STATIC__/pc/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/pc/js/perfect-scrollbar.min.js"></script>
+  <script type="text/javascript" src="__STATIC__/pc/js/jquery.qtip.min.js"></script>
+  <link href="__STATIC__/pc/css/jquery.qtip.min.css" rel="stylesheet" type="text/css">
+  <script src="__STATIC__/pc/js/compare.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $('[wttype="mcard"]').membershipCard({
+        type: 'shop'
+      });
+    });
+  </script>
+  <script>
+    //提示信息
+    $('.tip').poshytip({
+      className: 'tip-yellowsimple',
+      showOn: 'hover',
+      alignTo: 'target',
+      alignX: 'center',
+      alignY: 'top',
+      offsetX: 0,
+      offsetY: 5,
+      allowTipHover: false
+    });
+  </script>
+</body>
+
+</html>

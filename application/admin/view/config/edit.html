@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<script>
+var pnum = {$pnum};
+{if condition="(!isset($search)) || (!$search)"}
+var url = "/{$Request.module}/config/lst.html?page="+pnum;
+{else/}
+var url = "/{$Request.module}/config/search.html?page="+pnum;
+{/if}
+var updateUrl = "{:url('config/edit')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>编辑系统配置</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" id="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属分类：</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="ca_id">
+                                        {foreach name="cationres" item="v"}
+                                        <option value="{$v.id}" {eq name="configs.ca_id" value="$v['id']"}selected="selected"{/eq}>{$v.ca_name}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">配置名称：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="cname" value="{$configs.cname}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">配置名称：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="ename" value="{$configs.ename}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">类型：</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="type">
+                                         <option value="0" {eq name="configs.type" value="0"}selected="selected"{/eq}>文本框</option>
+                                         <option value="1" {eq name="configs.type" value="1"}selected="selected"{/eq}>文本域</option>
+                                         <option value="2" {eq name="configs.type" value="2"}selected="selected"{/eq}>单选按钮</option>
+                                         <option value="3" {eq name="configs.type" value="3"}selected="selected"{/eq}>复选框</option> 
+                                         <option value="4" {eq name="configs.type" value="4"}selected="selected"{/eq}>下拉框</option>
+										 <option value="5" {eq name="configs.type" value="5"}selected="selected"{/eq}>图片</option>   
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">配置可选值：</label>
+                                <div class="col-sm-6">
+                                    <textarea name="values" id="values" class="form-control">{$configs.values}</textarea>
+                                </div>  
+                                <label class="col-sm-2" style="padding-top:7px; color:#333; font-size:12px;">(多个以英文,号隔开)</label>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                         							             
+                            <input type="hidden" name="id" value="{$configs.id}">                                                                                                           
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit">保存内容</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>      
+
+	<script>
+    	$(function(){ 	    
+            var config_type =  $('select[name=type]').val();
+            
+            if(config_type == 0 || config_type == 1 || config_type == 5){
+            	$('#values').prop('disabled','disabled');
+            }
+
+            $('select[name=type]').change(function(){
+            	var type = $(this).val();
+            	var disabled = $('#values').prop('disabled');
+            	if(type != 0 && type != 1 && type != 5){
+            		if(disabled){
+                		$('#values').removeAttr('disabled');
+            		}
+            	}else{
+            		if(!disabled){
+                		$('#values').prop('disabled','disabled');
+            		}
+            	}
+            });
+  
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	        	//layer ajax提交表单
+	            submitHandler:function(){
+	               // 序列化 表单数据 后提交 ，太简洁了
+	            	var configType = $('select[name=type]').val();
+	            	var values = $('#values').val();
+	            	if(configType != 0 && configType != 1 && configType != 5){
+	            		if(values == ''){
+		                	layer.msg('属性可选值不能为空', {icon: 2,time: 2000});
+		                	return false;
+	            		}
+	                }
+					
+	            	post(updateUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+
+	        	rules:{
+	        		cname:{
+	        			required:true        			
+	        	    },
+	        		ename:{
+	        			required:true        			
+	        	    },
+	        		ca_id:{
+	        			required:true,
+	        			digits:true
+	        	    },
+	        	    type:{
+	        	    	required:true,
+	        	    	digits:true
+	        	    }
+	        	},
+
+	        	messages:{
+	        		cname:{
+	        			required:icon+'必填'
+	        	    },
+	        		ename:{
+	        			required:icon+'必填'
+	        	    },
+	                ca_id:{
+	                	required:icon+'必选',
+	                	digits:icon+'选择配置分类参数错误'
+	                },
+	                type:{
+	                	required:icon+'必选',
+	                	digits:icon+'选择配置类型参数错误'
+	                }
+	        	}
+        	});
+      });
+
+	  function cl(){
+		  parent.location.href = url;
+	  }	  
+    </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+</body>
+</html>
+<script src="https://cxy365-file.obs.cn-south-1.myhuaweicloud.com/static/js/jquery-3.1.1.min.js"></script>
+<script>
+    var baseurl = window.location.hostname;
+    var wxCode = ''
+    var go_url = window.location.pathname;
+    // var url = "https://store.cxy365.com/" + go_url;
+    var url = 'https://store.cxy365.com/html/soldier.html';
+    // var shareid = uni.getStorageSync('shareid')
+    if(go_url){
+        go_url = go_url.slice(3)
+    }
+    if(isWeiXin()){
+
+        wxCode = getParams("code")
+        if(wxCode != ''){
+            comWxLogin()
+        }else{
+            getLoginCode()
+        }
+        
+    }
+
+    function getLoginCode(){
+        $.ajax({
+            url:"https://store.cxy365.com/apicloud/Login/authWx",
+            type:'POST',
+            data:{
+                url:url
+            },
+            dataType:"json",
+            success:function(data){
+                window.location.href = data.data
+            },
+            error:function(){
+
+            }
+        })
+    }
+
+    function comWxLogin(){
+
+        $.ajax({
+            url:"https://store.cxy365.com/apicloud/Login/authWx",
+            type:'POST',
+            data:{
+                code:wxCode
+            },
+            dataType:"json",
+            success:function(data){
+                if(data.status == 200){
+                    var data = data.data
+                    var nickname = data.nickname
+                    var openid = data.openid
+                    var unionid = data.unionid ? data.unionid : ''
+                    var head_pic = data.head_pic
+                    console.log(data)
+                    window.location.href = "http://soldier.cxy365.com/soldier?oauth=1&user_name="+nickname+"&openid="+openid+"&head_pic="+head_pic+"&unionid="+unionid
+                    // api.authWxLogin({data:data}).then((res)=>{
+                    //     uni.setStorageSync('user_id', res.data.id);
+                    //     uni.setStorageSync('token', res.data.token);
+                    //     // uni.setStorageSync('identity', res.data.identity);
+                    //     uni.setStorageSync('role', res.data.role);
+                    //     uni.setStorageSync('role_id', res.data.shop_id);
+                    //     uni.setStorageSync('pid', res.data.shop_id);
+                    //     uni.setStorageSync('serviceShopId', res.data.serviceShopId);
+                    //     uni.setStorageSync('userInfo', JSON.stringify(res.data));
+                    //     // uni.switchTab({
+                    //     // 	url: go_url
+                    //     // })
+                    //     window.location.href = "http://soldier.cxy365.com/soldier"
+                
+                    // })
+                }
+            },
+            error:function(){
+
+            }
+        })
+    }
+
+
+    
+    function getParams(name){
+        var url = location.href;
+        url = url.replace("?","?&").split("&");
+        var res = "";
+        for (let i = 0; i < url.length; i++) {
+            if(url[i].indexOf(name+"=") == 0){
+                res = url[i].replace(name+"=","");
+            }
+        }
+        return res;
+    }
+
+    function isWeiXin(){
+        var ua = window.navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+</script>

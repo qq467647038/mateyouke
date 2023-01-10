@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+</head>
+
+<style>
+.table1 .xinxiinfo1{
+	width:13%;
+	height:50px;
+	text-align:right;
+	background-color:#F5F5F6;
+}
+.table1 .xinxiinfo2{
+	width:87%;
+	height:50px;
+	text-align:left;
+}
+</style>
+<script>
+    var recycleUrl = "{:url('member/delblack')}";
+</script>
+<body class="gray-bg" >    
+    <div class="wrapper wrapper-content" style="padding-bottom:0px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>拉黑用户信息</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%">用户手机号</th> 
+                                    <th style="width:15%">用户昵称</th> 
+                                    <th style="width:15%">房间号</th>
+                                    <th style="width:15%">限制类型状态</th>
+                                    <th style="width:10%">操作</th>
+                                </tr>
+                            </thead>
+                        
+                            <tbody>
+                                {foreach name="list" item="v"}
+                                <tr>
+                                <td>{$v.phone}</td>
+                                <td>{$v.user_name}</td>
+                                <td>{$v.room}</td>
+                                <td>{switch name="v.type"}{case value="1"}拉黑{/case}{case value="2"}单场禁言{/case}{case value="3"}永久禁言{/case}{/switch}</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button>
+                                </td>
+                                </tr>
+	                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script> 
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    
+    <script>
+    $(function(){
+    	
+    });
+
+    function delone(id){
+        $.ajax({
+            url:"{:url('Member/delblack')}",
+            type:'POST',
+            data:{'id':id},
+            dataType:'json',
+            success:function(data){
+                if(data){
+                    location.reload();    
+                }else{
+                    location.reload();
+                }
+            },
+            error:function(){
+                location.reload();
+            }
+        });
+    }
+
+    </script>
+
+</body>
+</html>

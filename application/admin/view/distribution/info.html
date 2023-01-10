@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/jquery.cityselect.js"></script>
+</head>
+
+<script>
+var url = "{:url('distribution/info')}";
+var infoUrl = "{:url('distribution/info')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>分销信息配置</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" enctype="multipart/form-data" class="form-horizontal" id="form"> 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">一级上线订单分成（百分比）</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="one_profit" {if condition="isset($distributions['one_profit'])"}value="{$distributions.one_profit}"{else/}value=""{/if} class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>                          							                                                                                                 
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">二级上线订单分成（百分比）</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="two_profit" {if condition="isset($distributions['two_profit'])"}value="{$distributions.two_profit}"{else/}value=""{/if} class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-2 control-label">平台分佣比例（百分比）</label>-->
+                                <!--<div class="col-sm-6">-->
+                                    <!--<input type="text" name="commission_rate" {if condition="isset($distributions['commission_rate'])"}value="{$distributions.commission_rate}"{else/}value=""{/if} class="form-control">-->
+                                <!--</div>-->
+                                <!--<label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>-->
+                            <!--</div>-->
+                            <!--<div class="hr-line-dashed"></div>-->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否开启分销</label>
+                                <div class="col-sm-6">
+                                        <label class="radio-inline"><input type="radio" name="is_open" {if condition="isset($distributions['is_open']) && $distributions['is_open'] eq 1"}checked="checked"{/if} value="1">开启</label>
+                                        <label class="radio-inline"><input type="radio" name="is_open" {if condition="isset($distributions['is_open']) && $distributions['is_open'] eq 0"}checked="checked"{/if} value="0">关闭</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">升级分销商商品：</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="goods_id">
+                                        <option value="">请选择</option>
+                                        {foreach name="goods_list" item="v"}
+                                        <option value="{$v.id}" {if condition="$distributions['goods_id'] eq $v['id']"}selected = "selected"{/if}>{$v.goods_name}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">推荐分销商品一级奖励金额</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="one_vip" {if condition="isset($distributions['one_vip'])"}value="{$distributions.one_vip}"{else/}value=""{/if} class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">推荐分销商品二级奖励金额</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="two_vip" {if condition="isset($distributions['two_vip'])"}value="{$distributions.two_vip}"{else/}value=""{/if} class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">推荐10人后分销商品一级奖励金额</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="ten_one_vip" {if condition="isset($distributions['ten_one_vip'])"}value="{$distributions.ten_one_vip}"{else/}value=""{/if} class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">推荐10人后分销商品二级奖励金额</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="ten_two_vip" {if condition="isset($distributions['ten_two_vip'])"}value="{$distributions.ten_two_vip}"{else/}value=""{/if} class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            {if condition="!empty($distributions['id'])"}
+                           <input type="hidden" name="id" value="{$distributions.id}">
+                           {/if}
+                           
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:100px;">保存内容</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>      
+
+	<script>
+    	$(function(){    		
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	        	//layer ajax提交表单
+	            submitHandler:function(){
+	               // 序列化 表单数据 后提交 ，太简洁了
+	            	post(infoUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+	                
+	        	rules:{
+	        		one_profit:{required:true},
+	        		two_profit:{required:true}
+	        	},
+	        		
+	        	messages:{
+	        		one_profit:{required:icon+'必填'},
+	        		two_profit:{required:icon+'必填'}
+	        	}
+        	});
+      });
+    	
+	  function cl(){
+	     location.href = url;
+	  }	  
+    </script>
+        
+
+</body>
+</html>

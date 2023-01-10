@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/Huploadify/Huploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/date.js"></script>
+</head>
+
+<script>
+var pnum = {$pnum};
+var filter = {$filter};
+{if condition="(!isset($search)) OR (!$search)"}
+var url = "/{$Request.module}/promotion/lst/filter/"+filter+".html?page="+pnum;
+{else/}
+var url = "/{$Request.module}/promotion/search.html?page="+pnum;
+{/if}
+var updateUrl = "{:url('promotion/edit')}";
+
+var gurl = "/{$Request.module}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+#calendarPanel table td{
+	border:solid #FFF; border-width:0px 1px 1px 0px; padding:3px 3px;
+}
+</style>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>编辑商品促销活动</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" id="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">活动名称：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="activity_name" value="{$promos.activity_name}" class="form-control">
+                                </div>
+                                 <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">活动类型：</label>
+                                <div class="col-sm-6" id="atype">
+                                        <label class="radio-inline"><input type="radio" name="type" {if condition="$promos['type'] eq 1"}checked="checked"{/if} value="1">直接打折</label>
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                            
+                            <div class="attrgroup">
+                            {foreach name="prom_typeres" item="v" key="k"}
+                            <div class="form-group">
+                            <label class="col-sm-2 control-label"><a href="javascript:;" onclick="attrad(this);">{if condition="$k eq 0"}[+]{else/}[-]{/if}</a>满件数：</label>
+                            <div class="col-sm-2">
+                            <input type="text" name="man_num[]" class="form-control" placeholder="请输入满件数" value="{$v.man_num}">
+                            </div>
+                            <label class="col-sm-1 control-label">折扣：</label>
+                            <div class="col-sm-2" style="width:15%;">
+                            <input type="text" name="discount[]" class="form-control" placeholder="请输入折扣" value="{$v.discount}">
+                            </div>
+                            <input type="hidden" name="hdpm_id[]" class="hdpm_id" value="{$v.id}">
+                            </div>
+                            {/foreach}
+                            </div>
+                            
+                            <div class="form-group"><div class="col-sm-6" style="margin-left:220px;line-height:20px;color:#F00;">折扣值（10-100）如果打9折，请输入90</div></div>               
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">活动时间：</label>
+                                <div class="col-sm-8">
+                                    <div style="float:left; margin-right:25px;">
+                                                                                                    开始时间：<input type="text" name="start_time" value="{:date('Y-m-d H:i:s',$promos['start_time'])}" onclick="SetDate(this,'yyyy-MM-dd hh:mm:ss')" readonly="readonly" class="form-control">
+                                    </div>
+                                    <div style="float:left;">
+                                                                                                    结束时间：<input type="text" name="end_time" value="{:date('Y-m-d H:i:s',$promos['end_time'])}" onclick="SetDate(this,'yyyy-MM-dd hh:mm:ss')" readonly="readonly" class="form-control">
+                                    </div>
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+							<label  class="col-sm-2 control-label">活动宣传图:</label>
+							<div class="col-sm-6">
+                            <div style="margin-bottom:7px; margin-top:5px;">
+                            <img id="imageinfo" {if condition="$promos['pic_url']"}src="/{$promos.pic_url}"{else/}src="__PUBLIC__/admin/img/nopic.jpg"{/if} width="180" height="120" border="0" />
+                            <br/><button type="button" class="btn btn-danger btn-xs del" style="display:none;">删除</button>
+                            </div>
+                            <div id="uploaderInput"></div>
+                            <input type="hidden" name="pic_id" value="" >
+                            <div class="repicm" style="display:none;">{$promos.pic_url}</div>
+                            </div>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">选择商品信息：</label>
+                                <div class="col-sm-6">
+                                <button type="button" class="btn btn-success" onclick="selectGoods();">选择商品信息</button>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">已选择的商品信息：</label>
+                                <div class="col-sm-8">
+	                            <table class="table table-hover table-bordered">
+	                            <thead class="biaoge">
+                                <tr><th style="width:30%">商品名称</th><th style="width:20%">缩略图</th><th style="width:15%">所属分类</th><th style="width:20%">金额</th><th style="width:15%">操作</th></tr>
+	                            </thead>
+                                <tbody id="goods_list">
+                                {foreach name="cominfo" item="v"}
+                                <tr>
+                                    <td style="display:none;"><input type="checkbox" class="text_id" name="goods_id[]" checked="checked" value="{$v.id}"></td>
+                                    <td>{$v.goods_name}</td>
+                                    <td><img src="/{$v.thumb_url}" width="100px" height="100px"/></td>
+                                    <td>{$v.cate_name}</td>
+                                    <td>{$v.shop_price}&nbsp;元</td>                                                                   
+                                    <td><button type="button" class="btn btn-danger btn-xs" onclick="$(this).parent().parent().remove();"><i class="fa fa-close"></i>&nbsp;移除</button></td>
+                                </tr>
+                                {/foreach}                                
+                                </tbody>	
+	                            </table>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <input type="hidden" name="id" value="{$promos.id}">
+                                                 
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:100px;">保存内容</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/admin/Huploadify/jquery.Huploadify.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script>
+    	$(function(){  
+	  		$('#atype .radio-inline').click(function(){
+				var i = $(this).index();
+				$('.adurl').hide();
+				$('.adurl').eq(i).show();
+			});
+	  		
+    		//上传缩略图
+	        $('#uploaderInput').Huploadify({
+	            uploader : '{:url("promotion/uploadify")}',
+		        method:'post',
+		        formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+		        buttonText : '上传图像', 
+		        removeTimeout: 2000,
+		        fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',  
+		        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;', 
+		        fileObjName: 'filedata', //上传附件$_FILE标识  
+		        fileSizeLimit : 2048,
+		        //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+		        auto : true, //开启,自动上传
+		        multi : false, //开启,多选文件
+		        //开始上传
+				onUploadStart:function(file){
+					layer.load(2);
+				},
+		        onUploadSuccess : function(file, data, response) {
+		        	//解析成json对象
+		        	eval('var data='+data);
+		        	if(data.status == 1){
+		        		var picpath = data.path;
+	    	        	$('#imageinfo').attr('src','/'+picpath.img_url);
+	    	        	$('.del').show();
+	    	        	$('input[name=pic_id]').val(picpath.pic_id);
+		        	}else{
+		        		layer.msg(data.msg, {icon: 2,time: 2000});
+		        	}
+		        },
+		        //上传完成后执行的操作
+		        onUploadComplete:function(file){
+		        	layer.closeAll('loading');
+		        },
+		        //上传错误  
+		        onUploadError : function(file, errorCode, errorMsg, errorString) { 
+		        	layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000}); 
+		        }
+		    });
+    	    
+    		
+    		$('.del').click(function(){
+    			layer.load(2);
+    			$.ajax({
+    				url:'{:url("promotion/delfile")}',
+    				type:'POST',
+    				data:{'zspic_id':$('input[name=pic_id]').val()},
+    				dataType:'json',
+    				success:function(data){
+    					if(data == 1){  
+    						layer.closeAll('loading');
+    						$('input[name=pic_id]').val('');
+    						var picval = $('.repicm').text();
+    						if(picval != ''){
+        						$('#imageinfo').attr('src','/'+picval);
+    						}else{
+    							$('#imageinfo').attr('src','__PUBLIC__/admin/img/nopic.jpg');
+    						}
+    						$('.del').hide();
+    					}else{
+    						layer.closeAll('loading');
+    						layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+    					}
+    				},
+    		        error:function(){
+    		        	layer.closeAll('loading');
+    		        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+    		        }
+    			});
+    		});
+            
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	            //layer ajax提交表单
+	            submitHandler:function(){
+	                // 序列化 表单数据 后提交 ，太简洁了
+	                if($('input[class=text_id]:checked').length == 0){
+	                    layer.msg('请选择商品', {icon: 2,time: 1000});
+	                    return false;
+	                }
+	                post(updateUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+	                
+	        	rules:{
+	        		activity_name:{required:true},
+	        		start_time:{required:true},
+	        		end_time:{required:true}
+	        	},
+	        		
+	        	messages:{
+	        		activity_name:{required:icon+'必填'},
+	        		start_time:{required:icon+'必填'},
+	        		end_time:{required:icon+'必填'}
+	        	}
+            });
+      });
+    	
+
+  	  function attrad(obj){
+		  var div = $(obj).parent().parent();
+		  var group = $(obj).parent().parent().parent();
+		  var pmid = div.find('input[class=hdpm_id]').val();
+		  if($(obj).html() == '[+]'){			  
+			  var newdiv = div.clone();
+			  if(pmid){
+				  newdiv.find('input[class=hdpm_id]').val('');
+			  }
+			  newdiv.find('a').html('[-]');
+			  group.append(newdiv);
+		  }else if($(obj).html() == '[-]'){
+			  if(pmid){
+		  		  layer.confirm('该促销方式已存在，是否彻底删除?', {  			  
+					  skin: 'layui-layer-molv',
+					  closeBtn: 0,
+					  shadeClose : true,
+					  btn: ['确定','取消'] //按钮
+				  },function(){
+					  layer.load(2);
+					  $.ajax({					 
+						  url:'{:url("promotion/deleteprom")}',
+						  type:'POST',
+						  data:{'id':pmid,'prom_id':$('input[name=id]').val()},
+						  dateType:'json',
+						  success:function(data){
+							  if(data.status == 1){
+								  layer.closeAll('loading');
+					    		  layer.msg(data.mess, {icon: 1,time: 1000}, function(){
+						    		  div.remove();
+					    		  });
+							  }else{
+								  layer.closeAll('loading');
+								  layer.msg(data.mess, {icon: 2,time: 3000});
+							  }
+						  },
+					      error:function(){
+					    	  layer.closeAll('loading');
+					    	  layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+					      }
+					  });				  
+				  });
+			  }else{
+				  div.remove();
+			  } 
+		  }
+	  }	
+    	
+    	
+      function selectGoods(){
+          var goods_id = new Array();
+          //过滤选择重复信息
+          $('input[name*=goods_id]').each(function(i,o){
+              goods_id.push($(o).val());
+          });
+          
+          var goodsurl = gurl+"/getgoods/lst/goods_id/"+goods_id;
+          
+          layer.open({
+              type: 2,
+              title: '选择商品信息',
+              shadeClose: true,
+              shade: 0.3,
+              area: ['70%', '80%'],
+              content: goodsurl,
+          });      	  
+      }
+
+      function call_backgoods(table_html){
+          layer.closeAll('iframe');
+          $('#goods_list').append(table_html);
+      }
+    	
+      function cl(){
+    	  location.href = url;
+      }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/province/lst.html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/province/search.html?page="+pnum;
+	{/if}
+	$(function(){
+		$("#checkAll").click(function () {
+	        $("input[class='text_id']:checkbox").prop("checked", this.checked);
+	    }); 
+	});
+</script>
+                        
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:50%">省份名称</th>
+                                    <th style="width:15%">开通</th>
+                                    <th style="width:15%">排序</th>
+                                    <th style="width:15%">操作</th>                                             
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.pro_name}</td>
+                                    <td>
+                                    {if condition="$v['checked'] eq 1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal2({$v.id},'checked',this);"><i class="fa fa-check"></i></button>
+                                    {elseif condition="$v['checked'] eq 0"/}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal2({$v.id},'checked',this);"><i class="fa fa-times"></i></button>
+                                    {/if}
+                                    </td>
+                                    <td><input name="{$v.id}" type="text" value="{$v.sort}" class="sort" size="1"></td>
+                                    <td><button type="button" class="btn btn-success btn-xs" onclick="city({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;下属城市</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs" onclick="edit3({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="4" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}							
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)https://store.cxy365.com/index.php?w=payment&t=real_order -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>孝笑好多用户商城系统</title>
+<meta name="keywords" content="孝笑好多用户商城系统">
+<meta name="description" content="孝笑好多用户商城系统">
+<meta name="author" content="孝笑好">
+<meta name="copyright" content="孝笑好 Inc. All Rights Reserved">
+<style type="text/css">
+body {.wt-appbar-tabs a.compare { display: none !important;}
+</style>
+<link href="__STATIC__/pc/css/common.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/pc/css/cart.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/pc/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+<link href="__STATIC__/pc/css/font-awesome.min.css" rel="stylesheet">
+<script>
+var PRICE_FORMAT = '&yen;%s';var COOKIE_PRE = 'B87D_';var _CHARSET = 'utf-8';var SITEURL = 'https://store.cxy365.com';var MEMBER_SITE_URL = 'https://store.cxy365.com/home';var STATIC_SITE_URL = 'https://store.cxy365.com/system/static';var STATIC_SITE_URL = 'https://store.cxy365.com/system/static';var SHOP_TEMPLATES_URL = 'https://store.cxy365.com/templets/WoSmart';
+Number.prototype.toFixed = function(d)
+{
+    var s=this+"";if(!d)d=0;
+    if(s.indexOf(".")==-1)s+=".";s+=new Array(d+1).join("0");
+    if (new RegExp("^(-|\\+)?(\\d+(\\.\\d{0,"+ (d+1) +"})?)\\d*$").test(s))
+    {
+        var s="0"+ RegExp.$2, pm=RegExp.$1, a=RegExp.$3.length, b=true;
+        if (a==d+2){a=s.match(/\d/g); if (parseInt(a[a.length-1])>4)
+        {
+            for(var i=a.length-2; i>=0; i--) {a[i] = parseInt(a[i])+1;
+            if(a[i]==10){a[i]=0; b=i!=1;} else break;}
+        }
+        s=a.join("").replace(new RegExp("(\\d+)(\\d{"+d+"})\\d$"),"$1.$2");
+    }if(b)s=s.substr(1);return (pm+s).replace(/\.$/, "");} return this+"";
+};
+</script>
+<script src="__STATIC__/pc/js/jquery.min.js"></script>
+<script src="__STATIC__/pc/js/common.js"></script>
+<script src="__STATIC__/pc/js/jquery.ui.js"></script>
+<script src="__STATIC__/pc/js/jquery.validation.min.js"></script>
+<script src="__STATIC__/pc/js/jquery.poshytip.min.js"></script>
+<script type="text/javascript" src="__STATIC__/pc/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="__STATIC__/pc/js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="__STATIC__/pc/js/dialog.js" id="wt_dialog" charset="utf-8"></script>
+<link href="__STATIC__/pc/css/dialog.css" rel="stylesheet" type="text/css">
+<script src="__STATIC__/pc/js/jquery.scrollLoading-min.js" charset="utf-8"></script>
+<script src="__STATIC__/pc/js/goods_cart.js"></script>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="https://store.cxy365.com/system/static/js/html5shiv.js"></script>
+      <script src="https://store.cxy365.com/system/static/js/respond.min.js"></script>
+<![endif]-->
+<script type="text/javascript">
+$(function(){
+	$("img[rel='lazy']").scrollLoading();
+});
+</script>
+<style id="poshytip-css-tip-yellowsimple" type="text/css">
+    div.tip-yellowsimple{visibility:hidden;position:absolute;top:0;left:0;}
+    div.tip-yellowsimple table, div.tip-yellowsimple td{margin:0;font-family:inherit;font-size:inherit;font-weight:inherit;font-style:inherit;font-variant:inherit;}
+    div.tip-yellowsimple td.tip-bg-image span{display:block;font:1px/1px sans-serif;height:10px;width:10px;overflow:hidden;}
+    div.tip-yellowsimple td.tip-right{background-position:100% 0;}
+    div.tip-yellowsimple td.tip-bottom{background-position:100% 100%;}
+    div.tip-yellowsimple td.tip-left{background-position:0 100%;}
+    div.tip-yellowsimple div.tip-inner{background-position:-10px -10px;}
+    div.tip-yellowsimple div.tip-arrow{visibility:hidden;position:absolute;overflow:hidden;font:1px/1px sans-serif;}
+</style>
+</head>
+<body>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div id="vToolbar" class="wt-appbar">
+  <div class="wt-appbar-tabs" id="siteslidebar">
+        <div class="user ta_delay" wttype="a-barUserInfo">
+      <div class="avatar"><img src="__STATIC__/pc/images/default_user_portrait.gif" data-url="__STATIC__/pc/images/default_user_portrait.gif" rel="lazy"></div>
+      <p>我的商城</p>
+    </div>
+    <div class="user-info" wttype="barUserInfo" style="display:none;"><i class="arrow"></i>
+      <div class="avatar"><img src="__STATIC__/pc/images/default_user_portrait.gif" data-url="__STATIC__/pc/images/default_user_portrait.gif" rel="lazy">
+        <a href="https://store.cxy365.com/home/index.php?w=member_information&amp;t=avatar" title="修改头像"><div class="frame"></div></a>
+      </div>
+      <dl>
+        <dt>Hi, <a href="https://store.cxy365.com/index.php?w=member&amp;t=home">mb2779</a></dt>
+        <dd>当前等级：<strong wttype="barMemberGrade"></strong></dd>
+        <dd>当前经验值：<strong wttype="barMemberExp"></strong></dd>
+      </dl>
+	 	<div class="wt-appbar-menu">
+            <ul>
+              <li><a href="https://store.cxy365.com/home/index.php?w=member_message&amp;t=message">站内消息(<span>0</span>)</a></li>
+              <li><a href="{:url('member_order/index')}" class="arrow">我的订单<i></i></a></li>
+              <li><a href="https://store.cxy365.com/index.php?w=member_consult&amp;t=my_consult">咨询回复(<span id="member_consult">0</span>)</a></li>
+              <li><a href="https://store.cxy365.com/index.php?w=member_favorite_goods&amp;t=fglist" class="arrow">我的收藏<i></i></a></li>
+                            <li><a href="https://store.cxy365.com/home/index.php?w=member_voucher&amp;t=index">代金券(<span id="member_voucher">0</span>)</a></li>
+                                          <li><a href="https://store.cxy365.com/home/index.php?w=member_points&amp;t=index" class="arrow">我的积分<i></i></a></li>
+                          </ul>
+          </div>
+    </div>
+        <ul class="tools">
+          <li><a href="javascript:void(0);" id="chat_show_user" class="chat ta_delay"><div class="tools_img"></div><span>聊天</span><i id="new_msg" class="new_msg" style="display:none;"></i></a></li>
+                    <li><a href="javascript:void(0);" id="rtoolbar_cart" class="cart ta_delay"><div class="tools_img"></div><span>购物车</span><i id="rtoobar_cart_count" class="new_msg" style="display:none;"></i></a></li>
+                  <li><a href="javascript:void(0);" id="compare" class="compare ta_delay"><div class="tools_img"></div><span>对比</span></a></li>
+            <li><a href="https://store.cxy365.com/index.php?w=member_goodsbrowse&amp;t=list" class="track ta_delay"><div class="tools_img"></div><span>我的足迹</span></a></li>
+    </ul>
+    <div class="content-box" id="content-compare">
+      <div class="top">
+        <h3>商品对比</h3>
+        <a href="javascript:void(0);" class="close" title="隐藏"></a></div>
+      <div id="comparelist"></div>
+    </div>
+    <div class="content-box" id="content-cart">
+      <div class="top">
+        <h3>我的购物车</h3>
+        <a href="javascript:void(0);" class="close" title="隐藏"></a></div>
+      <div id="rtoolbar_cartlist"></div>
+    </div>
+    <a id="activator" href="javascript:void(0);" class="wt-appbar-hide"></a>
+	<a id="gotop" href="javascript:void(0);" class="wt-appbar-gotop"></a>
+	</div>
+  <div class="wt-hidebar" id="wtHideBar">
+    <div class="wt-hidebar-bg">
+            <div class="user-avatar"><img src="__STATIC__/pc/images/default_user_portrait.gif" data-url="__STATIC__/pc/images/default_user_portrait.gif" rel="lazy"></div>
+            <div class="frame"></div>
+      <div class="show"></div>
+  </div>
+</div>
+</div>
+<div class="wt-topbar w">
+  <div class="topbar wrapper">
+    <div class="service fl">
+        <div class="home"><a href="https://store.cxy365.com/" title="孝笑好多用户商城系统" target="_self">商城首页</a></div>
+        <div class="tel">服务热线：<b>400-000-0000</b></div>
+        <div class="m-mx"> <span><i></i><a href="https://store.cxy365.com/mobile">手机逛商城</a></span>
+        <div>
+            <dl class="down_app">
+            <dd>
+                <div class="qrcode"><img src="__STATIC__/pc/images/mb_app.png" data-url="__STATIC__/pc/images/mb_app.png" width="120" height="120" rel="lazy"></div>
+                <div class="hint">
+                  <h4>手机扫一扫下载</h4>
+                  </div>
+                <div class="addurl">
+                  <a href="http://app.33hao.com/down/2094" target="_blank"><i class="icon-android"></i>Android</a>
+                  <a href="http://app.33hao.com/down/2094" target="_blank"><i class="icon-apple"></i>iPhone</a>
+                </div>
+            </dd>
+          </dl>
+                  </div>
+      </div>
+    <div class="left">
+<!--        <div id="TopCity">
+            <a href="javascript:;" class="area">
+                <span class="icon-map-marker"></span>
+                <span id="shortCutAreaName" title="北京" data-id="1">北京</span>
+                <i></i>
+            </a>
+            <div id="shortCutAreaList" class="area-list">
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="0" class="">全国</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="36" class="">北京</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="40" class="">天津</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="3" class="">河北</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="4" class="">山西</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="5" class="">内蒙古</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="6" class="">辽宁</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="7" class="">吉林</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="8" class="">黑龙江</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="39" class="">上海</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="10" class="">江苏</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="11" class="">浙江</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="12" class="">安徽</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="13" class="">福建</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="14" class="">江西</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="15" class="">山东</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="16" class="">河南</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="17" class="">湖北</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="18" class="">湖南</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="19" class="">广东</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="20" class="">广西</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="21" class="">海南</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="62" class="">重庆</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="23" class="">四川</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="24" class="">贵州</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="25" class="">云南</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="26" class="">西藏</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="27" class="">陕西</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="28" class="">甘肃</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="29" class="">青海</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="30" class="">宁夏</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="31" class="">新疆</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="32" class="">台湾</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="33" class="">香港</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="34" class="">澳门</a></div>
+                <div class="item"><a href="javascript:;" data-deep="1" data-id="45055" class="">海外</a></div>
+            </div>
+        </div>-->
+    </div>
+    </div>
+    <div class="right-menu">
+      <dl>
+        <dt>客户服务<i></i></dt>
+        <dd>
+          <ul>
+            <li><a href="https://store.cxy365.com/help-cate-2.html">帮助中心</a></li>
+            <li><a href="https://store.cxy365.com/help-cate-5.html">售后服务</a></li>
+            <li><a href="https://store.cxy365.com/help-cate-6.html">客服中心</a></li>
+          </ul>
+        </dd>
+      </dl>
+      <dl>
+        <dt><a href="https://store.cxy365.com/index.php?w=show_joinin&amp;t=index" title="商家管理">商家管理</a><i></i></dt>
+        <dd>
+          <ul>
+		    <li><a href="https://store.cxy365.com/index.php?w=show_joinin&amp;t=index" title="招商入驻">招商入驻</a></li>
+            <li><a href="https://store.cxy365.com/index.php?w=seller_login&amp;t=show_login" target="_blank" title="商家登录">商家登录</a></li>
+          </ul>
+	 </dd>
+      </dl>
+          </div>
+    <div class="head-user-mall">
+    <dl class="my-mall">
+        <dt><span class="ico"></span><a href="{:url('member/index')}" title="我的商城">我的商城</a><i class="arrow"></i></dt>
+        <dd>
+          <div class="my-top-menu">
+            <ul>
+              <li><a href="https://store.cxy365.com/home/index.php?w=member_message&amp;t=message">站内消息(<span>0</span>)</a></li>
+              <li><a href="{:url('member_order/index')}" class="arrow">我的订单<i></i></a></li>
+              <li><a href="https://store.cxy365.com/index.php?w=member_consult&amp;t=my_consult">咨询回复(<span id="member_consult">0</span>)</a></li>
+              <li><a href="https://store.cxy365.com/index.php?w=member_favorite_goods&amp;t=fglist" class="arrow">我的收藏<i></i></a></li>
+                            <li><a href="https://store.cxy365.com/home/index.php?w=member_voucher&amp;t=index">代金券(<span id="member_voucher">0</span>)</a></li>
+                                          <li><a href="https://store.cxy365.com/home/index.php?w=member_points&amp;t=index" class="arrow">我的积分<i></i></a></li>
+                          </ul>
+          </div>
+          <div class="my-history">
+            <div class="part-title">
+              <h4>最近浏览的商品</h4>
+              <span style="float:right;"><a href="https://store.cxy365.com/index.php?w=member_goodsbrowse&amp;t=list">全部浏览历史</a></span> </div>
+            <ul>
+              <li class="no-goods"><img class="loading" src="__STATIC__/pc/images/loading.gif"></li>
+            </ul>
+          </div>
+        </dd>
+      </dl>
+    </div>
+    <div class="user-entry">
+      您好, <span> <a href="https://store.cxy365.com/index.php?w=member&t=home">mb9225</a>
+          <div class="wt-grade-mini" style="cursor:pointer;"
+            onclick="javascript:go('https://store.cxy365.com/grade.html');">V0</div>
+        </span><span class="wr"><a href="https://store.cxy365.com/home/index.php?w=login&t=logout">退出</a></span>
+        <span><a href="https://store.cxy365.com/index.php?w=invite">邀请返利</a></span>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+var getcity = '全国';
+//登录开关
+var connect_qq = "1";
+var connect_sn = "1";
+var connect_wx = "1";
+var connect_wx_appid = "1";
+
+$(function() {
+	if (($.cookie("wt0"))) {
+		tCity = $.cookie("wt0").split(',');
+		$("#tbarea").html(tCity[2]);
+	} else {
+		$("#tbarea").html(getcity);
+	}
+	$('#gotop').click(function(){
+	        $('html, body').animate({
+	            scrollTop: 0
+	        }, 500);
+	});
+	var wtkey = getCookie('wtkey');
+		if(wtkey){
+		$("#top-banner").hide();
+		} else {
+			$("#top-banner").slideDown(800);
+			}
+		$("#top-banner .close").click(function(){
+			setCookie('wtkey','yes',1);
+			$("#top-banner").hide();
+	});
+		$(".head-user-mall dl").hover(function() {
+			$(this).addClass("hover");
+		},
+		function() {
+			$(this).removeClass("hover");
+		});
+		$('.head-user-mall .my-mall').mouseover(function(){
+			load_history_information();
+			$(this).unbind('mouseover');
+		});
+	
+		$('#activator').click(function() {
+			$('#content-cart').animate({'right': '-250px'});
+			$('#content-compare').animate({'right': '-250px'});
+			$('#vToolbar').animate({'right': '-60px'}, 300,
+			function() {
+				$('#wtHideBar').animate({'right': '59px'},	300);
+			});
+	        $('div[wttype^="bar"]').hide();
+		});
+		$('#wtHideBar').click(function() {
+			$('#wtHideBar').animate({
+				'right': '-86px'
+			},
+			300,
+			function() {
+				$('#content-cart').animate({'right': '-250px'});
+				$('#content-compare').animate({'right': '-250px'});
+				$('#vToolbar').animate({'right': '6px'},300);
+			});
+		});
+    $("#compare").click(function(){
+    	if ($("#content-compare").css('right') == '-250px') {
+ 		   loadCompare(false);
+ 		   $('#content-cart').animate({'right': '-250px'});
+  		   $("#content-compare").animate({right:'0px'});
+    	} else {
+    		$(".close").click();
+    		$(".chat-list").css("display",'none');
+        }
+	});
+    $("#rtoolbar_cart").click(function(){
+        if ($("#content-cart").css('right') == '-250px') {
+         	$('#content-compare').animate({'right': '-250px'});
+    		$("#content-cart").animate({right:'0px'});
+    		if (!$("#rtoolbar_cartlist").html()) {
+    			$("#rtoolbar_cartlist").load('https://store.cxy365.com/index.php?w=cart&t=ajax_load&type=html');
+    		}
+        } else {
+        	$(".close").click();
+        	$(".chat-list").css("display",'none');
+        }
+	});
+	$(".close").click(function(){
+		$(".content-box").animate({right:'-250px'});
+      });
+
+	$(".right-menu dl").hover(function() {
+		$(this).addClass("hover");
+	},
+	function() {
+		$(this).removeClass("hover");
+	});
+
+    // 右侧bar用户信息
+    $('div[wttype="a-barUserInfo"]').click(function(){
+        $('div[wttype="barUserInfo"]').toggle();
+    });
+    // 右侧bar登录
+    $('div[wttype="a-barLoginBox"]').click(function(){
+        $('div[wttype="barLoginBox"]').toggle();
+        document.getElementById('codeimage').src='https://store.cxy365.com/index.php?w=vercode&type=30x92&c=' + Math.random();
+    });
+    $('a[wttype="close-barLoginBox"]').click(function(){
+        $('div[wttype="barLoginBox"]').toggle();
+    });
+        });
+	
+(function() {
+	var ReplaceTpl = function(str, o, regexp) {
+		return str.replace(regexp || /\\?\{([^{}]+)\}/g, function(match, name) {
+			return (o[name] === undefined) ? '' : o[name];
+		});
+	};
+	$.ReplaceTpl = ReplaceTpl;
+	String.prototype.wtReplaceTpl = function(option) {
+		return ReplaceTpl(this, option);
+	};
+})();
+window.WoSmart = {},
+    ["Array", "Object", "Function", "String", "Number", "Date", "Boolean", "regexp"].forEach(function(e) {
+        WoSmart["is" + e] = function(t) {
+            return jQuery.type(t) === e.toLowerCase()
+        }
+    }),
+    jQuery.extend(WoSmart, {
+        isEmpty: function(e) {
+            return WoSmart.isBoolean(e) ? !e: null == e ? !0 : WoSmart.isNumber(e) ? 0 >= e: WoSmart.isArray(e) || WoSmart.isString(e) || e instanceof jQuery ? 0 === e.length: 0 === Object.keys(e).length
+        },
+    });
+var topMyCity = function($) {
+    "use strict";
+    var areaUrl = '';
+    var $element = {};
+    var tmpl = '<a href="javascript:;" class="area"><span class="icon-map-marker"></span><span id="shortCutAreaName" title="{areaName}" data-id="{areaId}">{areaName}</span> <i></i></a>'
+    function _init() {
+        $element.TopCity = $("#TopCity");
+        _getAreaList();
+        "MjJTaG9wTkMySW5jMjIy";
+    }
+    function _getAreaIdByCookie() {
+        return $.cookie("wt0");
+    }
+    function _setAreaIdByCookie(value) {
+        return $.cookie("wt0", value, {
+            expires: 30,
+            path: '/'
+        });
+    }
+    function _getAreaList() {
+        $.getJSON(areaUrl, function(data) {
+            if (data.code == "200") {
+                _buildElement(data.data.areaList)
+            }
+        })
+    }
+    function _buildElement(data) {
+        var myCookie = _getAreaIdByCookie(),
+            myCity = !WoSmart.isEmpty(myCookie) ? myCookie.split(",") : "";
+        var a = $.map(data, function(n, index) {
+		//5.3	
+		if (WoSmart.isEmpty($.cookie("wt0"))){
+			$.each(data,function(i){
+				if(getcity == this.areaName){	
+						$.cookie("wt0", [this.areaId, this.areaDeep, this.areaName].join(","), {
+						expires: 30,
+						path: '/'
+					});
+				}
+			});
+		}
+            return '<div class="item"><a href="javascript:;" data-deep="' + n.areaDeep + '" data-id="' + n.areaId + '" class="' +
+                ((myCity.length && n.areaId == myCity[0]) ? "selected" : "") + '">' + n.areaName + '</a></div>';
+        });
+ if (a.length) {
+            a.splice(0, 0, '<div class="item"><a href="javascript:;" data-deep="1" data-id="0" class="">全国</a></div>');
+        	}
+        $element.TopCity
+            .append(tmpl.wtReplaceTpl(myCity ? {
+                areaId: myCity[0],
+                areaName: myCity[2]
+            } : {
+                areaId: 0,
+                areaName: getcity
+            }))
+            .append(
+                a.length ? '<div id="shortCutAreaList" class="area-list">' + a.join('') + '</div>' : '');
+    }
+	
+	//更换当前URL
+	function changeURLPar(destiny, par, par_value){
+		var pattern = par+'=([^&]*)';
+		var replaceText = par+'='+par_value;
+		if (destiny.match(pattern)){
+			var tmp = '/\\'+par+'=[^&]*/';
+			tmp = destiny.replace(eval(tmp), replaceText);
+			return (tmp);
+		} else {
+			if (destiny.match('[\?]')) {
+				return destiny+'&'+ replaceText;
+			} else {
+				return destiny+'?'+replaceText;
+			}
+		}
+		return destiny+'\n'+par+'\n'+par_value;
+	} 
+
+    function bindEvents() {
+        $element.TopCity.on("click", "a[data-id]", function() {
+            var $this = $(this);
+            $("#shortCutAreaList a").removeClass("selected");
+            $this.addClass("selected");
+            $("#shortCutAreaName")
+                .html($this.html())
+                .attr({
+                    title: $this.html(),
+                    "data-id": $this.data("id") ? $this.data("id") : 0
+                });
+            //修改cookie
+            _setAreaIdByCookie([$this.data("id"), $this.data("deep"), $this.html()].join(","));
+			$('.region').html("请选择地区");
+			$.cookie('dregion', '', { expires: -1 });
+			var geturl = changeURLPar(window.location.href, 'area_id', $this.data("id"));
+            location.replace(geturl);
+			//location.reload(geturl);
+        })
+    }
+
+    return {
+        init: function() {
+            _init();
+            bindEvents();
+        },
+        getAreaIdByCookie: _getAreaIdByCookie
+    };
+}(jQuery);
+$(function() {
+	topMyCity.init();
+
+ });
+</script>  <header class="wtc-head-box">
+    <div class="site-logo"><a href="https://store.cxy365.com/"><img src="__STATIC__/pc/images/logo.png" class="pngFix"></a></div>
+      </header>
+<div class="wtc-wrapper">
+
+  <style>
+.wxpayment { border-top: 2px solid #4b5b78; padding: 12px 30px 0; border: 1px solid #eee; color: #777; }
+.p-w-bd::after,
+.pay-weixin::after { clear: both; content: ""; display: table; }
+.p-w-hd { font-family: "Microsoft Yahei"; font-size: 18px; margin-bottom: 20px; }
+.p-w-bd { margin-bottom: 30px; padding-left: 130px; }
+.pw-box-hd img { border: 1px solid #ddd; }
+.p-w-box { float: left; width: 300px; }
+.payment-change .pc-wrap { display: block; height: 56px; line-height: 56px; padding: 0 20px; transition: all 0.1s ease 0s; }
+.payment-change .pc-wrap .pc-w-arrow-left { float: left; margin-right: 15px; }
+.payment-change .pc-wrap .pc-w-arrow-left,
+.payment-change .pc-wrap .pc-w-arrow-right { color: #2fa1dd; float: right; font-family: "宋体"; font-size: 22px; font-style: normal; text-align: center; width: 20px; }
+.pw-box-ft { background: url("__STATIC__/pc/images/payment/icon-red.png") no-repeat scroll 50px 8px #ff7674; height: 44px; padding: 8px 0 8px 125px; }
+.p-w-sidebar { background: url("__STATIC__/pc/images/payment/phone-bg.png") no-repeat scroll 50px 0 rgba(0, 0, 0, 0); float: left; height: 421px; margin-top: -20px; padding-left: 50px; width: 379px; }
+.pw-box-ft p { color: #fff; font-size: 14px; font-weight: 700; line-height: 22px; margin: 0; }
+.payment-change .pc-wrap .pc-w-arrow-left { float: left; margin-right: 15px; }
+.payment-change .pc-wrap strong { color: #2ea7e7; cursor: pointer; float: left; font-size: 14px; margin-right: 30px; }
+</style>
+<div class="wtc-main">
+  <div class="wtc-title">
+    <h3></h3>
+    <h5>订单详情内容可通过查看<a href="{:url('member_order/index')}" target="_blank">我的订单</a>进行核对处理。</h5>
+  </div>
+  <div class="wtc-receipt-info">
+    <div class="wtc-receipt-info-title">
+      <h3> 订单提交成功，请您尽快付款。 应付金额：<strong>{$orderinfos.total_price}</strong>元 </h3>
+    </div>
+  </div>
+      <table class="wtc-table-style">
+        <thead>
+          <tr>
+            <th class="w50"></th>
+            <th class="w200 tl">订单号</th>
+            <th class="tl">金额(元)</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td class="tl">{$orderinfos.order_number}</td>
+                <td class="tl">{$orderinfos.total_price}</td>
+            </tr>
+        </tbody>
+      </table>
+  <div class="wxpayment"> 
+    <!-- 微信支付 -->
+    <div class="pay-weixin">
+      <div class="p-w-hd">微信支付</div>
+      <div class="p-w-bd">
+        <div class="p-w-box">
+            <div class="pw-box-hd"> <img width="298" src="{:url('pay/get_prepay_url', array('prepay_url' => $prepay_url))}"> </div>
+          <div class="pw-box-ft">
+            <p>请使用微信扫一扫</p>
+            <p>扫描二维码支付</p>
+          </div>
+        </div>
+        <div class="p-w-sidebar"></div>
+      </div>
+    </div>
+    <!-- 微信支付 end --> 
+    <!-- payment-change 变更支付方式 -->
+    <div class="payment-change"> <a href="{:url('pay/orderpay', array('order_number' => $orderinfos.order_number))}" id="reChooseUrl" class="pc-wrap"> <i class="pc-w-arrow-left">&lt;</i> <strong>选择其他支付方式</strong> </a> </div>
+    <!-- payment-change 变更支付方式 end --> 
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+    setTimeout("queryOrderState()",1000);
+});
+
+function queryOrderState(){
+    var order_id = "{$orderinfos.id}";
+    $.ajax({
+        type: "post",
+        url: "{:url('pay/check_order_state')}",
+        data: {order_id: order_id},
+        dataType: "json",
+        timeout: 4000,
+        success: function(result) {
+            console.log(result);
+            if(result.status == 200){
+                window.location.href = "{:url('pay/paysuccess')}"
+            }
+        }
+    });
+    setTimeout("queryOrderState()",3000);
+}
+</script>
+
+</div>                   
+<link href="__STATIC__/pc/css/chat.css" rel="stylesheet" type="text/css">
+    <div style="clear: both;"></div>
+    <div id="web_chat_dialog" style="float: right;">
+        <div class="chat-box">
+            <div class="chat-list">
+                <div class="chat-list-top">
+                    <h1><i></i>联系人</h1>
+                    <span class="minimize-chat-list" onclick="chat_show_list();"></span>
+                </div>
+                <div id="chat_user_list" class="chat-list-content ps-container">
+                    <div>
+                        <dl id="chat_user_friends">
+                            <dt onclick="javascript:void(0);">
+                                <span class="hide"></span>我的好友
+                            </dt>
+                        </dl>
+                        <dl id="chat_user_recent">
+                            <dt onclick="javascript:void(0);">
+                                <span class="show"></span>最近联系人
+                            </dt>
+                            <dd u_id="1" title="最后对话:2019-05-10 13:28:00" onclick="chat(1);">
+                                <span class="user-avatar">
+                                    <img alt="admin" src="__STATIC__/pc/images/avatar_1.jpg">
+                                    <i class="offline"></i>
+                                </span>
+                                <h5>admin</h5>
+                                <a href="javascript:void(0)"></a>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="ps-scrollbar-x-rail" style="width: 100px; display: none; left: 0px; bottom: 3px;">
+                        <div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 420px; display: none; right: 3px;">
+                        <div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><div id="new_msg_dialog" class="msg-windows"><div class="user-tab-bar"><ul class="user-list" id="user_list"></ul></div><div class="msg-dialog"><div class="dialog-body"><div id="msg_list" class="msg-contnet"><div id="user_msg_list"></div></div><div class="msg-input-box"><div class="msg-input-title"><a id="chat_show_smilies" href="javascript:void(0)" class="chat_smiles">表情</a><a href="javascript:void(0)" class="chat_sendimg"><input type="file" hidefocus="true" size="1" class="input-file" id="chat_send_img" name="chat_send_img">图片</a><span class="title">输入聊天信息</span><span class="chat-log-btn off" onclick="show_chat_log();">聊天记录<i></i></span></div>
+    <form id="msg_form"><textarea name="send_message" id="send_message" class="textarea" onkeyup="send_keyup(event);" onfocus="send_focus();"></textarea><div class="msg-bottom"><div id="msg_count"></div><a href="JavaScript:void(0);" onclick="send_msg();" class="msg-button"><i></i>发送消息</a><div id="send_alert"></div></div></form></div></div><div id="dialog_chat_right" class="dialog-chat-right"></div><div id="dialog_chat_log" class="dialog_chat_log"></div></div><div id="dialog_clear" class="dialog_clear"></div></div><object width="1" height="1" style="position: absolute; left: -1px;" id="msg_audio" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"><param value="https://store.cxy365.com/api/im/static/audio.swf" name="movie"><param value="always" name="allowscriptaccess"><embed width="1" height="1" allowscriptaccess="always" src="https://store.cxy365.com/api/im/static/audio.swf" name="msg_audio"></object>
+    <a id="chat_login" href="javascript:void(0)" style="display: none;"></a>
+        <script type="text/javascript">
+            var LOGIN_SITE_URL = 'https://store.cxy365.com/home';
+            var CHAT_SITE_URL = 'https://store.cxy365.com/api/im';
+            var BASE_SITE_URL = 'https://store.cxy365.com';
+            var connect_url = "http://211.149.249.207:33";
+
+            var layout = "layout/buy_layout.php";
+            var w_t = "payment_real_order";
+            var chat_goods_id = "0";
+            var user = {};
+
+            user['u_id'] = "771";
+            user['u_name'] = "mb2779";
+            user['s_id'] = "";
+            user['s_name'] = "";
+            user['s_avatar'] = "__STATIC__/pc/images/default_store_avatar.png";
+            user['avatar'] = "__STATIC__/pc/images/default_user_portrait.gif";
+
+            $("#chat_login").wt_login({
+                wthash:'a3078ee2',
+                formhash:'QVrNpgzYdPQI4DirRHRVrQEeo1PRoUJ'
+            });
+        </script>
+        <script type="text/javascript" src="__STATIC__/pc/js/jquery.charCount.js" charset="utf-8"></script>
+        <script type="text/javascript" src="__STATIC__/pc/js/jquery.smilies.js" charset="utf-8"></script>
+        <script type="text/javascript" src="__STATIC__/pc/js/user.js" charset="utf-8"></script>
+        <div class="slogen">
+            <div class="wrapper">
+              <ul></ul>
+            </div>
+        </div>
+        <div class="faq">
+          <div class="wrapper">
+              </div>
+        </div>
+    <div class="footer">
+    <p>
+        <a href="https://store.cxy365.com/">首页</a>
+      | <a href="https://store.cxy365.com/index.php?w=article&amp;article_id=24">招聘英才</a>
+      | <a href="https://store.cxy365.com/index.php?w=article&amp;article_id=25">合作及洽谈</a>
+      | <a href="https://store.cxy365.com/index.php?w=article&amp;article_id=23">联系我们</a>
+      | <a href="https://store.cxy365.com/since">物流自取</a>
+      | <a href="https://store.cxy365.com/link.html">友情链接</a>
+      | <a href="https://store.cxy365.com/home/index.php?w=article&amp;article_id=22">关于我们</a>
+    </p>
+  Copyright 2018 <a href="https://store.cxy365.com/" target="_blank">WoSmart</a> All rights reserved.<br>版权所有：<a href="https://store.cxy365.com/" target="_blank">store.cxy365.com</a>  <a href="http://www.miibeian.gov.cn/" rel="nofollow" target="_blank"></a></div>
+<div id="task"><iframe src="./wechatpay_files/cj_index.html" width="0" height="0" frameborder="0" style="display:none;"></iframe></div>
+<script type="text/javascript">
+document.getElementById('task').innerHTML='<iframe src="https://store.cxy365.com/system/task/cj_index.php?w=task&run=js" width="0" height="0" frameborder="0" style="display:none;"></iframe>';
+</script>
+<script type="text/javascript" src="__STATIC__/pc/js/jquery.cookie.js"></script>
+<link href="__STATIC__/pc/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/pc/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="__STATIC__/pc/js/jquery.qtip.min.js"></script>
+<link href="__STATIC__/pc/css/jquery.qtip.min.css" rel="stylesheet" type="text/css">
+<script src="__STATIC__/pc/js/compare.js"></script>
+<script type="text/javascript">
+$(function(){$('[wttype="mcard"]').membershipCard({type:'shop'});});
+</script><script>
+//提示信息
+$('.tip').poshytip({
+	className: 'tip-yellowsimple',
+	showOn: 'hover',
+	alignTo: 'target',
+	alignX: 'center',
+	alignY: 'top',
+	offsetX: 0,
+	offsetY: 5,
+	allowTipHover: false
+});
+</script>
+
+
+</body></html>

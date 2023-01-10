@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<script>
+var pnum = {$pnum};
+var filter = {$filter};
+{if condition="(!isset($search)) OR (!$search)"}
+var url = "/{$Request.module}/apply_info/lst/filter/"+filter+".html?page="+pnum;
+{else/}
+var url = "/{$Request.module}/apply_info/search.html?page="+pnum;
+{/if}
+</script>
+
+<body class="gray-bg">
+<style>
+.table1 .xinxiinfo1{
+	width:13%;
+	height:50px;
+	text-align:right;
+	background-color:#F5F5F6;
+}
+.table1 .xinxiinfo2{
+	width:87%;
+	height:50px;
+	text-align:left;
+}
+
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+
+    <div class="wrapper wrapper-content" style="padding:0px 20px 0px 20px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>申请状态</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-bordered table1">
+                            <tbody>
+                                <tr>
+                                <td class="xinxiinfo1">申请类型：</td>
+                                <td class="xinxiinfo2">
+                                {switch name="applys.apply_type"}
+                                {case value="1"}
+                                                                                         个人入驻
+                                {/case}
+                                {case value="2"}
+                                                                                         实体店入驻
+                                {/case}
+                                {/switch}
+                                </td>
+                                </tr>                              
+                                <tr>
+                                <td class="xinxiinfo1">状态：</td>
+                                <td class="xinxiinfo2">
+                                {if condition="$applys['checked'] eq 0 && $applys['qht'] eq 0 && $applys['state'] eq 0 && $applys['complete'] eq 0"}
+                                <span style="color:#1c84c6;">待审核</span>
+                                {elseif condition="$applys['checked'] eq 2 && $applys['qht'] eq 0 && $applys['state'] eq 0 && $applys['complete'] eq 0"/}
+                                <span style="color:#ed5565;">已拒绝</span>
+                                {elseif condition="$applys['checked'] eq 1 && $applys['qht'] eq 0 && $applys['state'] eq 0 && $applys['complete'] eq 0"/}
+                                <span style="color:#1c84c6;">待签合同</span>
+                                {elseif condition="$applys['checked'] eq 1 && $applys['qht'] eq 1 && $applys['state'] eq 0 && $applys['complete'] eq 0"/}
+                                <span style="color:#1c84c6;">待支付保证金</span>
+                                {elseif condition="$applys['checked'] eq 1 && $applys['qht'] eq 1 && $applys['state'] eq 1 && $applys['complete'] eq 0"/}
+                                <span style="color:#1c84c6;">待开通</span>
+                                {elseif condition="$applys['checked'] eq 1 && $applys['qht'] eq 1 && $applys['state'] eq 1 && $applys['complete'] eq 1"/}
+                                <span style="color:#1992FC;">已开通</span>
+                                {/if}
+                                </td>
+                                </tr>
+                                <tr><td class="xinxiinfo1">申请时间：</td><td class="xinxiinfo2">{:date('Y-m-d H:i:s',$applys['apply_time'])}</td></tr>
+                                <tr><td class="xinxiinfo1">审核时间：</td><td class="xinxiinfo2">{:date('Y-m-d H:i:s',$applys['checked_time'])}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {switch name="applys.apply_type"}
+    {case value="1"}
+    <div class="wrapper wrapper-content" style="padding:0px 20px 0px 20px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>联系人信息</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-bordered table1">
+                            <tbody>
+                                <tr><td class="xinxiinfo1">联系人姓名：</td><td class="xinxiinfo2">{$applys.contacts}</td></tr>
+                                <tr><td class="xinxiinfo1">联系人电话：</td><td class="xinxiinfo2">{$applys.telephone}</td></tr>
+                                <tr><td class="xinxiinfo1">联系人邮箱：</td><td class="xinxiinfo2">{$applys.email}</td></tr>
+                                <tr><td class="xinxiinfo1">联系人身份证号：</td><td class="xinxiinfo2">{$applys.sfz_num}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+    
+    <div class="wrapper wrapper-content" style="padding:0px 20px 0px 20px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>证件信息</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-bordered table1">
+                            <tbody>
+                                <tr><td class="xinxiinfo1">经营者身份证正面：</td><td class="xinxiinfo2"><img src="/{$applys.sfzz_pic}" width="150px" height="100px" /></td></tr>
+                                <tr><td class="xinxiinfo1">经营者身份证背面：</td><td class="xinxiinfo2"><img src="/{$applys.sfzb_pic}" width="150px" height="100px" /></td></tr>
+                                <tr><td class="xinxiinfo1">经营者手持身份证：</td><td class="xinxiinfo2"><img src="/{$applys.frsfz_pic}" width="150px" height="100px" /></td></tr>
+                                <tr><td class="xinxiinfo1">其他资料：</td><td class="xinxiinfo2">
+                                {foreach name="ziliaopicres" item="v"}
+                                <img src="/{$v.img_url}" width="150px" height="100px" style="margin-right:15px;" />
+                                {/foreach}
+                                </td></tr>                             
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>      
+    {/case}
+    
+    {case value="2"}
+    <div class="wrapper wrapper-content" style="padding:0px 20px 0px 20px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>公司及联系人信息</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-bordered table1">
+                            <tbody>
+                                <tr><td class="xinxiinfo1">公司名称：</td><td class="xinxiinfo2">{$applys.com_name}</td></tr>
+                                <tr><td class="xinxiinfo1">公司性质：</td><td class="xinxiinfo2">{$applys.nature}</td></tr>
+                                <tr><td class="xinxiinfo1">公司所在地：</td><td class="xinxiinfo2">{$applys.com_shengshiqu}</td></tr>
+                                <tr><td class="xinxiinfo1">公司详细地址：</td><td class="xinxiinfo2">{$applys.com_address}</td></tr>
+                                <tr><td class="xinxiinfo1">公司电话：</td><td class="xinxiinfo2">{$applys.fixed_phone}</td></tr>
+                                <tr><td class="xinxiinfo1">公司电子邮箱：</td><td class="xinxiinfo2">{$applys.com_email}</td></tr>
+                                <tr><td class="xinxiinfo1">联系人姓名：</td><td class="xinxiinfo2">{$applys.contacts}</td></tr>
+                                <tr><td class="xinxiinfo1">联系电话：</td><td class="xinxiinfo2">{$applys.telephone}</td></tr>
+                                <tr><td class="xinxiinfo1">联系人邮箱：</td><td class="xinxiinfo2">{$applys.email}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="wrapper wrapper-content" style="padding:0px 20px 0px 20px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>营业执照信息（副本）</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-bordered table1">
+                            <tbody>
+                                <tr><td class="xinxiinfo1">营业执照编号：</td><td class="xinxiinfo2">{$applys.tyxydm}</td></tr>
+                                <tr><td class="xinxiinfo1">营业执照有效期：</td><td class="xinxiinfo2">{$applys.zzstart_time}-{$applys.zzend_time}</td></tr>
+                                <tr><td class="xinxiinfo1">注册资本：</td><td class="xinxiinfo2">{$applys.zczj}&nbsp;万元</td></tr>
+                                <tr><td class="xinxiinfo1">经营范围：</td><td class="xinxiinfo2">{$applys.jyfw}</td></tr>
+                                <tr><td class="xinxiinfo1">法人姓名：</td><td class="xinxiinfo2">{$applys.faren_name}</td></tr>
+                                <tr><td class="xinxiinfo1">法人身份证号：</td><td class="xinxiinfo2">{$applys.sfz_num}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="wrapper wrapper-content" style="padding:0px 20px 0px 20px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>证件信息</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-bordered table1">
+                            <tbody>
+                                <tr><td class="xinxiinfo1">法人身份证正面：</td><td class="xinxiinfo2"><img src="/{$applys.sfzz_pic}" width="150px" height="100px" /></td></tr>
+                                <tr><td class="xinxiinfo1">法人身份证背面：</td><td class="xinxiinfo2"><img src="/{$applys.sfzb_pic}" width="150px" height="100px" /></td></tr>
+                                <tr><td class="xinxiinfo1">法人手持身份证：</td><td class="xinxiinfo2"><img src="/{$applys.frsfz_pic}" width="150px" height="100px" /></td></tr>
+                                <tr><td class="xinxiinfo1">营业执照：</td><td class="xinxiinfo2"><img src="/{$applys.zhizhao}" width="150px" height="100px" /></td></tr>
+                                <tr><td class="xinxiinfo1">其他资料：</td><td class="xinxiinfo2">
+                                {foreach name="ziliaopicres" item="v"}
+                                <img src="/{$v.img_url}" width="150px" height="100px" style="margin-right:15px;" />
+                                {/foreach}
+                                </td></tr>  
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {/case}
+    {/switch}
+    
+    <div class="wrapper wrapper-content" style="padding:0px 20px 0px 20px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>店铺信息</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-bordered table1">
+                            <tbody>
+                                <tr><td class="xinxiinfo1">店铺名称：</td><td class="xinxiinfo2">{$applys.shop_name}</td></tr>
+                                <tr><td class="xinxiinfo1">店铺描述：</td><td class="xinxiinfo2">{$applys.shop_desc}</td></tr>
+                                <tr><td class="xinxiinfo1">主营行业：</td><td class="xinxiinfo2">{$applys.industry_name}</td></tr>
+                                <tr>
+                                <td class="xinxiinfo1">经营类目：</td>
+                                <td class="xinxiinfo2">
+                                {foreach name="cateres" item="v"}
+                                {$v.cate_name}&nbsp;&nbsp;
+                                {/foreach}
+                                </td>
+                                </tr>
+                                <tr><td class="xinxiinfo1">店铺省市区：</td><td class="xinxiinfo2">{$applys.pro_name}&nbsp;{$applys.city_name}&nbsp;{$applys.area_name}</td></tr>
+                                <tr><td class="xinxiinfo1">店铺详细地址：</td><td class="xinxiinfo2">{$applys.address}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>签合同</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" id="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否已签合同：</label>
+                                <div class="col-sm-6" id="atype">
+                                        <label class="radio-inline"><input type="radio" name="qht" {if condition="$applys['qht'] eq 1"}checked="checked"{/if} value="1">是</label>
+                                        <label class="radio-inline"><input type="radio" name="qht" {if condition="$applys['qht'] eq 0"}checked="checked"{/if} value="0">否</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                           
+                            <input type="hidden" name="id" value="{$applys.id}" />
+                           
+                                                               
+                           <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button" id="doSubmit" style="margin-right:50px;">保存设置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script>
+      $(function(){
+    	  
+    	  $('#doSubmit').click(function(){
+    		  var shcanshu = $('input:radio[name=qht]:checked').val();
+    		  if(shcanshu == null){
+    			  layer.msg('请选择是否已签合同', {icon: 2,time: 1000});
+    			  return false;
+    		  }
+    			
+    		  if('0,1'.indexOf(shcanshu) == -1){
+    			  layer.msg('参数错误', {icon: 2,time: 1000});
+    			  return false;
+    		  }
+    		  
+    		  if(shcanshu == 1){
+    			  var shuoming = '确定已签合同么？不可撤销';
+    		  }
+    		  
+    		  if(shcanshu == 0){
+    			  var shuoming = '确定未签合同么？';
+    		  }
+    		  
+	  		  layer.confirm(shuoming, {  			  
+				  skin: 'layui-layer-molv',
+				  closeBtn: 0,
+				  shadeClose : true,
+				  btn: ['确定','取消'] //按钮
+			  },function(){
+				  layer.load(2);
+				  
+			      $.ajax({
+				      url:"{:url('apply_info/qht')}",
+				      type:'POST',
+				      data:$('#form').serialize(),
+				      dataType:'json',
+				      success:function(data){
+				    	  if(data.status == 1){
+				    		  layer.closeAll('loading');
+				    		  layer.msg(data.mess, {icon: 1,time: 1000}, function(){
+	                               cl();
+				    		  });
+				    	  }else if(data.status == 0){
+				    		  layer.closeAll('loading');
+				    		  layer.msg(data.mess, {icon: 2,time: 1000});
+				    	  }
+				      },
+				      error:function(){
+				    	  layer.closeAll('loading');
+				    	  layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+				      }
+				  });
+			  });
+    	  });
+      });
+    	
+      function cl(){
+    	  location.href = url;
+      }
+    </script>
+
+</body>
+</html>

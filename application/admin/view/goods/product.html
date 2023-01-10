@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>{$goods_name}&nbsp;&nbsp;的单选属性库存</h5>
+                    </div>
+                    <div class="ibox-content">  
+                    <form method="post" id="form">
+                    <div class="row" style="margin-bottom:10px;">
+						   <div class="col-sm-7 m-b-xs">
+                                <button type="submit" id="doSubmit" class="btn btn-sm btn-success" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;保存库存</button>
+                            </div> 
+                   </div>                                           
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                {if condition="!empty($radioAttrRes)"}
+                                {foreach name="radioAttrRes" item="v"}
+                                <th>{$v[0]['attr_name']}</th>
+                                {/foreach}
+                                {/if}
+                                <th>库存</th>
+                                {if condition="!empty($prores)"}<th>设为默认</th>{/if}
+                                {if condition="!empty($radioAttrRes)"}<th>操作</th>{/if}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {if condition="!empty($prores)"}
+                                {foreach name="prores" item="val" key="k2"}
+                                <tr class="kc">
+                                {if condition="!empty($radioAttrRes)"}
+                                {foreach name="radioAttrRes" item="v" key="k"}
+                                    <td>
+                                    <select name="goods_attr[{$k}][]" class="form-control">
+                                    <option value="">请选择</option>
+                                    {foreach name="v" item="vo"}
+                                        <option value="{$vo.id}" {if condition="strpos(','.$val['goods_attr'].',',','.$vo['id'].',') !== false"}selected="selected"{/if}>{$vo.attr_value}</option> 
+                                    {/foreach}     
+                                    </select>
+                                    </td> 
+                                {/foreach}
+                                {/if}
+                                    <td><input type="text" name="goods_number[]" value="{$val.goods_number}" class="form-control"></td> 
+                                    <input class="product_id" type="hidden" name="product_id[]" value="{$val.id}">
+                                    <td class="def">
+                                    {if condition="$val['def'] eq 1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal({$val.id},'def',{$goods_id},this);"><i class="fa fa-check"></i></button>
+                                    {elseif condition="$val['def'] eq 0" /}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal({$val.id},'def',{$goods_id},this);"><i class="fa fa-times"></i></button>
+                                    {/if}
+                                    </td>
+                                    {if condition="!empty($radioAttrRes)"}<td><button type="button" class="btn btn-success btn-sm clone" onclick="getAttrPro(this);">{if condition="$k2 eq 0"}+{else/}-{/if}</button></td>{/if}
+                                </tr>
+                                {/foreach}
+                                {else/}
+                                
+                                <tr class="kc">
+                                {if condition="!empty($radioAttrRes)"}
+                                {foreach name="radioAttrRes" item="v" key="k"}
+                                    <td>
+                                    <select name="goods_attr[{$k}][]" class="form-control">
+                                    <option value="">请选择</option>
+                                    {foreach name="v" item="vo"}
+                                        <option value="{$vo.id}">{$vo.attr_value}</option> 
+                                    {/foreach}     
+                                    </select>
+                                    </td> 
+                                {/foreach}
+                                {/if}
+                                    <td><input type="text" name="goods_number[]" class="form-control"></td> 
+                                    {if condition="!empty($radioAttrRes)"}<td><button type="button" class="btn btn-success btn-sm clone" onclick="getAttrPro(this);">+</button></td>{/if}
+                                </tr>    
+                                                            
+                                {/if}
+                                <input type="hidden" name="goods_id" value="{$goods_id}">
+					
+                            </tbody>
+                        </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    
+    <script>   
+    $(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });   
+        
+        $('#doSubmit').click(function(){
+        	post('{:url("goods/product")}','POST',$('#form').serialize(),1);
+            return false;
+        });
+    });
+    
+    function changeTableVal(field_id,field_name,goods_id,obj){
+    	if($(obj).hasClass('btn-danger')){
+    		var field_value = 1;
+    	}else if($(obj).hasClass('btn-primary')){
+    		var field_value = 0;
+    	}
+    	layer.load(2);
+    	$.ajax({
+    		url:"{:url('goods/progaibian')}",
+    		type:'POST',
+    		data:{id:field_id,name:field_name,value:field_value,goods_id:goods_id},
+    		dataType:'json',
+    		success:function(data){
+    			if(data == 1){
+    				layer.closeAll('loading');
+    			   	if(field_value == 1){
+    			   		$('.btn-primary').html('<i class="fa fa-times"></i>');
+    			   		$('.btn-primary').removeClass('btn-primary').addClass('btn-danger');
+    		    		$(obj).removeClass('btn-danger').addClass('btn-primary');
+    		    		$(obj).html('<i class="fa fa-check"></i>');
+    		        	layer.msg('设置成功', {icon: 1,time: 1000});	
+    			   	}else if(field_value == 0){
+    		    		$(obj).removeClass('btn-primary').addClass('btn-danger');
+    		    		$(obj).html('<i class="fa fa-times"></i>');
+    		        	layer.msg('设置成功', {icon: 1,time: 1000});	
+    			   	}
+    			}else{
+    				layer.closeAll('loading');
+    				layer.msg('更新失败，请重试', {icon: 2,time: 1000});
+    			}
+    		},
+    		error:function(){
+    			layer.closeAll('loading');
+    			layer.msg('操作失败或您没有权限，请重试', {icon: 2,time: 1000});
+    		}
+    	});
+    }
+
+    function getAttrPro(o){
+    	var tr = $(o).parent().parent();
+    	if($(o).text() == '+'){
+    		var newtr = tr.clone();
+    		newtr.find('.clone').text('-');
+    		newtr.find('.def').html('');
+    		newtr.find('.product_id').remove();
+    		$('.kc:last').after(newtr);
+    	}else if($(o).text() == '-'){
+    		var product_id = tr.find('input[class=product_id]').val();
+            if(product_id){
+		  		  layer.confirm('该库存信息已存在，是否彻底删除?', {  			  
+					  skin: 'layui-layer-molv',
+					  closeBtn: 0,
+					  shadeClose : true,
+					  btn: ['确定','取消'] //按钮
+				  },function(){
+					  layer.load(2);
+					  $.ajax({					 
+						  url:'{:url("goods/delproduct")}',
+						  type:'POST',
+						  data:{'id':product_id,'goods_id':$('input[name=goods_id]').val()},
+						  dateType:'json',
+						  success:function(data){
+							  if(data.status == 1){
+								  layer.closeAll('loading');
+					    		  layer.msg(data.mess, {icon: 1,time: 1000}, function(){
+					    			  tr.remove();
+					    		  });
+							  }else{
+								  layer.closeAll('loading');
+								  layer.msg(data.mess, {icon: 2,time: 3000});
+							  }
+						  },
+					      error:function(){
+					    	  layer.closeAll('loading');
+					    	  layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+					      }
+					  });				  
+				  });
+            }else{
+      	        tr.remove();
+            }
+    	}
+    }
+    
+    {if condition="empty($pnum)"}
+    function cl(){
+    	location.reload();
+    }
+    {else/}
+    function cl(){
+    	var pnum = {$pnum};
+    	var kcurl = "/{$Request.module}/kcyj/lst.html?page="+pnum;
+    	location.href=kcurl;
+    }
+    {/if}
+    </script>
+</body>
+</html>

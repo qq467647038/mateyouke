@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<script>
+var url = "/{$Request.module}/menu";
+var deleteUrl = "{:url('menu/delete')}";
+var sortUrl = "{:url('menu/order')}";
+</script>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>微信菜单列表</h5>
+                    </div>
+                    <div class="ibox-content">
+						<div class="row">
+						   <div class="col-sm-8 m-b-xs">
+                                <a href="{:url('menu/add')}"><button type="button" class="btn btn-sm btn-primary" id="add" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;增加菜单</button></a>
+                                <button type="button" class="btn btn-sm btn-success" style="margin-right:15px;" id="order">更新排序</button>
+                                <button type="button" class="btn btn-sm btn-success" style="margin-right:15px;" id="send">生成菜单</button>
+                            </div>                    
+                        </div>
+						
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%"></th>
+                                    <th style="width:50%">菜单名称</th>
+                                    <th style="width:15%">类型</th>
+                                    <th style="width:15%">排序</th>
+                                    <th style="width:15%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list"}
+							{foreach name="list" item="v"} 
+                                <tr cid="{$v.id}" pid="{$v.pid}" level="{$v.level}" {neq name="v.pid" value="0"}style="display:none;"{/neq}>
+                                    <td><a href="javascript:;" class="catezk" onclick="cateshow(this);" style="font-size:15px;">[+]</a></td>
+                                    <td>{:str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $v['level'])}{if condition='$v["level"] gt 0'}|{/if}{$v.html}{$v.name}</td>
+                                    <td>
+                                    {switch name="v.type"}
+                                    {case value="top"}
+                                                                                                    无事件的一级菜单
+                                    {/case}
+                                    {case value="view"}
+                                                                                                    跳转url
+                                    {/case}
+                                    {case value="click"}
+                                                                                                    点击推事件
+                                    {/case}
+                                    {/switch}
+                                    </td>
+                                    <td><input name="{$v.id}" type="text" value="{$v.sort}" class="sort" size="1"></td>
+                                    <td><button type="button" class="btn btn-primary btn-xs" onclick="edit({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="5" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/catecommon.js"></script>
+	<script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+	<script>
+	$(function(){
+		$('#send').click(function(){
+			$.ajax({
+				url:'{:url("menu/send")}',
+				type:'POST',
+				data:{sid : 1},
+				dataType:'json',
+				success:function(data){
+					if(data.errcode == 0 && data.errmsg == 'ok'){    	
+						layer.msg('生成微信菜单成功', {icon: 1,time: 1000});
+					}else{
+						layer.msg('生成微信菜单失败', {icon: 2,time: 1000});
+					}
+				},
+		        error:function(){
+		        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+		        }
+			});
+		});
+	})
+	</script>
+	
+</body>
+</html>

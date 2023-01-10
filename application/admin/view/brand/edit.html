@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/Huploadify/Huploadify.css"/>
+</head>
+
+<script>
+var pnum = {$pnum};
+var filter = {$filter};
+{if condition="(!isset($search)) OR (!$search)"}
+var url = "/{$Request.module}/brand/lst/filter/"+filter+".html?page="+pnum;
+{else/}
+var url = "/{$Request.module}/brand/search.html?page="+pnum;
+{/if}
+var updateUrl = "{:url('brand/edit')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>编辑品牌</h5>
+                    </div>
+                    <div class="ibox-content">
+                    <form method="post" enctype="multipart/form-data" class="form-horizontal" id="form"> 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">品牌名称：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="brand_name" value="{$brands.brand_name}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+							<label  class="col-sm-2 control-label">logo图:</label>
+							<div class="col-sm-6">
+                            <div style="margin-bottom:7px; margin-top:5px;">
+                            <img id="imageinfo" {if condition="$brands['brand_logo']"}src="/{$brands.brand_logo}"{else/}src="__PUBLIC__/admin/img/nopic.jpg"{/if} width="180" height="120" border="0" />
+                            <br/><button type="button" class="btn btn-danger btn-xs del" style="display:none;">删除</button>
+                            </div>
+                            <div id="uploaderInput"></div>
+                            <input type="hidden" name="pic_id" value="" >
+                            <div class="repicm" style="display:none;">{$brands.brand_logo}</div>
+                            </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否显示：</label>
+                                <div class="col-sm-6">
+                                        <label class="radio-inline"><input type="radio" name="is_show" {if condition="$brands['is_show'] eq 1"}checked="checked"{/if} value="1">是</label>
+                                        <label class="radio-inline"><input type="radio" name="is_show" {if condition="$brands['is_show'] eq 0"}checked="checked"{/if} value="0">否</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>  
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">关联分类</label>
+                                <div class="col-sm-6" style="color:#333">
+                                <ul style="list-style-type:none; padding-left:0px; margin-top:5px;">
+                                {foreach name="cateres" item="v"}
+                                <li level="{$v.level}" style="margin-bottom:5px;"><input type="checkbox" {if condition="strpos(','.$brands['cate_id_list'].',',','.$v['id'].',') !== false"}checked="checked"{/if} class="cate_id_list" name="cate_id_list[]" value="{$v.id}">{:str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $v['level'])}{gt name="v.level" value="0"}|{/gt}{$v.html}{eq name="v.pid" value="0"}<b>{$v.cate_name}</b>{else/}{$v.cate_name}{/eq}</li>
+                                {/foreach}
+                                </ul>                                 
+                                </div>
+                            </div>					
+                            <div class="hr-line-dashed"></div>                         
+                            
+                            <input type="hidden" name="id" value="{$brands.id}" />
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit">保存内容</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/admin/Huploadify/jquery.Huploadify.js"></script> 
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    
+
+	 <script>	
+    	$(function(){
+            //关联分类js
+            $('input[class=cate_id_list]:checkbox').click(function(){
+            	var cateli = $(this).parent();
+            	var level = cateli.attr('level');
+            	var checked = $(this).prop("checked");
+            	if(checked){
+                	cateli.prevAll('li').each(function(){
+                        if($(this).attr('level')<level){
+                			$(this).find('input[class=cate_id_list]:checkbox').prop('checked','checked');
+                		}  
+                		if($(this).attr('level') == 0){
+                			return false;
+                		}
+                	});
+            	}else if(!checked){
+                	cateli.nextAll('li').each(function(){
+                        if($(this).attr('level')>level){
+                			$(this).find('input[class=cate_id_list]:checkbox').removeAttr('checked');
+                		}else{
+                			return false;
+                		}               		
+                	});
+            	}
+            });
+    		//上传图片
+	        $('#uploaderInput').Huploadify({
+	            uploader : '{:url("brand/uploadify")}',
+		        method:'post',
+		        formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+		        buttonText : '上传图像', 
+		        removeTimeout: 2000,
+		        fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',  
+		        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;', 
+		        fileObjName: 'filedata', //上传附件$_FILE标识  
+		        fileSizeLimit : 2048,
+		        //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+		        auto : true, //开启,自动上传
+		        multi : false, //开启,多选文件
+		        //开始上传
+				onUploadStart:function(file){
+					layer.load(2);
+				},
+		        onUploadSuccess : function(file, data, response) {
+		        	//解析成json对象
+		        	eval('var data='+data);
+		        	if(data.status == 1){
+		        		var picpath = data.path;
+	    	        	$('#imageinfo').attr('src','/'+picpath.img_url);
+	    	        	$('.del').show();
+	    	        	$('input[name=pic_id]').val(picpath.pic_id);
+		        	}else{
+		        		layer.msg(data.msg, {icon: 2,time: 2000});
+		        	}
+		        },
+		        //上传完成后执行的操作
+		        onUploadComplete:function(file){
+		        	layer.closeAll('loading');
+		        },
+		        //上传错误  
+		        onUploadError : function(file, errorCode, errorMsg, errorString) { 
+		        	layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000}); 
+		        }
+		    }); 
+    	    
+    		
+    		$('.del').click(function(){
+    			layer.load(2);
+    			$.ajax({
+    				url:'{:url("brand/delfile")}',
+    				type:'POST',
+    				data:{'zspic_id':$('input[name=pic_id]').val()},
+    				dataType:'json',
+    				success:function(data){
+    					if(data == 1){  
+    						layer.closeAll('loading');
+    						$('input[name=pic_id]').val('');
+    						var picval = $('.repicm').text();
+    						if(picval != ''){
+        						$('#imageinfo').attr('src','/'+picval);
+    						}else{
+    							$('#imageinfo').attr('src','__PUBLIC__/admin/img/nopic.jpg');
+    						}
+    						$('.del').hide();
+    					}else{
+    						layer.closeAll('loading');
+    						layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+    					}
+    				},
+    		        error:function(){
+    		        	layer.closeAll('loading');
+    		        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+    		        }
+    			});
+    		});
+    		
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+                       
+            
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	        	//layer ajax提交表单
+	            submitHandler:function(){
+	               // 序列化 表单数据 后提交 ，太简洁了
+	            	post(updateUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+	                
+	        	rules:{
+	        		brand_name:{required:true}
+	        	},
+	        		
+	        	messages:{
+	                brand_name:{required:icon+'必填'}
+	        	}
+        	});
+      });  	  	
+    </script>
+    
+    
+    
+    <script>
+		function cl(){
+			parent.location.href = url;
+		}
+    </script>    
+
+</body>
+</html>

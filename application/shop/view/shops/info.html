@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/Huploadify/Huploadify.css"/>
+</head>
+
+<script>
+var url = "{:url('shops/info')}";
+var infoUrl = "{:url('shops/info')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>商家基本信息</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" enctype="multipart/form-data" class="form-horizontal" id="form"> 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">店铺名称：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="shop_name" value="{$shops.shop_name}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">行业名称：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$shops.industry_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">费率：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">千分之{$shops['remind']}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>  
+                            
+                           <div class="form-group">
+                           <label class="col-sm-2 control-label">店铺描述：</label>
+                                <div class="col-sm-6">
+                                    <textarea name="shop_desc" class="form-control">{$shops.shop_desc}</textarea>
+                                </div>  
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                           </div>
+                           <div class="hr-line-dashed"></div>
+                           
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">搜索关键字：</label>
+                                <div class="col-sm-6">
+                                    <textarea name="search_keywords" class="form-control">{$shops.search_keywords}</textarea>
+                                </div>  
+                                <label class="col-sm-2" style="padding-top:7px; color:#333; font-size:12px;">(多个以英文,号隔开)</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>                      							                                                                                                 
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">联系人：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="contacts" value="{$shops.contacts}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">手机号：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="telephone" value="{$shops.telephone}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>  
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">微信号：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="wxnum" value="{$shops.wxnum}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">QQ号：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="qqnum" value="{$shops.qqnum}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                            
+                            <div class="form-group">
+							<label  class="col-sm-2 control-label">logo图:</label>
+							<div class="col-sm-6">
+                            <div style="margin-bottom:7px; margin-top:5px;">
+                            <img id="imageinfo" {if condition="$shops['logo']"}src="/{$shops.logo}"{else/}src="__PUBLIC__/admin/img/nopic.jpg"{/if} width="100" height="100" border="0" />
+                            <br/><button type="button" class="btn btn-danger btn-xs del" style="display:none;">删除</button>
+                            </div>
+                            <div id="uploaderInput"></div>
+                            <input type="hidden" name="pic_id" value="" >
+                            <div class="repicm" style="display:none;">{$shops.logo}</div>
+                            </div>
+                            </div>
+                            <div class="hr-line-dashed"></div> 
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">营业时间：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="sertime" value="{$shops.sertime}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">运费：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="freight" value="{$shops.freight}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">满减金额：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="reduce" value="{$shops.reduce}" class="form-control">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+	                        <div class="form-group">
+	                            <label class="col-sm-2 control-label">店铺省.市.区/县:</label>
+	                            <div class="col-sm-2">
+	                                <select class="form-control m-b" name="pro_id">
+	                                    {foreach name="prores" item="v"}
+	                                    <option {if condition="$shops['pro_id'] eq $v['id']"}selected="selected"{/if} value="{$v.id}"}>{$v.zm}.{$v.pro_name}</option>
+	                                    {/foreach}
+	                                </select>
+	                            </div>
+	                            <div class="col-sm-2">
+	                                <select class="form-control m-b" name="city_id" id="cityname">
+		                                {foreach name="cityres" item="v"}
+		                                <option {if condition="$shops['city_id'] eq $v['id']"}selected="selected"{/if} value="{$v.id}">{$v.zm}.{$v.city_name}</option>
+		                                {/foreach}
+	                                </select>
+	                            </div>
+	                            <div class="col-sm-2">
+	                                <select class="form-control m-b" name="area_id" id="areaname">
+	                                    {foreach name="areares" item="v"}
+		                                <option {if condition="$shops['area_id'] eq $v['id']"}selected="selected"{/if} value="{$v.id}">{$v.zm}.{$v.area_name}</option>
+		                                {/foreach}
+	                                </select>
+	                            </div>
+	                            <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+	                        </div>
+	                        <div class="hr-line-dashed"></div>
+	                        
+	                       <div class="form-group">
+                           <label class="col-sm-2 control-label">详细地址：</label>
+                                <div class="col-sm-6">
+                                    <textarea name="address" class="form-control">{$shops.address}</textarea>
+                                </div>  
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                           </div>
+                           <div class="hr-line-dashed"></div>  
+                           
+                           <div class="form-group">
+                                <label class="col-sm-2 control-label">店铺所在位置：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="latlon" value="{$shops.lng},{$shops.lat}" class="form-control">
+                                </div>
+                                <div class="col-sm-1"><button class="btn btn-info" type="button" id="zbxz">打开坐标选择器</button></div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                                              
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否开启商品分销：</label>
+                                <div class="col-sm-6">
+                                        <label class="radio-inline"><input type="radio" name="fenxiao" {if condition="$shops['fenxiao'] eq 1"}checked="checked"{/if} value="1">开启</label>
+                                        <label class="radio-inline"><input type="radio" name="fenxiao" {if condition="$shops['fenxiao'] eq 0"}checked="checked"{/if} value="0">关闭</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>   
+                            
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit">保存内容</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/admin/Huploadify/jquery.Huploadify.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>      
+
+	<script>
+    	$(function(){
+    		$('#zbxz').click(function(){
+    			var zbUrl = "http://api.map.baidu.com/lbsapi/getpoint/index.html";
+    			layer.open({
+    				type : 2,
+    				title : '选择坐标',
+    				shadeClose : true,
+    				shade : 0.5,
+    				area : ['1000px','650px'],
+    				content : zbUrl
+    			});
+    		});
+    		
+    		//上传图片
+	        $('#uploaderInput').Huploadify({
+	            uploader : '{:url("shops/uploadify")}',
+		        method:'post',
+		        formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+		        buttonText : '上传图像', 
+		        removeTimeout: 2000,
+		        fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',  
+		        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;', 
+		        fileObjName: 'filedata', //上传附件$_FILE标识  
+		        fileSizeLimit : 2048,
+		        //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+		        auto : true, //开启,自动上传
+		        multi : false, //开启,多选文件
+		        //开始上传
+				onUploadStart:function(file){
+					layer.load(2);
+				},
+		        onUploadSuccess : function(file, data, response) {
+		        	//解析成json对象
+		        	eval('var data='+data);
+		        	if(data.status == 1){
+		        		var picpath = data.path;
+	    	        	$('#imageinfo').attr('src','/'+picpath.img_url);
+	    	        	$('.del').show();
+	    	        	$('input[name=pic_id]').val(picpath.pic_id);
+		        	}else{
+		        		layer.msg(data.msg, {icon: 2,time: 2000});
+		        	}
+		        },
+		        //上传完成后执行的操作
+		        onUploadComplete:function(file){
+		        	layer.closeAll('loading');
+		        },
+		        //上传错误  
+		        onUploadError : function(file, errorCode, errorMsg, errorString) { 
+		        	layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000}); 
+		        }
+		    }); 
+    	    
+    		
+    		$('.del').click(function(){
+    			layer.load(2);
+    			$.ajax({
+    				url:'{:url("shops/delfile")}',
+    				type:'POST',
+    				data:{'zspic_id':$('input[name=pic_id]').val()},
+    				dataType:'json',
+    				success:function(data){
+    					if(data == 1){  
+    						layer.closeAll('loading');
+    						$('input[name=pic_id]').val('');
+    						var picval = $('.repicm').text();
+    						if(picval != ''){
+        						$('#imageinfo').attr('src','/'+picval);
+    						}else{
+    							$('#imageinfo').attr('src','__PUBLIC__/admin/img/nopic.jpg');
+    						}
+    						$('.del').hide();
+    					}else{
+    						layer.closeAll('loading');
+    						layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+    					}
+    				},
+    		        error:function(){
+    		        	layer.closeAll('loading');
+    		        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+    		        }
+    			});
+    		});
+        	
+            $('select[name=pro_id]').change(function(){
+            	var pro_id = $(this).val();
+            	if(pro_id != '' && pro_id != 0){
+            		$.ajax({
+         			   url:"{:url('shops/getcitylist')}",
+         			   type:'POST',
+         			   data:{'pro_id':pro_id},
+         		       dataType:'json',
+         			   success:function(data){
+         				   if(data){
+                         	  var html = '';
+                         	  var html='<option value="">--选择市--</option>';
+                              $.each(data,function(i,v){
+                             	 html+='<option value="'+v.id+'">'+v.zm+'.'+v.city_name+'</option>';
+                              });
+                          	  $('#cityname').html(html);
+                          	  var html2='<option value="">--选择区/县--</option>';
+                          	  $('#areaname').html(html2);
+         				   }else{
+         					  var html='<option value="">--选择市--</option>';
+         					  var html2='<option value="">--选择区/县--</option>';
+         					  $('#cityname').html(html);
+         					  $('#areaname').html(html2);
+         				   }
+         			   }
+         		    });
+            	}else{
+    				var html='<option value="">--选择市--</option>';
+    		        var html2='<option value="">--选择区/县--</option>';
+    			    $('#cityname').html(html);
+    			    $('#areaname').html(html2);
+            	}
+            });            
+            
+            $('select[name=city_id]').change(function(){
+            	var city_id = $(this).val();
+            	if(city_id != '' && city_id != 0){
+            		$.ajax({
+         			   url:"{:url('shops/getarealist')}",
+         			   type:'POST',
+         			   data:{'city_id':city_id},
+         		       dataType:'json',
+         			   success:function(data){
+         				   if(data){
+                         	    var html = '';
+                         	    var html='<option value="">--选择区/县--</option>';
+                                $.each(data,function(i,v){
+                             	   html+='<option value="'+v.id+'">'+v.zm+'.'+v.area_name+'</option>';
+                                });
+                          	   $('#areaname').html(html);
+         				   }else{
+         					   var html='<option value="">--选择区/县--</option>';
+         					   $('#areaname').html(html);
+         				   }
+         			   }
+         		    });
+            	}else{
+            		var html='<option value="">--选择区/县--</option>';
+    				$('#areaname').html(html);
+            	}
+            });
+            
+    		//手机号验证
+        	jQuery.validator.addMethod("phone", function(value, element){   
+        	    var tel = /^1[345678]\d{9}$/;
+        	    return this.optional(element) || (tel.test(value));
+        	}, "手机格式不正确");
+                                    
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	        	//layer ajax提交表单
+	            submitHandler:function(){
+	               // 序列化 表单数据 后提交 ，太简洁了
+	            	post(infoUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+	                
+	        	rules:{
+	        		shop_name:{required:true},
+	        		contacts:{required:true},
+	        		telephone:{
+		        		required:true,
+		        		phone:true
+		        	},
+		        	search_keywords:{required:true},
+		        	freight:{required:true},
+		        	reduce:{required:true},
+	        		pro_id:{
+	        			required:true,
+	        			digits:true
+	        		},
+	        		city_id:{
+	        			required:true,
+	        			digits:true
+	        		},
+	        		area_id:{
+	        			required:true,
+	        			digits:true
+	        		},
+		        	address:{required:true},
+		        	latlon:{required:true}
+	        	},
+	        		
+	        	messages:{
+	        		shop_name:{required:icon+'必填'},
+	        		contacts:{required:icon+'必填'},
+	        		telephone:{
+	        			required:icon+'必填',
+	        			phone:icon+'手机号格式不正确'
+	        		},
+	        		search_keywords:{required:icon+'必填'},
+	        		freight:{required:icon+'必填'},
+	        		reduce:{required:icon+'必填'},
+	        		pro_id:{
+	        			required:icon+'必选',
+	        			digits:icon+'省份id必须是整数'
+	        		},
+	        		city_id:{
+	        			required:icon+'必选',
+	        			digits:icon+'城市id必须是整数'
+	        		},
+	        		area_id:{
+	        			required:icon+'必选',
+	        			digits:icon+'区县id必须是整数'
+	        		},
+	        		address:{required:icon+'必填'},
+	        		latlon:{required:icon+'必填'}
+	        	}
+        	});
+      });
+    	
+	  function cl(){
+	     location.href = url;
+	  }	  
+    </script>
+        
+
+</body>
+</html>

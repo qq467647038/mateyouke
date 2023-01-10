@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInRight">
+        {if condition="$list->isEmpty() == false"}
+        {foreach name="list" item="v"}
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins" style="background-color:white;">
+                <div class="ibox-title">
+                    <div class="row">
+                        <div class="col-sm-8"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;主播：{notempty name="v.user_name"}{$v['user_name']}-{/notempty}{$v['phone']}</div>
+                        <div class="col-sm-4">{if condition="$v['prohibit'] eq 1"}<i class="fa fa-eye-slash" aria-hidden="true"></i>{else/}<i class="fa fa-eye" aria-hidden="true"></i>{/if}&nbsp;状态：{if condition="$v['prohibit'] eq 1"}禁用{else/}正常{/if}</div>
+                    </div>
+                </div>
+                <div class="ibox-content no-padding border-left-right">
+                    <video src="https://ql.lfjjw888.com//1553094096546" controls="controls"  style="padding:1%;"></video>
+                </div>
+
+                <div class="ibox-content profile-content">
+                    <h4><strong>主播ID：</strong><span style="font-weight: normal;">{$v['uid']}</span></h4>
+                    <h4><strong>房间号：</strong><span style="font-weight: normal;">{$v['room']}</span></h4>
+                    <h4><strong>最后登录时间：</strong><span style="font-weight: normal;">{$v['lastlogin_time']|date="Y-m-d H:i:s",###}</span></h4>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h5><strong>是否热门&nbsp;&nbsp;</strong><i class="fa fa-fire" aria-hidden="true" {if condition="$v['hot'] eq 1"}style="color:red;"{/if}></i></h5>
+                        </div>
+                        <div class="col-sm-6">
+                            <h5><strong>是否推荐&nbsp;&nbsp;</strong><i class="fa fa-hand-pointer-o" aria-hidden="true" {if condition="$v['recommend'] eq 1"}style="color:red;"{/if}></i></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-button">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-primary btn-sm btn-block btn-danger"><i class="fa fa-bell-slash"></i> 关闭</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-default btn-sm btn-block btn-warning"><i class="fa fa-exclamation-triangle"></i> 警告</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/foreach}
+        {else/}
+        <div class="col-sm-3">没有找到相关数据</div>
+        {/if}
+    </div>
+</div>
+
+
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+	
+</body>
+</html>

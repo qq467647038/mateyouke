@@ -1,0 +1,73 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/shop_assemble/lst/filter/"+filter+".html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/shop_assemble/search.html?page="+pnum;
+	{/if}
+</script>    
+
+                  
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%">状态</th>
+                                    <th style="width:10%">拼团名称</th>
+                                    <th style="width:20%">商品信息</th>
+                                    <th style="width:10%">拼团价</th>
+                                    <th style="width:10%">几人团数量</th>
+                                    <th style="width:15%">开始时间</th>
+                                    <th style="width:15%">结束时间</th>
+                                    <th style="width:5%">推荐</th>
+                                    <th style="width:10%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="!empty($list)"}
+							{foreach name="list" item="v"}
+                                <tr>
+                                    <td>
+                                    {if condition="$v['zhuangtai'] eq 1"}
+                                    <span style="color:#1c84c6;">待审核</span>
+                                    {elseif condition="$v['zhuangtai'] eq 2"/}
+                                    <span style="color:#1c84c6;">即将开始</span>
+                                    {elseif condition="$v['zhuangtai'] eq 3"/}
+                                    <span style="color:#1c84c6;">拼团中</span>
+                                    {elseif condition="$v['zhuangtai'] eq 4"/}
+                                    <span style="color:#1992FC;">已结束</span>
+                                    {elseif condition="$v['zhuangtai'] eq 5"/}
+                                    <span style="color:#ed5565;">平台已关闭</span>
+                                    {/if}
+                                    </td>
+                                    <td>{$v.pin_name}</td>
+                                    <td>{$v.goods_name}&nbsp;&nbsp;{$v.goods_attr_str}</td>
+                                    <td>{$v.price}</td>
+                                    <td>{$v.pin_num}人团</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['start_time'])}</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['end_time'])}</td>
+                                    <td>
+                                    {switch name="v.recommend"}
+                                    {case value="1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal({$v.id},'recommend',this);"><i class="fa fa-check"></i></button>
+                                    {/case}
+                                    {case value="0"}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal({$v.id},'recommend',this);"><i class="fa fa-times"></i></button>
+                                    {/case}                                    
+                                    {/switch}
+                                    </td> 
+                                    <td>                                  
+                                    {if condition="$v['checked'] eq 0"}<button type="button" class="btn btn-primary btn-xs" onclick="pin_checked({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;审核</button>{else/}<button type="button" class="btn btn-info btn-xs" onclick="pin_info({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;详细</button>{/if}
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="9" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}				
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

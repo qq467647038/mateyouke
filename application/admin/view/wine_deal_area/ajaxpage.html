@@ -1,0 +1,78 @@
+<!--
+ * @Descripttion: 
+ * @Author: cbing
+ * @Date: 2019-06-10 14:42:00
+ * @LastEditors: cbing
+ * @LastEditTime: 2019-08-24 18:15:04
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/wine_deal_area/lst.html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/wine_deal_area/search.html?page="+pnum;
+	{/if}
+</script>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">ID</th>
+                                    <th style="width:15%">交易时间段</th>
+                                    <th style="width:15%">单数</th>
+                                    <th style="width:15%">保证金</th>
+                                    <th style="width:5%">状态</th>
+                                    <th style="width:20%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <td>
+                                        {$v['desc']}{$v['deal_area']}
+                                    </td>
+                                    <td>{$v.odd_num} 单</td>
+                                    <td>{$v.deposit}</td>
+                                    <td>
+                                        {if condition="$v['status']==1"}
+                                        开启
+                                        {elseif condition="$v['status']==0"}
+                                        关闭
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="edit({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>
+                                        {if condition="$v['id'] != 10"}
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="yuyue({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;预约数量</button>
+                                        {/if}
+                                        <!--<button type="button" class="btn btn-primary btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;删除</button>-->
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="14" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+
+<script>
+function yuyue(id,obj){
+	if(search == 0){
+		var editUrl = url+'/yuyue/id/'+id;
+	}else{
+		var editUrl = url+'/yuyue/id/'+id;
+	}
+	layer.open({
+		type : 2,
+		title : false,
+		shadeClose : false,
+		shade : 0.5,
+		area : ['100%','100%'],
+		content : editUrl
+	});
+}
+</script>

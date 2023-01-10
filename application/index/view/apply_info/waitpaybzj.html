@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+</head>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                <h5>系统提示</h5>
+                </div>
+                <div class="ibox-content">
+                <p style="font-size:14px; line-height:30px;">您的商家申请资料已审核通过，请缴纳保证金完成入驻</p>
+                <p style="font-size:14px; line-height:30px;">您申请的行业为：{$industrys.industry_name}</p>
+                <p style="font-size:14px; line-height:30px;">费率为：千分之{$industrys.remind}</p>
+                <p style="font-size:14px; line-height:30px;">需缴纳保证金：{$industrys.ser_price}&nbsp;元</p>
+                <div class="form-group" style="margin-top:20px; margin-bottom:50px;">
+                <button class="btn btn-primary" type="button" id="ruzhuorder" style="margin-right:25px;">缴纳保证金</button>
+                <a href="{:url('login/loginout')}" class="btn btn-danger">退出登录</a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(function(){
+	$('#ruzhuorder').click(function(){
+		layer.load(2);
+		
+		$.ajax({
+			url:'{:url("apply_info/addorder")}',
+			type:'POST',
+			data:{'zspic_id':1},
+			dataType:'json',
+			success:function(data){
+				if(data.status == 1){
+					layer.closeAll('loading');
+					location.href="{:url('rz_order/index')}";
+				}else if(data.status == 2){
+					layer.closeAll('loading');
+					layer.msg(data.mess, {icon: 2,time: 2000},function(){
+						location.href="{:url('login/index')}";
+					});
+				}else{
+					layer.closeAll('loading');
+					layer.msg(data.mess, {icon: 2,time: 1000});
+				}
+			},
+	        error:function(){
+	        	layer.closeAll('loading');
+	        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+	        }
+		});
+	});	
+});
+
+</script>
+
+</body>
+</html>

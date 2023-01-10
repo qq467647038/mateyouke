@@ -1,0 +1,83 @@
+<!--
+ * @Descripttion: 
+ * @Author: cbing
+ * @Date: 2019-06-10 14:42:00
+ * @LastEditors: cbing
+ * @LastEditTime: 2019-08-24 18:15:04
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/member/lst.html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/member/search.html?page="+pnum;
+	{/if}
+</script>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">ID</th>
+                                    <th style="width:%">用户名</th>
+                                    <th style="width:%">手机号</th>
+                                    <th style="width:12%">申请时间</th>
+                                    <th style="width:12%">状态</th>
+                                    <th style="width:20%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <td>{if condition="$v['user_name']"}{$v['user_name']}{else/}/{/if}</td>
+                                    <td>{if condition="$v['phone']"}{$v.phone}{else/}/{/if}</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['addtime'])}</td>
+                                    <td>
+                                    {switch name="v.status"}
+                                    {case value="0"}
+                                    待审
+                                    {/case}
+                                    {case value="1"}
+                                    通过
+                                    {/case}
+                                    {case value="2"}
+                                    拒绝
+                                    {/case}
+                                    {/switch}
+                                    </td>
+                                    <td>
+                                        {if condition="$v['status'] == 0"}
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="setVip({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;通过</button>
+                                        {/if}
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="14" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+
+<script>
+    function setVip(id, obj){
+        layer.confirm('是否确定设置VIP专享', {
+            btn: ['确定', '取消']
+        }, function(index){
+            $.ajax({
+                type: 'post',
+                url: '{:url("member/setVip")}',
+                data: {
+                  'id': id
+                },
+                success:function(res){
+                    layer.close(index);
+                    window.location.reload();
+                }
+            })
+        })
+    }
+
+</script>

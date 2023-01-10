@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+</head>
+
+<script>
+//删除url
+var url = "/{$Request.module}/goods";
+var recycleUrl = "{:url('goods/recycle')}";
+</script>
+
+<body class="gray-bg">
+    <style>
+	.qiehuan{
+	    width:120px; height:40px; line-height:40px; font-size:14px; font-weight:bold; color:#333; background-color:#F5F5F6; float:left; margin-right:10px; text-align:center; cursor:pointer;
+	}
+	</style>
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>{if condition="isset($cate_name) && $cate_name"}{$cate_name}{/if}商品列表</h5>
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="row" style="margin-top:10px;margin-bottom:20px;">  
+                        	<div class="col-sm-3 m-b-xs">
+                                <a href="{:url('FindTags/add')}" class="btn btn-sm btn-primary" id="addgoods" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;添加标签</a>
+                            </div>
+                        
+                            <form action="{:url('FindTags/lst')}" method="post" id="form_search">
+                            <div class="col-sm-3" style="float:right;">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" placeholder="请输入标签名称" class="input-sm form-control" value="{:input('param.keyword')}"/>
+                                    <span class="input-group-btn"><button type="submit" class="btn btn-sm btn-primary" id="submit_search2">搜索</button></span>
+                                </div>
+                            </div>
+
+                            <div style="float:right; margin-right:10px; font-size:15px;">
+                                <select style="height:30px; line-height:30px; border:1px solid #e5e6e7;" name="cate_id">
+                                    <option value="0">所有分类</option>
+                                    {foreach name="cateres" item="v"}
+                                    <option value="{$v.id}" {if condition="input('param.cate_id') eq $v['id']"}selected="selected"{/if}>{:str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $v['level'])}{if condition='$v["level"] gt 0'}|{/if}{$v.html}{$v.cate_name}</option>
+                                    {/foreach}
+                                </select>
+                            </div>                         
+                           </form>
+                           
+                        </div>  
+                        
+                        
+                        <div id="ajaxpagetest">
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="width:35%">标签名称</th>
+                                    <th style="width:15%">所属分类</th>
+                                    <th style="width:10%">创建时间</th>
+                                    <th style="width:10%">是否推荐</th>
+                                    <th style="width:20%">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {if condition="$list->isEmpty() == false"}
+                                {foreach name="list" item="v"}
+                                <tr>
+                                    <td>{$v.name}</td>
+                                    <td>{$v.cate_name}</td>
+                                    <td>{$v.createtime}</td>
+                                    <td>
+                                        {if condition="$v['recommend'] eq 1"}
+                                        <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal({$v.id});"><i class="fa fa-check"></i></button>
+                                        {elseif condition="$v['recommend'] eq 0" /}
+                                        <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal({$v.id});"><i class="fa fa-times"></i></button>
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        <a href="{:url('find_tags/edit',array('id'=>$v['id']))}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i>&nbsp;编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button type="button" class="btn btn-danger btn-xs" onclick="recycle({$v.id});"><i class="fa fa-close"></i>&nbsp;删除</button>
+                                    </td>
+                                </tr>
+                                {/foreach}
+                                {else/}
+                                <tr><td colspan="6" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+                                {/if}
+                                </tbody>
+                            </table>
+                            <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+                        </div>                        
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/admin.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script type="text/javascript">
+        /**
+         * 筛选查询
+         */
+        $("ul li a").on("click",function (e) {
+            var url = $(this).attr("href");
+            var formdata = $("#form_search").serialize();
+            if(url.indexOf('?')<=-1){
+                url = url+"?"+formdata;
+            }else{
+                url = url+"&"+formdata;
+            }
+            e.preventDefault();
+            $(location).attr('href', url);
+        });
+
+
+        /*
+        是否推荐
+         */
+        function changeTableVal(id) {
+            $.ajax({
+                url:"{:url('find_tags/isshow')}",
+                type:'POST',
+                data:{id:id},
+                dataType:'json',
+                success:function(data) {
+                    if(data.code == 200){
+                        layer.msg(data.mess);
+                    }else{
+                        layer.msg(data.mess)
+                    }
+                }
+            });
+            window.setTimeout(function () {
+                location.reload();
+            },1000);
+        }
+
+
+
+        /*
+        删除
+         */
+        function recycle(id) {
+            $.ajax({
+                url:"{:url('find_tags/del')}",
+                type:'POST',
+                data:{id:id},
+                dataType:'json',
+                success:function(data) {
+                    if(data.code == 200){
+                        layer.msg(data.msg);
+                        window.setTimeout(function () {
+                            location.reload();
+                        },1000);
+                    }else{
+                        layer.msg(data.msg)
+                    }
+                }
+
+            });
+        }
+
+    </script>
+	
+</body>
+</html>

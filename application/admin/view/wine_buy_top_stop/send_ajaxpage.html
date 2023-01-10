@@ -1,0 +1,113 @@
+<!--
+ * @Descripttion: 
+ * @Copyright: ©版权所有
+ * @Link: www.s1107.com
+ * @Contact: QQ:2487937004
+ * @LastEditors: cbing
+ * @LastEditTime: 2020-05-01 18:40:18
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="!isset($search) && !isset($cate_id)"}
+	var search = 0;
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/integral_goods/lst/filter/"+filter+".html?page="+pnum;
+	{elseif condition="isset($search) && $search" /}
+	var search = {$search};
+	var cate_id = 0;
+	var goUrl = "/{$Request.module}/integral_goods/search.html?page="+pnum;
+	{elseif condition="isset($cate_id) && $cate_id" /}
+	var cate_id = {$cate_id};
+	var search = 0;
+	var goUrl = "/{$Request.module}/integral_goods/catelist/cate_id/"+cate_id+"/filter/"+filter+".html?page="+pnum;
+	{/if}
+</script>                           
+                        
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:3%">id</th>
+                                    <th style="width:5%">商品名称</th>
+                                    <th style="width:5%">缩略图</th>
+                                    <th style="width:5%">价值</th>
+                                    <th style="width:5%">收货人</th>
+                                    <th style="width:5%">手机号</th>
+                                    <th style="width:5%">省</th>
+                                    <th style="width:5%">市</th>
+                                    <th style="width:5%">区</th>
+                                    <th style="width:5%">地址</th>
+                                    <th style="width:5%">状态</th>
+                                    <th style="width:5%">时间</th>
+                                    <th style="width:5%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <td>{$v.goods_name}</td>   
+                                    <td><img src="{$v.goods_thumb}" width="80px" height="80px"/></td>
+                                    <td>{$v.sale_amount}</td>
+                                    <td>{$v.contacts}</td>
+                                    <td>{$v.phone}</td>
+                                    <td>{$v.pro_name}</td>
+                                    <td>{$v.city_name}</td>
+                                    <td>{$v.area_name}</td>
+                                    <td>{$v.address}</td>
+                                    <td>{$v.status == 0 ? '待发货' : '<label style="color:green;font-weight:bold;">已发货</label>'}</td>
+                                    <td>
+                                        {if condition="$v.addtime"}
+                                        {$v.addtime|date='Y-m-d H:i:s', ###}
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        {if condition="$v.status == 0"}
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="fahuo({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;发货</button>
+                                        {/if}
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="32" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}								
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+                        
+                        <div onclick="hide_proof()" class="proof" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:2;display:none;"></div>
+                        <div class="proof" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;display:none;height: 100%;">
+                            <img style="height:90%;margin-top:10%;" id="img" src="https://yanxinmiao.oss-cn-hongkong.aliyuncs.com/2a91d05eece5177af0337d5c0ae8a73b.jpg" alt="" />
+                        </div>
+                        
+    <script src="/static/admin/js/jquery.min.js?v=2.1.4"></script>  
+    <script type="text/javascript" charset="utf-8">
+        function fahuo(id,obj){
+            layer.confirm('是否确认发货?', {
+                btn: ['发货', '取消']
+            }, function(){
+                $.ajax({
+                    url: "{:url('WineBuyTopStop/send_liji')}",
+                    type: "post",
+                    data: {
+                        id: id
+                    },
+                    success: function(res){
+                        if(res == 1){
+                            layer.msg('成功');
+                            // layer.parent.reload();
+                            setTimeout(function(){
+                                location.reload();
+                            }, 2000);
+                        }
+                        else{
+                            layer.msg('失败');
+                        }
+                    }
+                })
+            });
+        }
+    </script>

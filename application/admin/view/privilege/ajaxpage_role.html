@@ -1,0 +1,43 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+    // var user_id = {$user_id};
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/detail/lst/filter/"+filter+".html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/detail/search.html?page="+pnum;
+	{/if}
+
+</script>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:20%">时间</th>
+                                    <th style="width:15%">操作者</th>
+<!--                                    <th style="width:15%">名称</th>-->
+                                    <th style="width:15%">IP</th>
+                                    <th style="width:20%">记录</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"}
+                                <tr>
+                                    <td>{:date('Y-m-d H:i:s',$v['addtime'])}</td>
+                                    <td>{$v['username']}</td>
+<!--                                    <td>{$v.op_id}</td>-->
+                                    <td>{$v.ip}</td>
+                                    <td>{$v.log}</td>
+<!--                                    <td><button type="button" class="btn btn-primary btn-xs" onclick="getmxinfo({$v.id},{$v.user_id},this);"><i class="fa fa-pencil"></i>&nbsp;查看详细</button></td>-->
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="6" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

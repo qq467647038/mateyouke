@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+<script>
+var url = "{:url('admin/lst')}";
+var insertUrl = "{:url('admin/add')}";
+var checkUsername = "{:url('admin/checkUsername')}";
+</script>
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>添加管理员</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" id="form">                                                                           
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">管理员账号</label>
+                                <div class="col-sm-6">
+                                    <input type="text" id="username" name="username" class="form-control">
+                                </div>
+                            </div>						
+                            <div class="hr-line-dashed"></div>                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">昵称</label>
+                                <div class="col-sm-6">
+                                    <input type="text" id="en_name" name="en_name" class="form-control">
+                                </div>
+                            </div>						
+                            <div class="hr-line-dashed"></div>                                                                 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">密码</label>
+                                <div class="col-sm-6">
+                                    <input type="password" id="password" name="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">确认密码</label>
+                                <div class="col-sm-6">
+                                    <input type="password" id="repwd" name="repwd" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属角色</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="roleid">
+                                        {foreach name="list" item="v"}
+                                        <option value="{$v.id}">{$v.rolename}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否锁定</label>
+                                <div class="col-sm-6">
+                                    <div class="radio">
+                                        <label><input type="radio" checked="checked" value="0" id="optionsRadios1" name="suo">否</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" value="1" id="optionsRadios2" name="suo">是</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>                                                                                              
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:20px;">保存</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script>
+    	$(function(){
+    		
+        	jQuery.validator.addMethod("user", function(value, element) {   
+        	    var tel = /^[a-zA-Z][a-zA-Z0-9]{4,16}$/;
+        	    return this.optional(element) || (tel.test(value));
+        	}, "以字母开头，5-17 字母、数字、下划线'_'");
+        	jQuery.validator.addMethod("pwd", function(value, element) {   
+        	    var tel = /^[A-Z][a-zA-Z0-9]{5,17}$/;
+        	    return this.optional(element) || (tel.test(value));
+        	}, "以大写字母开头，6-18 字母、数字、下划线'_'");
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	        	//layer ajax提交表单
+	            submitHandler:function(){
+	            // 序列化 表单数据 后提交 ，太简洁了
+	                post(insertUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+	        	rules:{
+	        		username:{
+	        		   required:true,
+	        		   user:true,
+	        		   remote : {
+	        			  url : checkUsername,
+	        			  type : 'post',
+	        			  dataType : 'json',
+	        			  data : {
+	        				 username : function () {
+	        				   return $('input[name=username]').val();
+	        			     }
+	        		      }
+	        	       }
+	        	    },
+	        	    en_name:{required:true},
+	        		password:{required:true,pwd:true},
+	        		repwd:{required:true,equalTo:"#password",pwd:true}
+	        	},
+	        	messages:{
+	        		username:{
+	        			required:icon+'必填',
+	        			remote:icon+'账号已存在'
+	        		},
+	        		en_name:{required:icon+'必填'},
+	        		password:{required:icon+'必填'},
+	        		repwd:{required:icon+'必填',equalTo:icon+'确认密码不正确'}
+	        	}
+            });
+      });
+      function cl(){
+    	  location.href = url;
+      }
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!--
+ * @Descripttion: 
+ * @Author: cbing
+ * @Date: 2019-09-17 17:53:11
+ * @LastEditors: cbing
+ * @LastEditTime: 2019-09-17 17:53:11
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>孝笑好</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #id_test_video, video, .vcp-player {
+      width: 100%;
+      height: 100%!important;
+    }
+  </style>
+</head>
+<body>
+  <div id="id_test_video"></div>
+  <script src="https://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.2.js" charset="utf-8"></script>
+  <script>
+    var player = new TcPlayer('id_test_video', {
+    "m3u8": this.getQueryVariable('src').replace('flv', 'm3u8'), //请替换成实际可用的播放地址
+    "autoplay" : true,      //iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+    "poster" : "http://www.test.com/myimage.jpg",
+      flash: false,
+      h5_flv: true
+    });
+
+    function getQueryVariable (variable) {
+      var query = window.location.search.substring(1)
+      var vars = query.split('&')
+
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=")
+        if (pair[0] == variable) {
+          return pair[1]
+        }
+      }
+
+      return false
+    }
+
+  </script>
+</body>
+</html>

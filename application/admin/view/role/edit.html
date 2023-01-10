@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+<script>
+var url = "{:url('role/lst')}";
+var updateUrl = "{:url('role/edit')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>编辑角色</h5>
+                    </div>
+                    <div class="ibox-content">
+                    <form method="post" class="form-horizontal" id="form">         
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">角色名称</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="rolename" value="{$roles.rolename}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">角色权限</label>
+                                <div class="col-sm-6" style="color:#333">
+                                <ul style="list-style-type:none; padding-left:0px; margin-top:5px;">
+                                {foreach name="prilist" item="v"}
+                                <li level="{$v.level}" style="margin-bottom:5px;"><input type="checkbox" {if condition="(isset($v['xz'])) AND ($v['xz'] eq 1)"}checked="checked"{/if} class="pri_id_list" name="pri_id_list[]" value="{$v.id}">{:str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $v['level'])}{gt name="v.level" value="0"}|{/gt}{$v.html}{eq name="v.pid" value="0"}<b>{$v.pri_name}</b>{else/}{$v.pri_name}{/eq}</li>
+                                {/foreach}
+                                </ul>                                 
+                                </div>
+                            </div>					
+                            <div class="hr-line-dashed"></div>                            							                                                                           
+
+                            <input type="hidden" name="id" value="{$roles.id}" />
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:20px;">保存</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	 <script>	
+    	$(function(){    		
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+
+            //增加权限js
+            $('input[class=pri_id_list]:checkbox').click(function(){
+            	var prili = $(this).parent();
+            	var level = prili.attr('level');
+            	var checked = $(this).prop("checked");
+            	if(checked){
+                	prili.prevAll('li').each(function(){
+                        if($(this).attr('level')<level){
+                			$(this).find('input[class=pri_id_list]:checkbox').prop('checked','checked');
+                		}  
+                		if($(this).attr('level') == 0){
+                			return false;
+                		}
+                	});
+            	}else if(!checked){
+                	prili.nextAll('li').each(function(){
+                        if($(this).attr('level')>level){
+                			$(this).find('input[class=pri_id_list]:checkbox').removeAttr('checked');
+                		}else{
+                			return false;
+                		}               		
+                	});
+            	}
+            });
+
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	            errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	            //layer ajax提交表单
+	            submitHandler:function(){
+	               // 序列化 表单数据 后提交 ，太简洁了
+	            	post(updateUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+
+	            rules:{
+	        		rolename:{required:true}
+	        	},
+
+	        	messages:{
+	        		rolename:{required:icon+'必填'}
+	        	}
+            });
+      });
+
+	  function cl(){
+		  parent.location.href = url;
+	  }
+    </script>
+
+</body>
+</html>

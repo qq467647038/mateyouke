@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/Huploadify/Huploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<script>
+var pnum = {$pnum};
+{if condition="(!isset($search)) OR (!$search)"}
+var url = "/{$Request.module}/keyword/lst.html?page="+pnum;
+{else/}
+var url = "/{$Request.module}/keyword/search.html?page="+pnum;
+{/if}
+var updateUrl = "{:url('keyword/edit')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>编辑关键字回复</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" enctype="multipart/form-data" class="form-horizontal" id="form">
+                                                                              
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">关键字名称：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="keyword_name" class="form-control" value="{$keys.keyword_name}">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>						
+                            <div class="hr-line-dashed"></div>
+                            
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">回复类型：</label>
+                                <div class="col-sm-6" id="atype">
+                                        <label class="radio-inline">
+                                        {switch name="keys.key_type"}
+                                        {case value="1"}
+                                        <input type="hidden" name="key_type" value="1">
+                                                                                                               文字回复                                                                  
+                                        {/case}
+                                        {case value="2"}
+                                        <input type="hidden" name="key_type" value="2">
+                                                                                                               单图文回复
+                                        {/case}
+                                        {case value="3"}
+                                        <input type="hidden" name="key_type" value="3">
+                                                                                                               多图文回复
+                                        {/case}
+                                        {/switch}
+                                        </label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            
+                            {if condition="$keys['key_type'] eq 1"}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">文字回复：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="message" class="form-control" value="{$keys.message}">
+                                </div>
+                                <label class="col-sm-1" style="padding-top:7px; color:#F00; font-size:16px;">*</label>
+                            </div>						
+                            <div class="hr-line-dashed"></div>                                                                
+                            {elseif condition="$keys['key_type'] eq 2" /}
+                            <div class="form-group">
+							<label  class="col-sm-2 control-label">缩略图:</label>
+							<div class="col-sm-6">
+                            <div style="margin-bottom:7px; margin-top:5px;">
+                            <img id="imageinfo" {if condition="(isset($kns['picurl'])) AND ($kns['picurl'])"}src="/{$kns.picurl}"{else/}src="__PUBLIC__/admin/image/nopic.jpg"{/if} width="180" height="120" border="0" />
+                            <br/><button type="button" class="btn btn-danger btn-xs del" style="display:none;">删除</button>
+                            </div>
+                            <div id="uploaderInput"></div>
+                            <input type="hidden" name="pic_id" value="" >
+                            <div class="repicm" style="display:none;">{if condition="(isset($kns['picurl'])) AND ($kns['picurl'])"}{$kns.picurl}{/if}</div>
+                            </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>  
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">标题：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="title" class="form-control" {if condition="(isset($kns['title'])) AND ($kns['title'])"}value="{$kns.title}"{/if}>
+                                </div>
+                            </div>						
+                            <div class="hr-line-dashed"></div> 
+							
+							<div class="form-group">
+                                <label class="col-sm-2 control-label">跳转url：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="url" class="form-control" {if condition="(isset($kns['url'])) AND ($kns['url'])"}value="{$kns.url}"{/if}>
+                                </div>
+                            </div>	
+                            <div class="hr-line-dashed"></div>	
+                                                        
+                            <div class="form-group">
+                            <label class="col-sm-2 control-label">描述:</label>
+                                <div class="col-sm-6">
+                                    <textarea name="description" class="form-control">{if condition="(isset($kns['description'])) AND ($kns['description'])"}{$kns.description}{/if}</textarea>
+                                </div> 
+                            </div>				
+                            <div class="hr-line-dashed"></div>  
+                            {elseif condition="$keys['key_type'] eq 3" /}
+                            <div class="form-group">
+							<label  class="col-sm-2 control-label">多图文回复:</label>
+							<div class="col-sm-6">
+                            <div class="imglst" style="width:685px; height:100%; overflow:hidden; margin-bottom:7px; margin-top:5px;">
+                            {if condition="(isset($knres)) AND ($knres)"}
+                            {foreach name="knres" item="v"}
+                            <div class="imgli" del="pic" style="width:170px; height:360px; margin-right:10px; margin-bottom:10px; float:left;">
+                            <img class="image" src="/{$v.picurl}" width="150" height="100" border="0" /><br/>
+                            <button type="button" class="btn btn-danger btn-xs" onclick="deletegp(this);">删除</button>
+                            <input class="ypic_id" type="hidden" name="ypic_id[]" value="{$v.id}">
+                            <div style="margin-top:15px;margin-bottom:10px;">标题:<input type="text" name="ntitle[]" value="{$v.title}"></div>
+                            <div style="margin-bottom:10px;">链接url:<input type="text" name="nurl[]" value="{$v.url}"></div>
+                            <div style="margin-bottom:10px;">描述:<textarea name="ndescription[]">{$v.description}</textarea></div>
+                            <div>排序:<input type="text" name="sort2[]" value="{$v.sort}"></div>
+                            </div>
+                            {/foreach}
+                            {/if}
+                            </div>
+                            <div id="uploaderInputs"></div>
+                            </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>  
+                            {/if}
+
+                            
+                            <input name="id" type="hidden" value="{$keys.id}">
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:20px;">保存内容</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/admin/Huploadify/jquery.Huploadify.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	 <script>	
+	 var kid = {$keys.id};
+	 
+ 	 $(function(){
+		//上传缩略图
+	    $('#uploaderInput').Huploadify({
+            uploader : '{:url("keyword/uploadify")}',
+	        method:'post',
+	        formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+	        buttonText : '上传图像', 
+	        removeTimeout: 2000,
+	        fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',  
+	        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;', 
+	        fileObjName: 'filedata', //上传附件$_FILE标识  
+	        fileSizeLimit : 2048,
+	        //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+	        auto : true, //开启,自动上传
+	        multi : false, //开启,多选文件
+	        //开始上传
+			onUploadStart:function(file){
+				layer.load(2);
+			},
+	        onUploadSuccess : function(file, data, response) {
+	        	//解析成json对象
+	        	eval('var data='+data);
+	        	if(data.status == 1){
+	        		var picpath = data.path;
+    	        	$('#imageinfo').attr('src','/'+picpath.img_url);
+    	        	$('.del').show();
+    	        	$('input[name=pic_id]').val(picpath.pic_id);
+	        	}else{
+	        		layer.msg(data.msg, {icon: 2,time: 2000});
+	        	}
+	        },
+	        //上传完成后执行的操作
+	        onUploadComplete:function(file){
+	        	layer.closeAll('loading');
+	        },
+	        //上传错误  
+	        onUploadError : function(file, errorCode, errorMsg, errorString) { 
+	        	layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000}); 
+	        }
+		});
+	    
+		
+		$('.del').click(function(){
+			layer.load(2);
+			$.ajax({
+				url:'{:url("keyword/delfile")}',
+				type:'POST',
+				data:{'zspic_id':$('input[name=pic_id]').val()},
+				dataType:'json',
+				success:function(data){
+					if(data == 1){  
+						layer.closeAll('loading');
+						$('input[name=pic_id]').val('');
+						var picval = $('.repicm').text();
+						if(picval != ''){
+    						$('#imageinfo').attr('src','/'+picval);
+						}else{
+							$('#imageinfo').attr('src','__PUBLIC__/admin/img/nopic.jpg');
+						}
+						$('.del').hide();
+					}else{
+						layer.closeAll('loading');
+						layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+					}
+				},
+		        error:function(){
+		        	layer.closeAll('loading');
+		        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+		        }
+			});
+		});
+		
+		//批量上传图片
+	    $('#uploaderInputs').Huploadify({
+            uploader : '{:url("keyword/uploadifys")}',
+	        method:'post',
+	        formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+	        buttonText : '上传图像', 
+	        removeTimeout: 2000,
+	        fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',  
+	        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;', 
+	        fileObjName: 'filedata', //上传附件$_FILE标识  
+	        fileSizeLimit : 2048,
+	        //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+	        auto : true, //开启,自动上传
+	        multi : false, //开启,多选文件
+	        //开始上传
+			onUploadStart:function(file){
+				layer.load(2);
+			},
+	        onUploadSuccess : function(file, data, response) {
+	        	//解析成json对象
+	        	eval('var data='+data);
+	        	if(data.status == 1){
+	        		var picpath = data.path.pic_url;
+	        		var pic_id = data.path.id;
+	        		var img = '<div class="imgli" style="width:170px; height:360px; margin-right:10px; margin-bottom:10px; float:left;"><img class="image" src="/'+picpath+'" width="150" height="100" border="0" /><br/><button type="button" class="btn btn-danger btn-xs" onclick="deletegp(this);">删除</button><input class="pic_id" type="hidden" name="picres_id[]" value="'+pic_id+'"><div style="margin-top:15px;margin-bottom:10px;">标题:<input type="text" name="duotitle[]"></div><div style="margin-bottom:10px;">链接url:<input type="text" name="duourl[]"></div><div style="margin-bottom:10px;">描述:<textarea name="duodescription[]"></textarea></div><div>排序:<input type="text" name="sort3[]"></div></div>';
+	        		$('.imglst').append(img);
+	        	}else{
+	        		layer.msg(data.msg, {icon: 2,time: 2000});
+	        	}
+	        },
+	        //队列完成后执行的操作
+	        onQueueComplete:function(file){
+	        	layer.closeAll('loading');
+	        },
+	        //上传错误  
+	        onUploadError : function(file, errorCode, errorMsg, errorString) { 
+	        	layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000}); 
+	        }
+	    });
+		
+	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+    	$('#form').validate({
+        	errorElement : 'span',
+        	debug: true,//只验证不提交表单
+        	//layer ajax提交表单
+            submitHandler:function(){
+                // 序列化 表单数据 后提交 ，太简洁了
+                post(updateUrl,'POST',$('#form').serialize(),1);
+                return false;
+            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+                
+        	rules:{
+        		keyword_name:{required:true}
+        	},
+        		
+        	messages:{
+        		keyword_name:{required:icon+'必填'}
+        	}
+        });
+  });
+
+ 	
+    //删除商品图片批量上传临时文件
+    function deletegp(obj){
+		  var div = $(obj).parent();
+		  var ypic_id = div.find('input[class=ypic_id]').val();
+		  var pic_id = div.find('input[class=pic_id]').val();
+		  var kid = $('input[name=id]').val();
+		  if(ypic_id){
+	  		  layer.confirm('该图片已存在，确定彻底删除？', {  			  
+				  skin: 'layui-layer-molv',
+				  closeBtn: 0,
+				  shadeClose : true,
+				  btn: ['确定','取消'] //按钮
+			  },function(){
+				  layer.load(2);
+			      $.ajax({
+				      url:"{:url('keyword/deleteone')}",
+				      type:'POST',
+				      data:{'ypic_id':ypic_id,'kid':kid},
+				      dataType:'json',
+				      success:function(data){
+				    	  if(data == 1){
+				    		  layer.closeAll('loading');
+				    		  layer.msg('删除成功', {icon: 1,time: 1000}, function(){
+					    		  div.remove();
+				    		  });
+				    	  }else{
+				    		  layer.closeAll('loading');
+				    		  layer.msg('删除图片失败', {icon: 2,time: 1000});
+				    	  }
+				      },
+				      error:function(){
+				    	  layer.closeAll('loading');
+				    	  layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+				      }
+				  });
+			  });
+		  }else if(pic_id){
+			  layer.load(2);
+	  		  $.ajax({
+	  			  url:'{:url("keyword/deletefile")}',
+	  			  type:'POST',
+	  			  data:{'pic_id':pic_id},
+	  			  dataType:'json',
+	  			  success:function(data){				  
+	  				  if(data == 1){
+	  					  layer.closeAll('loading');
+	  			    	  div.remove();
+	  				  }else{
+	  					  layer.closeAll('loading');
+	  					  layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+	  				  }
+	  			  },
+	  		      error:function(){
+	  		    	  layer.closeAll('loading');
+	  		          layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+	  		      }
+	  		  });
+		  }	    	  
+    }
+  	
+  function cl(){
+	  parent.location.href = url;
+  }
+  </script>
+
+</body>
+</html>

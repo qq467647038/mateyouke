@@ -1,0 +1,45 @@
+<!--
+ * @Descripttion: 
+ * @Author: cbing
+ * @Date: 2019-06-10 14:42:00
+ * @LastEditors: cbing
+ * @LastEditTime: 2019-08-24 18:15:04
+ -->
+<script>
+	var pnum = {$pnum};
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/wine_deal_area/lst.html";
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/wine_deal_area/search.html";
+	{/if}
+</script>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>会员编号</th>
+                                    <th>会员名称</th>
+                                    <th>会员手机号</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="count($list)"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <td>
+                                        {$v['true_name']?$v['true_name']:$v['user_name']}
+                                    </td>
+                                    <td>{$v.phone}</td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="14" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+
+<script>
+</script>

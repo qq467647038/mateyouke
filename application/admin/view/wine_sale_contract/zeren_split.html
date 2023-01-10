@@ -1,0 +1,209 @@
+<!--
+ * @Descripttion:
+ * @Author: cbing
+ * @Date: 2019-09-15 16:11:04
+ * @LastEditors: cbing
+ * @LastEditTime: 2019-09-15 16:12:15
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+<script>
+    var url = "{:url('WineSaleContract/wenti')}";
+    var updateUrl = "{:url('WineSaleContract/zerenSplit')}";
+</script>
+
+<body class="gray-bg">
+<style>
+    input.error{
+        border:1px solid red;
+    }
+    span.error{
+        padding-top:10px;
+        color: #f00;
+        font-size:12px;
+    }
+</style>
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form method="post" class="form-horizontal" id="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">订单编号</label>
+                            <div class="col-sm-6">
+                                {$info.odd}
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品名称</label>
+                            <div class="col-sm-6">
+                                {$info.goods_name}
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">成交金额</label>
+                            <div class="col-sm-6">
+                                {$info.buy_amount}
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">买家</label>
+                            <div class="col-sm-6">
+                                {$info.b_true_name}
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">卖家</label>
+                            <div class="col-sm-6">
+                                {$info.m_true_name}
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">付款凭证</label>
+                            <div class="col-sm-6">
+                                {if condition="$info.proof_qrcode"}
+                                <img src="{$info.proof_qrcode}" width="300px" height="300px"/>
+                                {else /}
+                                {/if}
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">支付状态</label>
+                            <div class="col-sm-6">
+                                {$info.pay_status==0?'未支付':'已支付'}
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">责任归属：</label>
+                            <div class="col-sm-6">
+                                <select name="type" id="type" onchange="guishu(this)">
+                                    <option value="0">归属状态</option>
+                                    <option value="1">更换买家</option>
+                                    <option value="2">强制成交</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="guishu" style="display: none;">
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">买家手机号</label>
+                                <div class="col-sm-6">
+                                    <input type="number" name="buy_phone" class="form-control" id="buy_phone" value="" />
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id" value="{$info.id}" />
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit" id="doSubmit" style="margin-right:20px;">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+<script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 自定义js -->
+<script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+<!-- iCheck -->
+<script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+<script>
+    function guishu(obj){
+        var guishu = $(obj).val();
+        if(guishu==1){
+            $('#guishu').css('display', 'block');
+        }
+        else{
+            $('#guishu').css('display', 'none');
+        }
+    }
+
+    $(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+        var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        $('#form').validate({
+            errorElement : 'span',
+            debug: true,//只验证不提交表单
+            //layer ajax提交表单
+            submitHandler:function(){
+                // 序列化 表单数据 后提交 ，太简洁了
+                post(updateUrl,'POST',$('#form').serialize(),1);
+                return false;
+            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+
+            rules:{
+                // user_name:{
+                //     required:true,
+                // },
+                // phone:{
+                //     required:true,
+                // },
+
+            },
+
+            messages:{
+                user_name:{
+                    required:icon+'必填',
+                    remote:icon+'已存在'
+                },
+                phone:{
+                    required:icon+'必填',
+                    remote:icon+'已存在'
+                },
+            }
+        });
+    });
+
+    function cl(){
+        // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+
+        // parent.layer.close(index); //再执行关闭   
+        window.parent.location.reload();
+    }
+</script>
+
+</body>
+</html>

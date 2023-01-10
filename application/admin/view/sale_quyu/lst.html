@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+</head>
+
+<script>
+var url = "/{$Request.module}/sale_quyu";
+var deleteUrl = "{:url('sale_quyu/delete')}";
+var sortUrl = "{:url('sale_quyu/order')}";
+</script>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>{$user_name}负责区域设置</h5>
+                    </div>
+                    <div class="ibox-content">
+						<div class="row">
+						   <div class="col-sm-8 m-b-xs">
+                                <a href="{:url('sale_quyu/add',array('user_id'=>$user_id))}"><button type="button" class="btn btn-sm btn-primary" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;增加</button></a>
+                                <button type="button" class="btn btn-sm btn-danger" id="del">批量删除</button>
+                            </div>              
+
+                        </div>
+						<div id="sj">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%"><input type="checkbox" id="checkAll"/></th>
+                                    <th style="width:20%">姓名</th>
+                                    <th style="width:20%">手机号</th>
+                                    <th style="width:15%">省份</th>
+                                    <th style="width:15%">城市</th>
+                                    <th style="width:15%">区县</th>
+                                    <th style="width:15%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="!empty($list)"}
+							{foreach name="list" item="v"}
+                                <tr>
+                                    <td><input type="checkbox" class="text_id" name="id[]" value="{$v.id}" /></td>
+                                    <td>{if condition="$v['user_name']"}{$v.user_name}{else/}/{/if}</td>
+                                    <td>{$v.phone}</td>
+                                    <td>
+                                    {if condition="$v['pro_id'] != 0"}
+                                    {$v.pro_name}
+                                    {elseif condition="$v['pro_id'] == 0"/}
+                                                                                                    全国                                                             
+                                    {/if}
+                                    </td>
+                                    <td>
+                                    {if condition="$v['pro_id'] != 0 && $v['city_id'] != 0"}
+                                    {$v.city_name}
+                                    {elseif condition="$v['pro_id'] != 0 && $v['city_id'] == 0"/}
+                                                                                                    全省
+                                    {elseif condition="$v['pro_id'] == 0 && $v['city_id'] == 0"/}
+                                                                                                    全国
+                                    {/if}
+                                    </td>
+                                    <td>
+                                    {if condition="$v['pro_id'] != 0 && $v['city_id'] != 0 && $v['area_id'] != 0"}
+                                    {$v.area_name}
+                                    {elseif condition="$v['pro_id'] != 0 && $v['city_id'] != 0 && $v['area_id'] == 0"/}
+                                                                                                    全市
+                                    {elseif condition="$v['pro_id'] != 0 && $v['city_id'] == 0 && $v['area_id'] == 0"/}
+                                                                                                    全省
+                                    {elseif condition="$v['pro_id'] == 0 && $v['city_id'] == 0 && $v['area_id'] == 0"/}
+                                                                                                    全国
+                                    {/if}
+                                    </td>
+                                    <td><button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}	
+							{else/}
+							<tr><td colspan="7" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}					
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/catecommon.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+</body>
+</html>

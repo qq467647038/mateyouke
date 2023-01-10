@@ -1,0 +1,64 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/yhorder/lst/filter/"+filter+".html?page="+pnum;
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/yhorder/search.html?page="+pnum;
+	{/if}
+</script> 
+
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:16%">订单号</th>
+                                    <th style="width:7%">类型</th>
+                                    <th style="width:9%">订单状态</th>
+                                    <th style="width:10%">会员昵称</th>
+                                    <th style="width:10%">会员手机</th>
+                                    <th style="width:10%">总价</th>
+                                    <th style="width:15%">所属区域</th>
+                                    <th style="width:15%">下单时间</th>                                
+                                    <th style="width:15%">操作</th>  
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.ordernumber}</td>
+                                    <td>{if condition="$v['order_type'] eq 1"}普通订单{elseif condition="$v['order_type'] eq 2"/}拼团订单{/if}</td>
+                                    <td>
+                                    {if condition="$v['state'] eq 1 && $v['fh_status'] eq 0 && $v['order_status'] eq 0"}
+                                    <font style="color:#1c84c6;">待发货</font>
+                                    {elseif condition="$v['state'] eq 1 && $v['fh_status'] eq 1 && $v['order_status'] eq 0"/}
+                                    <font style="color:#1c84c6;">已发货</font>
+                                    {elseif condition="$v['state'] eq 1 && $v['fh_status'] eq 1 && $v['order_status'] eq 1"/}
+                                    <font style="color:#1992FC;">已完成</font>                                                             
+                                    {elseif condition="$v['state'] eq 0 && $v['fh_status'] eq 0 && $v['order_status'] eq 0"/}
+                                    <font style="color:#1c84c6;">待支付</font>
+                                    {elseif condition="$v['order_status'] eq 2"/}
+                                    <font style="color:#F00;">已关闭</font>                                                                                                                                                                               
+                                    {/if}                                                               
+                                    </td>
+                                    <td>{if condition="$v['user_name']"}{$v.user_name}{else/}/{/if}</td>
+                                    <td>{$v.phone}</td>
+                                    <td>{$v.total_price}&nbsp;元</td>
+                                    <td>{$v.pro_name}&nbsp;{$v.city_name}&nbsp;{$v.area_name}</td>
+                                    <td>{:date('Y-m-d H:i:s',$v['addtime'])}</td>
+                                    <td>
+                                    <button type="button" class="btn btn-success btn-xs" onclick="getinfo({$v.id},{$user_id},this);"><i class="fa fa-pencil"></i>&nbsp;详情</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button>
+                                    </td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="9" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

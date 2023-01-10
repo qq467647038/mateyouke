@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<script>
+//删除url
+var url = "/{$Request.module}/area";
+var deleteUrl = "{:url('area/delete')}";
+var sortUrl = "{:url('area/order')}";
+</script>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>{if condition="(isset($city_name)) AND ($city_name)"}{$city_name}下属{/if}区县管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                            <div class="row">
+                            <div class="col-sm-5 m-b-xs">
+                                <a href="{:url('area/add',array('city_id'=>$city_id))}"><button type="button" class="btn btn-sm btn-primary" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;增加区县</button></a>
+                                <button type="button" class="btn btn-sm btn-success" style="margin-right:15px;" id="order">更新排序</button>
+                            </div>
+                        </div>
+                        
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:30%">区县名称</th>
+                                    <th style="width:30%">所属城市</th>
+                                    <th style="width:10%">开通</th>
+                                    <th style="width:10%">排序</th>
+                                    <th style="width:20%">操作</th>                                             
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="!empty($list)"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.area_name}</td>
+                                    <td>{$v.city_name}</td>
+                                    <td>
+                                    {if condition="$v['checked'] eq 1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal({$v.id},'checked',this);"><i class="fa fa-check"></i></button>
+                                    {elseif condition="$v['checked'] eq 0"/}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal({$v.id},'checked',this);"><i class="fa fa-times"></i></button>
+                                    {/if}
+                                    </td>
+                                    <td><input name="{$v.id}" type="text" value="{$v.sort}" class="sort" size="1"></td>
+                                    <td><button type="button" class="btn btn-primary btn-xs" onclick="editarea({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="5" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}							
+                            </tbody>
+                        </table>	
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/catecommon.js"></script>
+	<script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+	
+    <script>
+    //编辑
+    function editarea(id,obj){
+    	var city_id = {$city_id};
+		layer.open({
+			type : 2,
+			title : '编辑',
+			shadeClose : true,
+			shade : 0.5,
+			area : ['1000px','650px'],
+			content : url+"/edit/id/"+id+"/city_id/"+city_id+"/filter/3"
+		});
+    }
+	</script>
+
+</body>
+</html>

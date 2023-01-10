@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <style>
+	.qiehuan{
+	    width:120px; height:40px; line-height:40px; font-size:14px; font-weight:bold; color:#333; background-color:#F5F5F6; float:left; margin-right:10px; text-align:center; cursor:pointer;
+	}
+	</style>
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>用户直播入驻列表</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="margin-top:10px;margin-bottom:20px;">
+                            <form action="{:url('finds/lst')}" method="post" id="form_search">
+                            <div class="col-sm-3" style="float:right;">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" placeholder="请输入描述关键字/电话/用户名" value="{:input('param.keyword')}" class="input-sm form-control">
+                                    <span class="input-group-btn"><button type="submit" class="btn btn-sm btn-primary" id="submit_search2">搜索</button></span>
+                                </div>
+                            </div>
+                           </form>
+                           
+                        </div>  
+                        
+                        
+                        <div id="ajaxpagetest">
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="width:10%">用户名-电话</th>
+                                    <th style="width:5%">头像</th>
+                                    <th style="width:10%">申请时间</th>
+                                    <th style="width:10%">最后登录时间</th>
+                                    <th style="width:10%">最后登录IP</th>
+                                    <th style="width:5%">审核状态</th>
+                                    <th style="width:10%">是否热门</th>
+                                    <th style="width:10%">是否推荐</th>
+                                    <th style="width:10%">账户状态</th>
+                                    <th style="width:20%">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {if condition="$list->isEmpty() == false"}
+                                {foreach name="list" item="v"}
+                                <tr>
+                                    <td>{$v.user_name}-{$v.phone}</td>
+                                    <td><img src="https://store.cxy365.com/{$v.headimgurl}" width="40px;"/></td>
+                                    <td>{$v.apply_time|date="Y-m-d H:i:s",###}</td>
+                                    <td>{$v.lastlogin_time|date="Y-m-d H:i:s",###}</td>
+                                    <td>{$v.lastlogin_ip}</td>
+                                    <td>
+                                        {switch name="v.status"}
+                                        {case value="-1"}<span style="color:red;">不通过</span>{/case}
+                                        {case value="1"}<span style="color:green;">通过</span>{/case}
+                                        {case value="2"}<span style="color:blue;">待审核</span>{/case}
+                                        {/switch}
+                                    </td>
+                                    <td>
+                                        {switch name="v.hot"}
+                                        {case value="0"}
+                                        <button class="btn btn-danger btn-xs" type="button" onclick="changehot({$v.id});"><i class="fa fa-times"></i></button>
+                                        {/case}
+                                        {case value="1"}
+                                        <button class="btn btn-primary btn-xs" type="button" onclick="changehot({$v.id});"><i class="fa fa-check"></i></button>
+                                        {/case}
+                                        {/switch}
+                                    </td>
+                                    <td>
+                                        {switch name="v.recommend"}
+                                        {case value="0"}
+                                        <button class="btn btn-danger btn-xs" type="button" onclick="changerecommend({$v.id});"><i class="fa fa-times"></i></button>
+                                        {/case}
+                                        {case value="1"}
+                                        <button class="btn btn-primary btn-xs" type="button" onclick="changerecommend({$v.id});"><i class="fa fa-check"></i></button>
+                                        {/case}
+                                        {/switch}
+                                    </td>
+                                    <td>
+                                        {switch name="v.prohibit"}
+                                        {case value="0"}
+                                        <button class="btn btn-primary btn-xs" type="button" onclick="prohibit({$v.id});"><i class="fa fa-check"></i></button>
+                                        {/case}
+                                        {case value="1"}
+                                        <button class="btn btn-danger btn-xs" type="button" onclick="prohibit({$v.id});"><i class="fa fa-times"></i></button>
+                                        {/case}
+                                        {/switch}
+                                    </td>
+                                    <td>
+                                        <a href="{:url('info',array('id'=>$v['id']))}" class="btn btn-primary btn-xs"><i class="fa fa-lock"></i>&nbsp;详情</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="javascript:void(0);" data-url="{:url('check',array('id'=>$v['id']))}"  class="btn btn-primary btn-xs checked"><i class="fa fa-lock"></i>&nbsp;审核</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+                                {/foreach}
+                                {else/}
+                                <tr><td colspan="6" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+                                {/if}
+                                </tbody>
+                            </table>
+                            <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>
+                        </div>                        
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script type="text/javascript">
+        /**
+         * 筛选查询 分页
+         */
+        $("ul li a").on("click",function (e) {
+            var url = $(this).attr("href");
+            var formdata = $("#form_search").serialize();
+            if(url.indexOf('?')<=-1){
+                url = url+"?"+formdata;
+            }else{
+                url = url+"&"+formdata;
+            }
+            e.preventDefault();
+            $(location).attr('href', url);
+        });
+
+
+        /**
+         * 审核列表
+         */
+        $('.checked').on('click',function () {
+            var url=$(this).attr('data-url');
+            layer.open({
+                type: 2,
+                title: '直播入驻审核',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['50%', '60%'],
+                content: url //iframe的url
+            });
+        });
+
+
+        /*
+        显示隐藏
+         */
+        function prohibit(id) {
+            $.ajax({
+                url:"{:url('alivemember/prohibit')}",
+                type:'POST',
+                data:{id:id},
+                dataType:'json',
+                success:function(data) {
+                    if(data.code == 200){
+                        layer.msg(data.mess);
+                    }else{
+                        layer.msg(data.mess)
+                    }
+                }
+            });
+            window.setTimeout(function () {
+                location.reload();
+            },1000);
+        }
+
+
+
+        /*
+        显示是否热门
+         */
+        function changehot(id) {
+            $.ajax({
+                url:"{:url('alivemember/ishot')}",
+                type:'POST',
+                data:{id:id},
+                dataType:'json',
+                success:function(data) {
+                    if(data.code == 200){
+                        layer.msg(data.mess);
+                    }else{
+                        layer.msg(data.mess)
+                    }
+                }
+            });
+            window.setTimeout(function () {
+                location.reload();
+            },1000);
+        }
+
+
+        /*
+        显示是否热门
+         */
+        function changerecommend(id) {
+            $.ajax({
+                url:"{:url('alivemember/isrecommend')}",
+                type:'POST',
+                data:{id:id},
+                dataType:'json',
+                success:function(data) {
+                    if(data.code == 200){
+                        layer.msg(data.mess);
+                    }else{
+                        layer.msg(data.mess)
+                    }
+                }
+            });
+            window.setTimeout(function () {
+                location.reload();
+            },1000);
+        }
+
+
+
+    </script>
+	
+</body>
+</html>

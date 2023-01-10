@@ -1,0 +1,46 @@
+<script>
+	var pnum = {$pnum};
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/area/lst/filter/"+filter+".html?page="+pnum;
+	{elseif condition="(isset($search)) AND ($search)"/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/area/search.html?page="+pnum;
+	{/if}
+
+</script>
+                        
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:40%">区县名称</th>
+                                    <th style="width:35%">所属城市</th>
+                                    <th style="width:10%">开通</th>
+                                    <th style="width:15%">操作</th>                                             
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$list->isEmpty() == false"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.area_name}</td>
+                                    <td>{$v.city_name}</td>
+                                    <td>
+                                    {if condition="$v['checked'] eq 1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal({$v.id},'checked',this);"><i class="fa fa-check"></i></button>
+                                    {elseif condition="$v['checked'] eq 0"/}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal({$v.id},'checked',this);"><i class="fa fa-times"></i></button>
+                                    {/if}
+                                    </td>
+                                    <td><button type="button" class="btn btn-primary btn-xs" onclick="editpic({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="4" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}							
+                            </tbody>
+                        </table>
+                        <div class="row"><div class="pagination" style="float:right; margin-right:20px;">{$page}</div></div>

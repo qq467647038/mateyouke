@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/uploadify/uploadify.css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+</head>
+
+<script>
+var pnum = {$pnum};
+var filter = {$filter};
+{if condition="(!isset($search)) OR (!$search)"}
+var url = "/{$Request.module}/shop_comment/lst/filter/"+filter+".html?page="+pnum;
+{else/}
+var url = "/{$Request.module}/shop_comment/search.html?page="+pnum;
+{/if}
+var deletecpUrl = "{:url('shop_comment/deletecp')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>审核评价</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" id="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品名称：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; height:35px; line-height:35px;">{$coms.goods_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品属性：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$coms.goods_attr_str}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户姓名：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:200px; height:35px; line-height:35px;">{$coms.user_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户手机号：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$coms.phone}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商家名称：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">{$coms.shop_name}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">评分：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:500px; height:35px; line-height:35px;">商品：{$coms.goods_star}星  | 物流：{$coms.logistics_star}星  | 服务：{$coms.service_star}星</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">评论内容：</label>
+                                <div class="col-sm-6">
+                                    <div style="font-size:14px; width:600px; height:100%; overflow:hidden; line-height:35px;">{$coms.content}</div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+
+                            <div class="form-group">
+							<label  class="col-sm-2 control-label">评论图片:</label>
+							<div class="col-sm-6">
+                            <div class="imglstzs" style="width:685px; height:100%; overflow:hidden; margin-bottom:7px; margin-top:5px;">
+                            {foreach name="coms.images" item="v"}
+                            <div class="imgli" style="width:170px; height:150px; margin-right:10px; margin-bottom:10px; float:left;">
+                            <img class="image" src="{$v.img_url}" width="150" height="100" border="0" /><br/>
+                            <button type="button" class="btn btn-danger btn-xs" onclick="deletegp(this);">删除</button>
+                            <input type="hidden" class="pic_id" name="pic_id[]" value="{$v.id}">
+                            </div>
+                            {/foreach}
+                            </div>
+                            </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否正常：</label>
+                                <div class="col-sm-6">
+                                        <label class="radio-inline"><input type="radio" name="checked" {if condition="$coms['checked'] eq 1"}checked="checked"{/if} value="1">是</label>
+                                        <label class="radio-inline"><input type="radio" name="checked" {if condition="$coms['checked'] eq 2"}checked="checked"{/if} value="2">否</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                           <input type="hidden" name="id" value="{$coms.id}" />
+
+
+                           <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button" id="doSubmit" style="margin-right:50px;">保存设置</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+	<script>
+      $(function(){
+    	  $('#doSubmit').click(function(){
+		      $.ajax({
+			      url:"{:url('shop_comment/checked')}",
+			      type:'POST',
+			      data:$('#form').serialize(),
+			      dataType:'json',
+			      success:function(data){
+			    	  if(data.status == 1){
+			    		  layer.msg(data.mess, {icon: 1,time: 1000}, function(){
+                               parent.location.href = url;
+			    		  });
+			    	  }else if(data.status == 0){
+			    		  layer.msg(data.mess, {icon: 2,time: 1000});
+			    	  }
+			      },
+			      error:function(){
+			    	  layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+			      }
+			  });
+    	  });
+
+      });
+
+  	  //删除图片
+      function deletegp(obj){
+		  var div = $(obj).parent();
+		  var pic_id = div.find('input[class=pic_id]').val();
+		  var com_id = $('input[name=id]').val();
+
+		  if(pic_id){
+	  		  layer.confirm('该图片已存在，确定彻底删除？', {
+				  skin: 'layui-layer-molv',
+				  closeBtn: 0,
+				  shadeClose : true,
+				  btn: ['确定','取消'] //按钮
+			  },function(){
+			      $.ajax({
+				      url:deletecpUrl,
+				      type:'POST',
+				      data:{'id':pic_id,'com_id':com_id},
+				      dataType:'json',
+				      success:function(data){
+				    	  if(data.status == 1){
+				    		  layer.msg('删除成功', {icon: 1,time: 1000}, function(){
+					    		  div.remove();
+				    		  });
+				    	  }else{
+				    		  layer.msg('删除图片失败', {icon: 2,time: 1000});
+				    	  }
+				      },
+				      error:function(){
+				    	  layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+				      }
+				  });
+			  });
+		  }
+      }
+
+      function cl(){
+    	  parent.location.href = url;
+      }
+    </script>
+
+</body>
+</html>

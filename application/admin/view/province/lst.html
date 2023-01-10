@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+</head>
+
+<style>
+.qiehuan{
+width:120px; height:40px; line-height:40px; font-size:14px; font-weight:bold; color:#333; background-color:#F5F5F6; float:left; margin-right:10px; text-align:center; cursor:pointer;
+}
+</style>
+		
+<script>
+	{if condition="(isset($filter)) AND ($filter)"}
+	var filter = {$filter};
+	{/if}
+	{if condition="(!isset($search)) OR (!$search)"}
+	var search = 0;
+	var goUrl = "/{$Request.module}/province/lst/filter/"+filter+".html";
+	{else/}
+	var search = {$search};
+	var goUrl = "/{$Request.module}/province/search.html";
+	{/if}
+    var url = "/{$Request.module}/province";
+    var deleteUrl = "{:url('province/delete')}";
+	var sortUrl = "{:url('province/order')}";
+</script>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>省份管理</h5>
+                    </div>
+                    <div class="ibox-content">
+						<div class="row">
+							<div class="col-sm-4 m-b-xs">                    
+                               <div style="width:1300px; height:40px; margin-bottom:25px;">
+                               <a href="{:url('province/lst',array('filter'=>3))}"><div class="qiehuan" {if condition="(isset($filter)) AND ($filter eq 3)"}style="background-color: #1992FC;color: #FFF;"{/if}>全部</div></a>
+                               <a href="{:url('province/lst',array('filter'=>1))}"><div class="qiehuan" {if condition="(isset($filter)) AND ($filter eq 1)"}style="background-color: #1992FC;color: #FFF;"{/if}>开通</div></a>
+                               <a href="{:url('province/lst',array('filter'=>2))}"><div class="qiehuan" {if condition="(isset($filter)) AND ($filter eq 2)"}style="background-color: #1992FC;color: #FFF;"{/if}>关闭</div></a>    
+                               </div>
+                            </div> 
+						</div>
+						
+						<div class="row"> 
+						   <div class="col-sm-7 m-b-xs">
+                                <a href="{:url('province/add')}"><button type="button" class="btn btn-sm btn-primary" id="add" style="margin-right:15px;"><i class="fa fa-plus" style="color:#FFF;"></i>&nbsp;增加省份</button></a>
+                                <button type="button" class="btn btn-sm btn-success" style="margin-right:15px;" id="order">更新排序</button>
+                            </div>
+                            
+                            <form action="{:url('province/search')}" method="post" id="form_search">          
+                            <div class="col-sm-3" style="float:right;">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" placeholder="请输入省份名称" {if condition="(isset($pro_name)) AND ($pro_name)"}value="{$pro_name}"{/if} class="input-sm form-control" /><span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary" id="submit_search">搜索</button></span>
+                                </div>
+                            </div>
+                            
+                            <div style="float:right; font-size:15px; margin-right:10px;">
+                                <select style="height:30px; line-height:30px; border:1px solid #e5e6e7;" name="checked">
+                                    <option value="0" {if condition="isset($checked) && $checked eq 0"}selected="selected"{/if}>全部</option>
+                                    <option value="1" {if condition="isset($checked) && $checked eq 1"}selected="selected"{/if}>开通</option>
+                                    <option value="2" {if condition="isset($checked) && $checked eq 2"}selected="selected"{/if}>关闭</option>
+                                </select>
+                            </div>
+                           </form>                     
+                        </div>
+
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:45%">省份名称</th>
+                                    <th style="width:10%">开通</th>
+                                    <th style="width:15%">排序</th>
+                                    <th style="width:20%">操作</th>                                             
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="!empty($list)"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.pro_name}</td>
+                                    <td>
+                                    {if condition="$v['checked'] eq 1"}
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="changeTableVal2({$v.id},'checked',this);"><i class="fa fa-check"></i></button>
+                                    {elseif condition="$v['checked'] eq 0"/}
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="changeTableVal2({$v.id},'checked',this);"><i class="fa fa-times"></i></button>
+                                    {/if}
+                                    </td>
+                                    <td><input name="{$v.id}" type="text" value="{$v.sort}" class="sort" size="1"></td>
+                                    <td><button type="button" class="btn btn-success btn-xs" onclick="city({$v.id},this);"><i class="fa fa-paste"></i>&nbsp;下属城市</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs" onclick="edit3({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="4" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}							
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/catecommon2.js"></script>
+	<script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    <script>
+	//城市区域列表
+	function city(id,obj){
+	    window.location.href='/{$Request.module}/city/citylst/pro_id/'+id;
+	}
+	</script>
+</body>
+</html>

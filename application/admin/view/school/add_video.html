@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/admin/Huploadify/Huploadify.css"/>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <style>
+        .tagfade {
+            width: 300px;
+            margin: 15px;
+        }
+        .tagfade .inputbox {
+            height: 34px;
+            line-height: 34px;
+            position: relative;
+        }
+        .tagfade .inputbox .input {
+            padding: 0 10px;
+            height: 34px;
+            line-height: 34px;
+            margin: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .tagfade .inputbox .addbtn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 0 15px;
+            border-radius: 0 5px 5px 0;
+            background-color: #093263;
+            color: #fff;
+            height: 34px;
+            line-height: 34px;
+            cursor: pointer;
+        }
+        .tagfade .catlist .item {
+            padding: 10px;
+            border-bottom: 1px solid #fafafa;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<script>
+var url = "{:url('school/video_list')}";
+var insertUrl = "{:url('school/save_video')}";
+</script>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>增加视频</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" enctype="multipart/form-data" class="form-horizontal" id="form">
+                            <input type="hidden" name="course_id" value="{$info['course_id']}">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属老师</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="teacher_id" onchange="getCourse()" id="teacher_id">
+                                        <option value="0">选择老师</option>
+                                        {foreach name="teachers" item="v"}
+                                        <option value="{$v.teacher_id}" {if condition="$info['teacher_id'] == $v['teacher_id']"}selected{/if}>{$v.title}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属课程</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="course_id" id="course_id">
+                                        <option value="0">选择课程</option>
+                                    </select>
+                                    <span class="err"></span>
+                                    <p class="notic"></p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">一级目录</label>
+                                <div class="col-sm-6">
+                                    <span id="pname">{$info['pname']}</span>
+                                    <label onclick="showCat(0)">请选择</label>
+                                    <input type="hidden" name="pid" id="pid" value="{$info['pid']}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">二级目录</label>
+                                <div class="col-sm-6">
+                                    <span id="catname">{$info['catname']}</span>
+                                    <label onclick="showCat(1)">请选择</label>
+                                    <input type="hidden" name="catid" id="catid" value="{$info['catid']}">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">显示</label>
+                                <div class="col-sm-6" id="atype">
+                                    <label class="radio-inline"><input type="radio" checked="checked" {if condition="$info['useable'] eq 1"}checked="checked"{/if} value="1" name="useable">显示</label>
+                                    <label class="radio-inline"><input type="radio" value="0" {if condition="$info['useable'] eq 0"}checked="checked"{/if} name="useable">不显示</label>
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+							<div class="form-group">
+							<label  class="col-sm-2 control-label">视频封面图</label>
+							<div class="col-sm-6">
+                            <div style="margin-bottom:7px; margin-top:5px;">
+                            <img id="imageinfo" {if condition="$info['imgurl']"}src="/{$info.imgurl}"{else/}src="__PUBLIC__/admin/img/nopic.jpg"{/if} width="180" height="120" border="0" />
+                            <br/><button type="button" class="btn btn-danger btn-xs del" style="display:none;">删除</button>
+                            </div>
+                            <div id="uploaderInput"></div>
+                            <input type="hidden" name="pic_id" value="" >
+                            <div class="repicm" style="display:none;">{$info.imgurl}</div>
+                            </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">视频上传</label>
+                                <div class="col-sm-6" id="">
+                                    <input type="text" style="width: 100%;height: 20px;" name="videourl" id="url" value="{$info.videourl}"/>
+                                    <input type="file" name="file" id="file" accept="video/mp4" onchange="uploadFile(0, true)"/>
+                                    <progress id="progress" style="display: none;">
+                                        <span id="objprogress">100</span>%
+                                    </progress>
+                                    {if condition="$info.videourl != ''"}
+                                        <video id="video" controls src="{$info.videourl}" style="width: 450px !important;height: 302px !important;"></video>
+                                    {else /}
+                                        <video id="video" style="display: none;width: 450px !important;height: 302px !important;" controls src="{$info.videourl}"></video>
+                                    {/if}
+
+                                </div>
+                            </div>
+                            <!-- <div class="form-group"> -->
+                                <!-- <label  class="col-sm-2 control-label">视频封面图:</label> -->
+                                <!-- <div class="col-sm-6"> -->
+                                <!-- <div style="margin-bottom:7px; margin-top:5px;"> -->
+                                <!-- <img id="imageinfo" {if condition="$info['imgurl']"}src="/{$info.imgurl}"{else/}src="__PUBLIC__/admin/img/nopic.jpg"{/if} width="180" height="120" border="0" /> -->
+                                <!-- <br/><button type="button" class="btn btn-danger btn-xs del" style="display:none;">删除</button> -->
+                            <!-- </div> -->
+
+                            <!-- <div class="hr-line-dashed"></div> -->
+                            <!-- <div id="uploaderInput"></div> -->
+
+                            <!-- <input type="hidden" name="pic_id" value="" > -->
+                            <!-- </div> -->
+
+
+                            <!-- </div> -->
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">视频外部链接</label>
+                                <div class="col-sm-6">
+                                    <textarea id="cate_desc" name="out_videourl" class="form-control" rows="6">{$info['out_videourl']}</textarea>
+                                </div>
+                            </div>
+<!--                            <div class="form-group">-->
+<!--                                <label class="col-sm-2 control-label">视频链接</label>-->
+<!--                                <div class="col-sm-6">-->
+<!--                                    <textarea id="videourl" name="videourl" class="form-control" rows="6" disabled>{$info['videourl']}</textarea>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">试看时间(秒)</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="displaytime" class="form-control" value="{$info['displaytime'] ?: 0}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">总时长(分钟)</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="alltime" class="form-control" value="{$info['alltime'] ?: 0}">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit" id="doSubmit">确认提交</button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="video_id" value="{$info['video_id']}">
+<!--                            <input type="hidden" name="videourl" id="videourl" value="{$info['videourl']}">-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script type="text/javascript" src="__PUBLIC__/admin/Huploadify/jquery.Huploadify.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+<script>
+    var RequestId = '';
+    var UploadId = '';
+    var path = '';
+    const chunkObj = 2 * 1024 * 1024;
+    var i = 0;
+    function uploadFile(start, afresh) {
+        var fileObj = document.getElementById('file')['files'][0];
+        if(fileObj.type.split('/')[1] != 'mp4'){
+            alert('只能上传MP4格式的视频');
+            return false;
+        }
+
+        $('#progress').css('display', 'block');
+        if(start==0 && afresh===true){
+            path = '';
+            $.ajax({
+                type: "post",
+                url: "/apicloud/Video/initiateMultipartUpload",
+                success: function(res){
+                    var arr = JSON.parse(res);
+                    RequestId = arr['RequestId'];
+                    UploadId = arr['UploadId'];
+                    path = arr['path'];
+
+                    $('#progress').prop('value', 0);
+                    $('#progress').prop('max', fileObj.size);
+                    uploadFile(start, false);
+                }
+            });
+
+            return false;
+        }
+
+        if(start >= fileObj.size){
+            // 开始合并
+            $.ajax({
+                type: "post",
+                data: {
+                    'UploadId': UploadId,
+                    'path': path
+                },
+                url: "/apicloud/Video/completeMultipartUpload",
+                success: function(res){
+                    var arr = JSON.parse(res);
+                    if(arr.errcode == 200){
+                        // 合并成功
+                        $('#url').val(arr.url);
+                        $('#video').prop('src', arr.url);
+                        $('#video').css('display', 'block');
+
+                        alert('上传成功');
+                    }
+                }
+            });
+
+            return false
+        }
+
+        // 切片上传
+        var end = (start + chunkObj) > fileObj.size ? fileObj.size : start + chunkObj;
+
+        var fd = new FormData();
+        fd.append('video', fileObj.slice(start, end));
+        fd.append('PartNumber', i+1);
+        fd.append('UploadId', UploadId);
+        fd.append('Offset', end);
+        fd.append('path', path);
+        fd.append('PartSize', chunkObj);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('post',"/apicloud/Video/uploadPart",true);
+
+        xhr.onload = function(){
+            if(this.readyState == 4 && this.status == 200){
+                $('#progress').prop('value', ++i*chunkObj);
+                uploadFile(end, false);
+            }
+        }
+        xhr.send(fd);
+    }
+</script>
+<script type="text/javascript">
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    UE.getEditor('ar_content', {initialFrameWidth:'100%', initialFrameHeight:500, enterTag:''});
+</script>
+	 <script>
+         function getCourse(){
+             var teacher_id = $('#teacher_id').val();
+             $.getJSON('/Admin/School/getcourse', {teacher_id: teacher_id}, function(json){
+                 var html = '<option value="0">选择课程</option>';
+                 var list = json;
+                 var has_course_id = "{$info['course_id']}";
+                 for(var i in list){
+                     if(has_course_id == list[i].course_id){
+                         var sel = ' selected';
+                     }else{
+                         var sel = '';
+                     }
+                     html += '<option value="' + list[i].course_id + '"' + sel + '>' + list[i].title + '</option>';
+                 }
+                 $('#course_id').html(html);
+             })
+         }
+
+         function clickCategory(){
+             $('#catlist .item').each(function(i, el){
+                 $(el).on('click', function(){
+                     var catid = $(this).attr('data-catid');
+                     var catname = $(this).attr('data-catname');
+                     var kind = $(this).attr('data-kind');
+                     if(kind == 0){
+                         $('#pname').text(catname);
+                         $('#pid').val(catid);
+                         $('#catname').text('');
+                         $('#catid').val('');
+                     }else{
+                         $('#catname').text(catname);
+                         $('#catid').val(catid);
+                     }
+                     layer.closeAll();
+                 })
+             });
+         }
+
+         function addCategory(kind){
+             var catname = $('#addcatname').val();
+             if(catname == ''){
+                 layer.msg('请输入章节');
+                 return false;
+             }
+             var data = {
+                 course_id: $('#course_id').val(),
+                 pid: kind == 0 ? 0 : $('#pid').val(),
+                 catname: catname
+             };
+             $.post('/Admin/School/savecategory', data, function(json){
+                 if(json.code == 1){
+                     var str = '';
+                     if(data.pid > 0){
+                         str = ' data-kind="1"';
+                     }else{
+                         str = ' data-kind="0"';
+                     }
+                     $('#catlist').prepend('<div class="item" data-catid="' + json.catid + '" data-catname="' + catname + '"' + str + '>' + catname + '</div>');
+                     clickCategory();
+                 }else{
+                     layer.msg(json.msg);
+                 }
+             }, 'json');
+         }
+
+         function showCat(kind){
+             var pid = $('#pid').val();
+             var catid = $('#catid').val();
+             if($('#course_id').val() == 0){
+                 layer.alert("请先选择课程！",{icon:2});
+                 return false;
+             }
+             var data = {
+                 kind: kind,
+                 course_id: $('#course_id').val()
+             };
+             if(kind == 1){
+                 if(pid == '' || pid == '0'){
+                     layer.alert("先选择一级目录！",{icon:2});
+                     return false;
+                 }
+                 data.pid = $('#pid').val();
+             }
+
+             $.post('/Admin/School/getcategory', data, function(json){
+                 if(json.code == 1){
+                     var list = json.list, itemhtml = '';
+                     for(var i in list){
+                         itemhtml += '<div class="item" data-catid="' + list[i].catid + '" data-catname="' + list[i].catname + '" data-kind="' + kind + '">' + list[i].catname + '</div>';
+                     }
+                     var html = '<div class="tagfade"><div class="taglist clearfix">' +
+                         '<div class="inputbox">' +
+                         '<input type="text" name="" class="input" placeholder="输入章节" id="addcatname" autocomplete="off">' +
+                         '<div class="addbtn" onclick="addCategory(' + (kind == 1 ? 1 : 0) + ')">增加</div>' +
+                         '</div>' +
+                         '<div class="catlist" id="catlist">' +
+                         itemhtml +
+                         '</div>' +
+                         '</div></div>';
+                     layer.open({
+                         type: 1,
+                         skin: 'layui-layer-demo', //样式类名
+                         anim: 2,
+                         shadeClose: true, //开启遮罩关闭
+                         content: html
+                     })
+                     clickCategory();
+                 }
+             }, 'json');
+         }
+
+
+         var video_id = "{$info['video_id']}";
+    	$(function(){
+            if(video_id){console.log(123);
+                getCourse();
+            }
+
+    		//上传图片
+	        $('#uploaderInput').Huploadify({
+	            uploader : '{:url("school/uploadify")}',
+		        method:'post',
+		        formData:null,//发送给服务端的参数，格式：{key1:value1,key2:value2}
+		        buttonText : '上传图像',
+		        removeTimeout: 2000,
+		        fileTypeDesc:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',
+		        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG;',
+		        fileObjName: 'filedata', //上传附件$_FILE标识
+		        fileSizeLimit : 2048,
+		        //showUploadedPercent:false,//是否实时显示上传的百分比，如20%
+		        auto : true, //开启,自动上传
+		        multi : false, //开启,多选文件
+		        //开始上传
+				onUploadStart:function(file){
+					layer.load(2);
+				},
+		        onUploadSuccess : function(file, data, response) {
+		        	//解析成json对象
+		        	eval('var data='+data);
+		        	if(data.status == 1){
+		        		var picpath = data.path;
+	    	        	$('#imageinfo').attr('src','/'+picpath.img_url);
+	    	        	$('.del').show();
+	    	        	$('input[name=pic_id]').val(picpath.pic_id);
+		        	}else{
+		        		layer.msg(data.msg, {icon: 2,time: 2000});
+		        	}
+		        },
+		        //上传完成后执行的操作
+		        onUploadComplete:function(file){
+		        	layer.closeAll('loading');
+		        },
+		        //上传错误
+		        onUploadError : function(file, errorCode, errorMsg, errorString) {
+		        	layer.msg('文件' + file.name + '上传失败:' + errorString, {icon: 2,time: 2000});
+		        }
+		    });
+    		$('.del').click(function(){
+    			layer.load(2);
+    			$.ajax({
+    				url:'{:url("school/delfile")}',
+    				type:'POST',
+    				data:{'zspic_id':$('input[name=pic_id]').val()},
+    				dataType:'json',
+    				success:function(data){
+    					if(data == 1){  
+    						layer.closeAll('loading');
+    						$('input[name=pic_id]').val('');
+    						var picval = $('.repicm').text();
+    						if(picval != ''){
+        						$('#imageinfo').attr('src','/'+picval);
+    						}else{
+    							$('#imageinfo').attr('src','__PUBLIC__/admin/img/nopic.jpg');
+    						}
+    						$('.del').hide();
+    					}else{
+    						layer.closeAll('loading');
+    						layer.msg('删除临时图片失败', {icon: 2,time: 1000});
+    					}
+    				},
+    		        error:function(){
+    		        	layer.closeAll('loading');
+    		        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+    		        }
+    			});
+    		});
+    		<!-- $('.del').click(function(){ -->
+    			<!-- layer.load(2); -->
+    			<!-- $.ajax({ -->
+    				<!-- url:'{:url("school/delfile")}', -->
+    				<!-- type:'POST', -->
+    				<!-- data:{'zspic_id':$('input[name=pic_id]').val()}, -->
+    				<!-- dataType:'json', -->
+    				<!-- success:function(data){ -->
+    					<!-- if(data == 1){ -->
+    						<!-- layer.closeAll('loading'); -->
+    						<!-- $('input[name=pic_id]').val(''); -->
+    						<!-- $('#imageinfo').attr('src','__PUBLIC__/admin/img/nopic.jpg'); -->
+    						<!-- $('.del').hide(); -->
+    					<!-- }else{ -->
+    						<!-- layer.closeAll('loading'); -->
+    						<!-- layer.msg('删除临时图片失败', {icon: 2,time: 1000}); -->
+    					<!-- } -->
+    				<!-- }, -->
+    		        <!-- error:function(){ -->
+    		        	<!-- layer.closeAll('loading'); -->
+    		        	<!-- layer.msg('操作失败，请重试', {icon: 2,time: 2000}); -->
+    		        <!-- } -->
+    			<!-- }); -->
+    		<!-- }); -->
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+
+    	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+        	$('#form').validate({
+	        	errorElement : 'span',
+	        	debug: true,//只验证不提交表单
+	        	//layer ajax提交表单
+	            submitHandler:function(){
+	               // 序列化 表单数据 后提交 ，太简洁了
+	            	post(insertUrl,'POST',$('#form').serialize(),1);
+	                return false;
+	            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+
+	        	rules:{
+	        		cate_name:{required:true},
+	        		sort:{
+	        			required:true,
+	        			digits:true
+	        	    }
+	        	},
+
+	        	messages:{
+	        		cate_name:{required:icon+'必填'},
+	                sort:{
+	                	required:icon+'必填',
+	                	digits:icon+'排序必须是整数'
+	                }
+	        	}
+        	});
+      });
+
+    </script>
+
+
+    <script>
+	    function cl(){
+	        location.href = url;
+	    }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+</head>
+
+<body class="gray-bg">
+<style>
+input.error{
+	border:1px solid red;
+}
+span.error{
+	padding-top:10px;
+	color: #f00;
+	font-size:12px;
+}
+</style>
+
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">YY</h1>
+
+            </div>
+            <h3>找回密码</h3>
+            <form class="m-t" method="post" id="form">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="phone" placeholder="请输入手机号">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="phonecode" placeholder="请输入短信验证码" style="width:61%; float:left; margin-bottom:15px;">
+                    <button type="button" class="btn btn-primary btn-primary" id="btnSendCode" style="float:left;margin-left:10px;">发送验证码</button>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" id="password" placeholder="请输入新密码">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="repwd" placeholder="请再次输入新密码">
+                </div>
+
+                <button type="submit" class="btn btn-primary block full-width m-b">重置密码</button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>	
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+    
+	<script>
+    var findpwdUrl = "{:url('login/findpwd')}";
+    var findpwdcode = "{:url('login/findpwdcode')}";
+    
+    var InterValObj; //timer变量，控制时间
+    var count = {$messtime}; //间隔函数，1秒执行
+    var curCount;//当前剩余秒数
+    
+    
+    
+    $(function(){
+    	$('#btnSendCode').click(function(){
+    		$(this).attr("disabled", "true");
+    		
+    		var phone = $('input[name=phone]').val();
+    		if(phone == ''){
+    			layer.msg('请输入手机号码', {icon: 2,time: 2000});
+    			$(this).removeAttr("disabled");//启用按钮
+    			return false;
+    		}
+    		
+    		if(!(/^1[3456789]\d{9}$/.test(phone))){
+    			layer.msg('请输入正确的手机号码', {icon: 2,time: 2000});
+    			$(this).removeAttr("disabled");//启用按钮
+    		    return false;
+            }
+    		
+    		layer.load(2);
+
+    	　　  //向后台发送处理数据
+    		$.ajax({
+    			url:findpwdcode,
+    			type:'POST',
+    			data:{'phone':phone},
+    			dataType:'json',
+    			success:function(data){
+    				if(data.status == 1){  
+    					layer.closeAll('loading');
+    					layer.msg(data.mess, {icon: 1,time: 1000});
+    		    		curCount = count;
+    					$("#btnSendCode").css({backgroundColor:'#f5f5f5',color:'#333'});
+    				　　   //设置button效果，开始计时
+    				    $("#btnSendCode").text("重发("+curCount+")s");
+    				    InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+    				}else{
+    					layer.closeAll('loading');
+    					$("#btnSendCode").removeAttr("disabled");//启用按钮
+    					layer.msg(data.mess, {icon: 2,time: 2000});
+    				}
+    			},
+    	        error:function(){
+    	        	layer.closeAll('loading');
+    	        	$("#btnSendCode").removeAttr("disabled");//启用按钮
+    	        	layer.msg('操作失败，请重试', {icon: 2,time: 2000});
+    	        }
+    		});
+    	});	    	
+    	
+		//手机号验证
+    	jQuery.validator.addMethod("phone", function(value, element){   
+    	    var tel = /^1[3456789]\d{9}$/;
+    	    return this.optional(element) || (tel.test(value));
+    	}, "手机格式不正确");
+
+    	jQuery.validator.addMethod("pwd", function(value, element) {   
+    	    var tel = /^[A-Z][a-zA-Z0-9]{5,14}$/;
+    	    return this.optional(element) || (tel.test(value));
+    	}, "以大写字母开头，6-15位 字母、数字、下划线'_'");
+
+	    var icon = "<i class='fa fa-times-circle'></i>&nbsp;&nbsp;";
+    	$('#form').validate({
+        	errorElement : 'span',
+        	debug: true,//只验证不提交表单
+        	//layer ajax提交表单
+            submitHandler:function(){
+            // 序列化 表单数据 后提交 ，太简洁了
+                post(findpwdUrl,'POST',$('#form').serialize(),1);
+                return false;
+            },//这是关键的语句，配置这个参数后表单不会自动提交，验证通过之后会去调用的方法
+
+        	rules:{
+        	    phone:{
+        	    	required:true,
+        	    	phone:true
+        	    },
+        	    phonecode:{required:true},
+        		password:{
+        			required:true,
+        			pwd:true
+                },
+        		repwd:{
+        			required:true,
+        			equalTo:"#password",
+        			pwd:true
+        	    }
+        	},
+
+        	messages:{
+        		phone:{
+        			required:icon+'必填',
+        			phone:icon+'手机号格式不正确'
+        		},
+        		phonecode:{required:icon+'必填'},
+        		password:{
+        			required:icon+'必填',
+        			pwd:icon+"以大写字母开头，6-15 位字母、数字、下划线'_'"
+        	    },
+        		repwd:{
+        			required:icon+'必填',
+        			equalTo:icon+'确认密码不正确',
+        			pwd:icon+"以大写字母开头，6-15 位字母、数字、下划线'_'"
+        	    }
+        	}
+        });    	
+    });
+
+      function cl(){
+    	  location.href = "{:url('login/index')}";
+      }
+      
+      //timer处理函数
+      function SetRemainTime() {
+          if (curCount == 0) {                
+              window.clearInterval(InterValObj);//停止计时器
+              $("#btnSendCode").removeAttr("disabled");//启用按钮
+              $("#btnSendCode").css({backgroundColor:'#1992FC',color:'#FFF'});
+              $("#btnSendCode").text("重发");
+          }
+          else {
+              curCount--;
+              $("#btnSendCode").text("重发("+curCount+")s");
+          }
+      }
+
+    </script>
+</body>
+
+</html>

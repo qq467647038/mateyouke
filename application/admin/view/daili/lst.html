@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+</head>
+
+<script>
+//删除url
+var deleteUrl = "{:url('daili/delete')}";
+var url = "/{$Request.module}/daili";
+</script>
+
+<body class="gray-bg" >
+    <div class="wrapper wrapper-content" id="server">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>代理申请列表</h5>
+                    </div>
+                    <div class="ibox-content">
+						   <div class="row">
+						   <div class="col-sm-8 m-b-xs">
+                                <button type="button" class="btn btn-sm btn-danger" id="del">批量删除</button>
+                           </div>
+                           </div>
+                         
+                           <div class="row" style="margin-top:15px;">
+                           <form action="{:url('daili/search')}" method="post" id="form_search">
+                           <div class="col-sm-3" style="float:right;">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" placeholder="请输入手机号" {if condition="(isset($keyword)) && ($keyword)"}value="{$keyword}"{/if} class="input-sm form-control" /><span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary">搜索</button></span>
+                                </div>
+                           </div>
+                           
+                           <div class="date fr" id="to" style="float:right; font-size:15px; margin-right:10px;"> 
+                                <input type="text" name="endtime" readonly="readonly" placeholder="结束时间" {if condition="(isset($endtime)) AND ($endtime)"}value="{:date('Y-m-d',$endtime)}"{/if} class="date-check">                           
+                            </div> 
+                            
+                            <div class="date date1 fl" id="from" style="float:right; font-size:15px; margin-right:10px;">
+                                <input type="text" name="starttime" readonly="readonly" placeholder="开始时间" {if condition="(isset($starttime)) AND ($starttime)"}value="{:date('Y-m-d',$starttime)}"{/if} class="date-check">                              
+                            </div> 
+   
+                           </form> 
+                           </div>                           
+                        
+                        <div id="ajaxpagetest">
+                        {include file="daili/ajaxpage" /}
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/admin.js"></script>    
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+
+<script>
+function getinfo(id,obj){
+	var infoUrl = url+'/info/id/'+id;
+	layer.open({
+		type : 2,
+		title : '详情',
+		shadeClose : true,
+		shade : 0.5,
+		area : ['1000px','650px'],
+		content : infoUrl
+	});
+}
+</script>
+
+</body>
+</html>

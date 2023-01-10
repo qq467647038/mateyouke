@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>{$configres.web_site_name} - 登录</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="孝笑好">
+    <meta name="copyright" content="孝笑好 Inc. All Rights Reserved">
+    <link href="__STATIC__/pc/css/common.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/pc/css/header.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/pc/css/login.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/pc/css/font-awesome.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="__STATIC__/pc/js/html5shiv.js"></script>
+      <script src="__STATIC__/pc/js/respond.min.js"></script>
+<![endif]-->
+  
+      <link href="__PUBLIC__/layui/css/layui.css" rel="stylesheet" type="text/css">
+      <script src="__PUBLIC__/layui/layui.js" ></script>
+    <script src="__STATIC__/pc/js/jquery.min.js"></script>
+    <script src="__STATIC__/pc/js/jquery.ui.js"></script>
+    <script src="__STATIC__/pc/js/common.js"></script>
+    <script src="__STATIC__/pc/js/jquery.validation.min.js"></script>
+    <script src="__STATIC__/pc/js/taglibs.js"></script>
+    <script src="__STATIC__/pc/js/tabulous.js"></script>
+  
+</head>
+
+<body style="">
+    <div class="qt-header-other">
+        <div class="w1200">
+            <div class="qt-logo">
+                <a class="statis" site="1" href="{$configres.weburl}/" title=""><img src="__STATIC__/pc/images/logo.png"></a>
+            </div>
+            <div class="header-title">
+                登录
+            </div>
+        </div>
+    </div>
+    <div id="append_parent"></div>
+    <div id="ajaxwaitid"></div>
+    <div class="login-main" style="background-color:#E8390E;">
+        <div class="w1200">
+            <a href="{$configres.weburl}/" target="_blank"><img data-which="login" site="2" src="__STATIC__/pc/images/4.jpg"></a>
+            <!--手机验证码登录-->
+            <div class="login-wrap">
+                <div class="login-hearder">
+                    <div class="header-btn on"> 登录 </div>
+                    <a id="statis-enroll" class="statis" site="3" href="{:url('register/index')}">
+                        <div class="header-btn"> 注册 </div>
+                    </a>
+                </div>
+                <div class="login-content">
+                    <div class="login-others">
+
+
+                    </div>
+                    <div class="login-box">
+
+                        <!-- <form id="post_form" method="post" class="wt-login-form" action="{:url('index',array('type'=>1))}">
+                            <input type="hidden" name="formhash" value="XhBkAg7zE6MEj1KUOuYhkCfjg4Nkb3f"> <input type="hidden" name="form_submit" value="ok">
+                            <input name="wthash" type="hidden" value="4d91088c">
+                            <div class="phone-box">
+                                <div class="login-form">
+                                    <div class="input-inline">
+                                        <div class="input-icon i-phone"></div>
+                                        <input name="phone" type="text" class="text" id="phone" tipmsg="输入手机号码" autocomplete="off" maxlength="11" style="color: rgb(187, 187, 187);">
+                                    </div>
+                                    <div class="input-inline captcha">
+                                        <input type="text" name="sms_captcha" style="width: 188px; color: rgb(187, 187, 187);" autocomplete="off" class="text" tipmsg="输入6位短信验证码" maxlength="6">
+                                        <div class="btn-captcha qt-btn"><a class="statis" site="13" href="javascript:void(0);" id="sms_text" onclick="get_sms_captcha(&#39;2&#39;)">发送验证码</a></div>
+                                    </div>
+                                    <div class="disabled" id="submit-phone">
+                                        <input type="hidden" site="20" name="type" value="1">
+                                        <input type="submit" id="submit2" class="login-submit qt-btn" value="登   录">
+                                        <input type="hidden" value="{:url('register')}" name="ref_url">
+                                    </div>
+                                    <div class="login-switch clearfix"><a href="#" site="15" class="statis fl j-accountLogin">帐号密码登录</a><a href="{:url('findpwd')}" site="22" class="statis fr">忘记密码？</a></div>
+                                </div>
+                            </div>
+                        </form> -->
+
+
+
+                        <div class="account-box2">
+
+                            <form id="login_form" class="wt-login-form" method="post" action="{:url('index',array('type'=>2))}">
+                                <input type="hidden" name="formhash" value="ryQ1n-whpovoQjAHZOs8y1p9RFmwIIl">
+                                <input type="hidden" name="form_submit" value="ok">
+                                <input name="wthash" type="hidden" value="4d91088c">
+                                <div class="login-form">
+                                    <div class="input-inline">
+                                        <div class="input-icon i-user"></div>
+                                        <input id="user_name" name="phone" type="text" autocomplete="off" placeholder="手机号码" style="color: rgb(187, 187, 187);">
+                                    </div>
+                                    <div class="input-inline">
+                                        <div class="input-icon i-password"></div>
+                                        <input id="password" name="password" type="text" autocomplete="off" placeholder="请输入登录密码" style="color: rgb(187, 187, 187);">
+                                    </div>
+
+
+                                    <div class="disabled" id="submit-passwd">
+                                        <input type="hidden" site="20" name="type" value="2">
+                                        <input type="submit" id="submit1" site="20" class="login-submit qt-btn" value="登   录">
+                                        <input type="hidden" value="" name="ref_url">
+                                    </div>
+                                    <div class="login-switch clearfix">
+                                        <a href="#" site="21" class="statis fl j-phoneLogin">
+                                            <!--手机验证码登录 -->
+                                        </a>
+                                        <a href="{:url('findpwd')}" site="22" class="statis fr">忘记密码？</a></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--            <div class="login-footer">-->
+                    <!--              <p class="login-type"><a site="7" href="javascript:;" class="statis j-phoneLogin j-phoneLogin_a" rel="external nofollow "></a><a site="8" href="javascript:;" class="statis j-accountLogin" rel="external nofollow"></a></p>-->
+                    <!--            </div>-->
+                    <div class="agreement-alert" style="display: ">
+                        <a href="javascript:;" class="agreement-handle"></a>勾选代表你同意<a href="{$configres.weburl}/document-agreement.html" target="_blank" class="text" title="阅读并同意">《服务协议》</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('input[tipMsg]').inputTipText({pwd:'password'});
+                $('.j-phoneLogin,.j-accountLogin').on('click', function() {
+                    var oLoginWrap = $(this).closest('.login-wrap');
+                    oLoginWrap.find('.phone-box,.account-box').hide();
+                    if ($(this).hasClass('j-phoneLogin')) {
+                        oLoginWrap.find('.phone-box').show();
+                    } else {
+                        oLoginWrap.find('.account-box').show()
+                    }
+                });
+        
+            $("#login_form").validate({
+                errorPlacement: function(error, element){
+                    var error_td = element.parent('.input-inline');
+                    error_td.append(error);
+                    element.addClass('error');
+                },
+                success: function(label) {
+                    label.removeClass('error').find('label').remove();
+                },
+                submitHandler:function(form){
+                    $.ajax({
+                        url: "{:url('index',array('type'=>2))}",
+                        type: 'post',
+                        dataType: 'json',
+                        data: $("#login_form").serialize(),
+                        success: function(res) { 
+                             layui.use("layer",function(){ 
+                                var layer = layui.layer;  //layer初始化 
+                                layer.msg(res.mess, {icon: 5,area:'200px',});  
+                             })
+                        }
+                    });
+                    // ajaxpost('login_form', '', '', 'onerror');
+                    // alert();
+                },
+                onkeyup: false,
+                rules: {
+                    captcha : {
+                        required : true,
+                        remote   : {
+                            url : 'https://store.cxy365.com/home/index.php/vercode/check',
+                            type: 'get',
+                            data:{
+                                captcha : function(){
+                                    return $('#getcaptcha').val();
+                                }
+                            },
+                            complete: function(data) {
+                                if(data.responseText == 'false') {
+                                    document.getElementById('codeimage').src='https://store.cxy365.com/home/index.php/vercode/index/type/40x130?c=' + Math.random();
+                                }
+                            }
+                        }
+                    },
+                    phone: {
+                        required : true,
+                        maxlength:11,
+                        minlength:11,
+                        number:true
+                    },
+                    password: {
+                        required : true,
+                        password : true
+                    }
+                },
+                messages: {
+                    captcha : {
+                        required : '<i class="icon-remove-bbs" title="验证码不能为空"></i>',
+                        remote	 : '<i class="icon-remove-bbs" title="验证码不能为空"></i>'
+                    },
+                    phone: {
+                        required : '<i class="icon-exclamation-sign"></i>请输入11位手机号码',
+                        // username : '<i class="icon-exclamation-sign"></i>11位手机号码',
+                        number: '<i class="icon-exclamation-sign"></i>请输入11位手机号码',
+                        maxlength : '<i class="icon-exclamation-sign"></i>请输入11位手机号码',
+                        minlength : '<i class="icon-exclamation-sign"></i>请输入11位手机号码',
+                    },
+                    password: {
+                        required : '<i class="icon-exclamation-sign"></i>请正确的输入密码',
+                        password : '<i class="icon-exclamation-sign"></i>6-20位数字,字母,下划线'
+                    }
+                }
+            });
+        });
+        </script>
+        
+
+    <div class="qt-footer-other login-footer">
+        {$configres.web_banquan}<br><a href="http://www.miibeian.gov.cn/" rel="nofollow" target="_blank" n="">{$configres.record_number}</a>
+    </div>
+
+
+</body>
+
+</html>

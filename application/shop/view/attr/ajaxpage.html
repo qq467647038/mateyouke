@@ -1,0 +1,32 @@
+<script>
+	var typeId = {$typeId};
+</script>                        
+                        
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:25%">属性名称</th>
+                                    <th style="width:15%">属性类型</th>
+                                    <th style="width:20%">属性可选值</th>
+                                    <th style="width:10%">所属类型</th>
+                                    <th style="width:15%">排序</th>
+                                    <th style="width:15%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="!empty($list)"}
+							{foreach name="list" item="v"} 
+                                <tr>
+                                    <td>{$v.attr_name}</td>
+                                    <td>{if condition="$v['attr_type'] eq 0"}唯一{elseif condition="$v['attr_type'] eq 1"/}单选{/if}</td>
+                                    <td>{$v.attr_values}</td>
+                                    <td>{$v.type_name}</td>
+                                    <td><input name="{$v.id}" type="text" value="{$v.sort}" class="sort" size="1"></td>
+                                    <td><button type="button" class="btn btn-primary btn-xs" onclick="editattr({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="delone({$v.id},this);"><i class="fa fa-close"></i>&nbsp;删除</button></td>
+                                </tr>
+							{/foreach}
+							{else/}
+							<tr><td colspan="6" style="text-align:center; font-size:14px;">没有找到相关数据</td></tr>
+							{/if}						
+                            </tbody>
+                        </table>

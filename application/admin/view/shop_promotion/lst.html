@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/double-date.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/page.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/double-date.js"></script>
+    <script src="__PUBLIC__/admin/js/jquery-ui-1.10.4.custom.min.js"></script>
+</head>
+
+<script>
+var url = "/{$Request.module}/shop_promotion";
+</script>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content" id="server">
+        <style>
+		.qiehuan{
+		width:120px; height:40px; line-height:40px; font-size:14px; font-weight:bold; color:#333; background-color:#F5F5F6; float:left; margin-right:10px; text-align:center; cursor:pointer;
+		}
+		</style>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>商家商品促销活动列表</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                        <div class="col-sm-5 m-b-xs">                    
+                               <div style="width:1300px; height:40px; margin-bottom:25px;">
+                               <a href="{:url('shop_promotion/lst',array('filter'=>5))}"><div class="qiehuan" {if condition="$filter && $filter eq 5"}style="background-color: #1992FC;color: #FFF;"{/if}>全部</div></a>
+                               <a href="{:url('shop_promotion/lst',array('filter'=>1))}"><div class="qiehuan" {if condition="$filter && $filter eq 1"}style="background-color: #1992FC;color: #FFF;"{/if}>即将开始</div></a>         
+                               <a href="{:url('shop_promotion/lst',array('filter'=>2))}"><div class="qiehuan" {if condition="$filter && $filter eq 2"}style="background-color: #1992FC;color: #FFF;"{/if}>活动中</div></a> 
+                               <a href="{:url('shop_promotion/lst',array('filter'=>3))}"><div class="qiehuan" {if condition="$filter && $filter eq 3"}style="background-color: #1992FC;color: #FFF;"{/if}>已结束</div></a>    
+                               </div>
+                        </div> 
+                        </div>
+         
+						<div class="row">
+                            <div class="col-sm-12 m-b-xs" style="float:right;">
+                            <form action="{:url('shop_promotion/search')}" method="post" id="form_search" style="margin-top:10px;">
+                            
+                            <div class="col-sm-4" style="float:right;">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" placeholder="请输入活动标题" {if condition="(isset($keyword)) AND ($keyword)"}value="{$keyword}"{/if} class="input-sm form-control" />
+                                    <span class="input-group-btn"><button type="submit" class="btn btn-sm btn-primary">搜索</button></span>
+                                </div>
+                            </div> 
+                            
+                            <div style="float:right; font-size:15px;">
+                                    <input type="text" name="shop_name" placeholder="请输入商家名称" {if condition="isset($shop_name) && $shop_name"}value="{$shop_name}"{/if} class="input-sm form-control">                   
+                            </div> 
+                            
+                            <div style="float:right; font-size:15px; margin-right:10px;">
+                                <select style="height:30px; line-height:30px; border:1px solid #e5e6e7;" name="recommend">
+                                    <option value="0" {if condition="(isset($recommend)) AND ($recommend eq 0)"}selected="selected"{/if}>全部</option>
+                                    <option value="1" {if condition="(isset($recommend)) AND ($recommend eq 1)"}selected="selected"{/if}>推荐</option>
+                                    <option value="2" {if condition="(isset($recommend)) AND ($recommend eq 2)"}selected="selected"{/if}>未推荐</option>
+                                </select>
+                            </div> 
+                                                
+                            <div style="float:right; font-size:15px; margin-right:10px;">
+                                <select style="height:30px; line-height:30px; border:1px solid #e5e6e7;" name="status">
+                                    <option value="0" {if condition="(isset($status)) AND ($status eq 0)"}selected="selected"{/if}>全部</option>
+                                    <option value="1" {if condition="(isset($status)) AND ($status eq 1)"}selected="selected"{/if}>即将开始</option>
+                                    <option value="2" {if condition="(isset($status)) AND ($status eq 2)"}selected="selected"{/if}>抢购中</option>
+                                    <option value="3" {if condition="(isset($status)) AND ($status eq 3)"}selected="selected"{/if}>已结束</option>
+                                </select>
+                            </div>                         
+                            
+                            <div class="date fr" id="to" style="float:right; font-size:15px; margin-right:10px;"> 
+                                <input type="text" name="endtime" readonly="readonly" placeholder="结束时间" {if condition="(isset($endtime)) AND ($endtime)"}value="{:date('Y-m-d',$endtime)}"{/if} class="date-check">                           
+                            </div> 
+                            
+                            <div class="date date1 fl" id="from" style="float:right; font-size:15px; margin-right:10px;">
+                                <input type="text" name="starttime" readonly="readonly" placeholder="开始时间" {if condition="(isset($starttime)) AND ($starttime)"}value="{:date('Y-m-d',$starttime)}"{/if} class="date-check">                              
+                            </div> 
+                                  
+                           </form>  
+                           </div>                                                                                          
+                        </div>
+                        
+                        
+
+                        <div id="ajaxpagetest">
+                        {include file="shop_promotion/ajaxpage" /}
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/common/admin.js"></script>
+    <script src="__PUBLIC__/admin/js/common/ajax.js"></script>
+    
+</body>
+</html>
