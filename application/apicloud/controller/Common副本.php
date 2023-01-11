@@ -2741,7 +2741,7 @@ class Common extends Controller{
                                                 if(!$res){
                                                     throw new Exception('购买失败');
                                                 }
-
+                                                
                                                 $res = Db::name('crowd_goods')->where('id', $last_crowd_goods_info['id'])->inc('pre_sale', $price)->inc('cur_crowd_num', $price)->update();
                                                 if(!$res){
                                                     throw new Exception('购买失败');
@@ -2772,63 +2772,4 @@ class Common extends Controller{
             } 
         });
     }
-
-    /****计算客户资产*****/
-    public function calAch(){
-        Db::name('member')->where('ach_time', '<' ,time() - 1800)->chunk(1000, function($list){
-            foreach ($list as $info){
-                Db::startTrans();
-                try{
-                    $wallet_info = Db::name('wallet')->where('user_id', $info['id'])->find();
-
-                    $wallet_amount = $wallet_info['price'] + $wallet_info['point_ticket'];
-
-                    $order_info = Db::name('crowd_order')->where('user_id', $info['id'])->where('addtime','>',time() - 9*86400)->find();
-
-                    if($wallet_amount >= 1000 || $order_info){
-                        $res = Db::name('member')->where('id', $info['id'])->update(['ach_time'=>time(),'is_effect'=>1]);
-                    }
-
-                    Db::commit();
-                }
-                catch(Exception $e){
-                    echo $e->getMessage();
-                    Db::rollback();
-                }
-            }
-        });
-
-    }
-
-    public function levelUp(){
-        Db::name('member')->chunk(1000, function($list){
-            foreach ($list as $info){
-                Db::startTrans();
-                try{
-                    $son_count = Db::name('member')->where('one_level', $info['id'])->where('is_effect',1)->count();
-
-                    $team_count = Db::name('member')->where('team_id','like', ','.$info['id'])->where('is_effect',1)->count();
-
-
-                    if($son_count >= 50 && $team_count >= 500){
-                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>3]);
-                    }elseif($son_count >= 20 && $team_count >= 200){
-                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>2]);
-                    }elseif($son_count >= 10 && $team_count >= 50){
-                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>1]);
-                    }else{
-                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>0]);
-                    }
-
-                    Db::commit();
-                }
-                catch(Exception $e){
-                    echo $e->getMessage();
-                    Db::rollback();
-                }
-            }
-        });
-
-    }
-
 }
