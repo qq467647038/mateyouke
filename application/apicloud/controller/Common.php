@@ -2784,9 +2784,10 @@ class Common extends Controller{
                     $wallet_amount = $wallet_info['price'] + $wallet_info['point_ticket'];
 
                     $order_info = Db::name('crowd_order')->where('user_id', $info['id'])->where('addtime','>',time() - 9*86400)->find();
-
                     if($wallet_amount >= 1000 || $order_info){
                         $res = Db::name('member')->where('id', $info['id'])->update(['ach_time'=>time(),'is_effect'=>1]);
+                    }else{
+                        Db::name('member')->where('id', $info['id'])->update(['ach_time'=>time()]);
                     }
 
                     Db::commit();
@@ -2801,20 +2802,29 @@ class Common extends Controller{
     }
 
     public function levelUp(){
+        echo time();
         Db::name('member')->chunk(1000, function($list){
             foreach ($list as $info){
                 Db::startTrans();
                 try{
                     $son_count = Db::name('member')->where('one_level', $info['id'])->where('is_effect',1)->count();
 
-                    $team_count = Db::name('member')->where('team_id','like', ','.$info['id'])->where('is_effect',1)->count();
-
-
+                    $team_count = Db::name('member')->where('team_id','like', '%,'.$info['id'].'%')->where('is_effect',1)->count();
+                    
+                    if($son_count > 0 || $team_count > 0){
+                        echo '用户id'.$info['id'].'--直推【'.$son_count.'】--团队【'.$team_count.'】'.PHP_EOL;
+                        
+                    }
+                    
+                    
                     if($son_count >= 50 && $team_count >= 500){
+                        echo '用户id'.$info['id'].'--直推【'.$son_count.'】--团队【'.$team_count.'】'.PHP_EOL;
                         Db::name('member')->where('id', $info['id'])->update(['agent_type'=>3]);
                     }elseif($son_count >= 20 && $team_count >= 200){
+                        echo '用户id'.$info['id'].'--直推【'.$son_count.'】--团队【'.$team_count.'】'.PHP_EOL;
                         Db::name('member')->where('id', $info['id'])->update(['agent_type'=>2]);
                     }elseif($son_count >= 10 && $team_count >= 50){
+                        echo '用户id'.$info['id'].'--直推【'.$son_count.'】--团队【'.$team_count.'】'.PHP_EOL;
                         Db::name('member')->where('id', $info['id'])->update(['agent_type'=>1]);
                     }else{
                         Db::name('member')->where('id', $info['id'])->update(['agent_type'=>0]);
@@ -2828,7 +2838,7 @@ class Common extends Controller{
                 }
             }
         });
-
+        echo '====='.time();
     }
 
 }
