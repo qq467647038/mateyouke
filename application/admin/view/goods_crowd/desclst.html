@@ -15,9 +15,8 @@
 
 <script>
 //删除url
-var url = "/{$Request.module}/goods";
-var recycleUrl = "{:url('goods/recycle')}";
-var crowdfundPath = "{:url('goods/crowdfunding')}";
+var url = "/{$Request.module}/goods_crowd";
+var recycleUrl = "{:url('goods_crowd/recycle')}";
 </script>
 
 <body class="gray-bg">
@@ -31,13 +30,13 @@ var crowdfundPath = "{:url('goods/crowdfunding')}";
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>众筹订单列表</h5>
+                        <h5>众筹详情列表</h5>
                     </div>
                     <div class="ibox-content">
                         
                         
                         <div id="ajaxpagetest">
-                        {include file="goods_crowd/order_ajaxpage" /}
+                        {include file="goods_crowd/desc_ajaxpage" /}
                         </div>
                         
 

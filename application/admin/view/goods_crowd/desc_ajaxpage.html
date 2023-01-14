@@ -14,7 +14,7 @@
 	{if condition="!isset($search) && !isset($cate_id)"}
 	var search = 0;
 	var cate_id = 0;
-	var goUrl = "/{$Request.module}/goods_crowd/lst";
+	var goUrl = "/{$Request.module}/goods_crowd/desclst";
 	{elseif condition="isset($search) && $search" /}
 	var search = {$search};
 	var cate_id = 0;
@@ -32,6 +32,7 @@
                                     <th>id</th>
                                     <th>商品标题</th>
                                     <th>缩略图</th>
+                                    <th>期数</th>
                                     <th>剩余数量</th>
                                     <th>状态</th>
                                     <!--<th>总众筹数</th>-->
@@ -49,11 +50,14 @@
                                     <td>{$v.id}</td>
                                     <td>{$v.goods_name}</td>   
                                     <td><img src="{$v.thumb_url}" width="80px" height="80px"/></td>
+                                    <td>{$v.cur_qi}</td> 
                                     <td>{$v.sy}</td>   
                                     <td>
                                         {if condition="$v.status == 1"}
                                         爆仓
-                                        {else /}
+                                        {elseif condition="$v.status == 2"}
+                                        升仓
+                                        {elseif condition="$v.status == 0"}
                                         进行中
                                         {/if}
                                     </td>   

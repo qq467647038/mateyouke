@@ -7,6 +7,29 @@ use think\Db;
 
 class GoodsCrowd extends Common
 {
+    public function desclst(){
+        $list = Db::name('crowd_goods')->order('id desc')->paginate(25);
+
+        $page = $list->render();
+
+        if (input('page')) {
+            $pnum = input('page');
+        } else {
+            $pnum = 1;
+        }
+
+        $this->assign('list', $list);
+        $this->assign('page', $page);
+        $this->assign('pnum', $pnum);
+        $this->assign('cateres', recursive($cateres));
+        $this->assign('brandres', $brandres);
+        if (request()->isAjax()) {
+            return $this->fetch('desc_ajaxpage');
+        } else {
+            return $this->fetch('desclst');
+        }
+    }
+    
     public function lst()
     {
         $shop_id = session('shop_id');
