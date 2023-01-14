@@ -144,27 +144,26 @@ var crowdfundPath = "{:url('goods/crowdfunding')}";
     }
     
     function crowdfunding(id, obj){
-        layer.prompt({title: '请输入众筹值'}, function(value){
-            // console.log(value, '十大科技');
-            $.ajax({
-                url: '{:url("generateCrowd")}?id='+id+'&value='+value,
-                method: 'post',
-                success: function(res){
-                    layer.msg(res.mess);
-                    setTimeout(function(){
-                        layer.closeAll();
-                    }, 1000)
-                }
-            });
-        });
-    // 	layer.open({
-    // 		type : 2,
-    // 		title : '众筹',
-    // 		shadeClose : true,
-    // 		shade : 0.5,
-    // 		area : ['1000px','650px'],
-    // 		content : crowdfundPath
-    // 	});
+        // layer.prompt({title: '请输入众筹值'}, function(value){
+        //     $.ajax({
+        //         url: '{:url("generateCrowd")}?id='+id+'&value='+value,
+        //         method: 'post',
+        //         success: function(res){
+        //             layer.msg(res.mess);
+        //             setTimeout(function(){
+        //                 layer.closeAll();
+        //             }, 1000)
+        //         }
+        //     });
+        // });
+    	layer.open({
+    		type : 2,
+    		title : '众筹',
+    		shadeClose : true,
+    		shade : 0.5,
+    		area : ['1000px','650px'],
+    		content : '{:url("generateCrowd")}?id='+id
+    	});
     }
     </script>
 	

@@ -31,17 +31,24 @@ class GoodsCrowd extends Common{
                 
                 $page = 1;
                 $webconfig = $this->webconfig;
-                $perpage = $webconfig['app_goodlst_num'];
+                $perpage = input('post.pageSize', $page);
                 $pagenum = input('post.page', $page);
                 $offset = ($pagenum-1)*$perpage;
                 
-                $list = Db::name('crowd_order')->alias('co')->where('co.user_id', $user_id)->where('co.status', 3)->join('crowd_goods cg', 'cg.id = co.goods_id', 'inner')->where('co.receive_time', '>=', time())->order('co.id desc')->field('co.*,cg.thumb_url,cg.goods_name')->limit($offset, $perpage)->select();
-                $tuikuan_value = Db::name('config')->where('ename', 'tuikuan_value')->value('value');
+                // $list = Db::name('crowd_order')->alias('co')->where('co.user_id', $user_id)->where('co.status', 3)->join('crowd_goods cg', 'cg.id = co.goods_id', 'inner')->where('co.receive_time', '>=', time())->order('co.id desc')->field('co.*,cg.thumb_url,cg.goods_name')->limit($offset, $perpage)->select();
+                $list1 = [];
+                if($pagenum==1){
+                    $list1 = Db::name('crowd_order')->alias('co')->where('co.user_id', $user_id)->where('co.status', 3)->join('crowd_goods cg', 'cg.id = co.goods_id', 'inner')->order('co.id desc')->field('co.*,cg.thumb_url,cg.goods_name')->order('co.status desc, addtime desc')->select();
+                }
+                $list2 = Db::name('crowd_order')->alias('co')->where('co.user_id', $user_id)->where('co.status', '<>', 3)->join('crowd_goods cg', 'cg.id = co.goods_id', 'inner')->order('co.id desc')->field('co.*,cg.thumb_url,cg.goods_name')->order('addtime desc')->limit($offset, $perpage)->select();
+                $list = array_merge($list1, $list2);
+                // $tuikuan_value = Db::name('config')->where('ename', 'tuikuan_value')->value('value');
                 foreach ($list as &$v){
+                    $tuikuan_value = Db::name('crowd_goods')->where('id', $v['goods_id'])->value('static_rate');
                     $v['income'] = $v['price'] + $v['price']*$tuikuan_value/100;
                 }
                 
-                $value = array('status'=>200,'mess'=>'获取信息成功','data'=>$list);
+                $value = array('status'=>200,'mess'=>'获取信息成功','data'=>$list, 'data1'=>$list1);
             }else{
                 $value = $result;
             }
@@ -63,7 +70,7 @@ class GoodsCrowd extends Common{
                     $value = array('status'=>400,'mess'=>'参数异常','data'=>array('status'=>400));
                 }
                 else{
-                    $tuikuan_value = Db::name('config')->where('ename', 'tuikuan_value')->value('value');
+                    // $tuikuan_value = Db::name('config')->where('ename', 'tuikuan_value')->value('value');
                     $info = Db::name('crowd_order')->where('user_id', $user_id)->where('status', 3)->where('id', $input['id'])->find();
                     $crowd_goods_info = Db::name('crowd_goods')->where('id', $info['goods_id'])->find();
                     $last_crowd_goods_info = Db::name('crowd_goods')->where('crowd_mark', $crowd_goods_info['crowd_mark'])->order('cur_qi desc')->find();
@@ -76,6 +83,7 @@ class GoodsCrowd extends Common{
                         $value = array('status'=>400,'mess'=>'领取失败','data'=>array('status'=>400));
                     }
                     else{
+                        $tuikuan_value = Db::name('crowd_goods')->where('id', $info['goods_id'])->value('static_rate');
                         $sprice = $info['price'] + $info['price']*$tuikuan_value/100;
                         $wallet_info = Db::name('wallet')->where('user_id', $info['user_id'])->find();
                         
@@ -124,7 +132,7 @@ class GoodsCrowd extends Common{
         }else{
             $value = array('status'=>400,'mess'=>'请求方式不正确','data'=>array('status'=>400));
         }
-        return json($value); 
+        return json($value);
     }
     
     public function crowdBuy(){
@@ -136,7 +144,7 @@ class GoodsCrowd extends Common{
                 
                 if(input('post.goods_id')){
                     $goods_id = input('post.goods_id');
-                    $price = input('post.price');
+                    $price = (float)input('post.price');
                     if(!$goods_id || !$price || $price<=0){
                         $value = array('status'=>400,'mess'=>'参数异常','data'=>array('status'=>400));
                         return json($value);
@@ -163,14 +171,14 @@ class GoodsCrowd extends Common{
                         $adjut = $strtime+122400;
                         
                         $wallet_info = Db::name('wallet')->where('user_id', $user_id)->find();
-                        $ticket_burn = $price * 0.02;
                         if(!is_null($wallet_info)){
                             if($wallet_info['point_ticket']>=$price && $wallet_info['ticket_burn']>=$ticket_burn){
                                 $time = time();
                                 Db::startTrans();
                                 try{
-                                    $pre_sale_num = $crowd_goods_info['crowd_value']*0.7;
-                                    $sy_pre_sale = $pre_sale_num - $crowd_goods_info['pre_sale'];
+                                    $pre_sale_num = ceil($crowd_goods_info['crowd_value']*0.7);
+                                    $sy_pre_sale = (float)($pre_sale_num - $crowd_goods_info['pre_sale']);
+                                    
                                     $sy_total_sale = $crowd_goods_info['crowd_value'] - $crowd_goods_info['cur_crowd_num'];
                                     
                                     if($time>=$adjut){
@@ -179,6 +187,17 @@ class GoodsCrowd extends Common{
                                             throw new Exception('购买只能是100的倍数');
                                         }
                                         else{
+                                            $count = Db::name('crowd_order')->where('goods_id', $goods_id)->count();
+                                            $endtime = $adjut + 172800 + $count*3600;
+                                            if($time > $endtime){
+                                                throw new Exception('购买时间已过');
+                                            }
+                                            
+                                            if($price > $sy_total_sale){
+                                                // throw new Exception('剩余量不足');
+                                                $price = $sy_total_sale;
+                                            }
+                                            
                                             $buy_data = [
                                                 'price' => $price,
                                                 'goods_id' => $goods_id,
@@ -199,16 +218,21 @@ class GoodsCrowd extends Common{
                                         }
                                     }
                                     else{
-                                        // 预售
+                                        // 预约
                                         if($crowd_goods_info['pre_sale'] >= $pre_sale_num){
-                                            throw new Exception('预售数已销售一空');
+                                            throw new Exception('预约数已销售一空');
                                         }
                                         else{
-                                            if($price <= $sy_pre_sale){
+                                            if(true){
                                                 if($price<$sy_pre_sale && $price%100!=0){
                                                     throw new Exception('购买只能是100的倍数');
                                                 }
                                                 else{
+                                                    if($price > $sy_pre_sale){
+                                                        // throw new Exception('剩余量不足');
+                                                        $price = $sy_pre_sale;
+                                                    }
+                                                    
                                                     $buy_data = [
                                                         'price' => $price,
                                                         'goods_id' => $goods_id,
@@ -229,7 +253,7 @@ class GoodsCrowd extends Common{
                                                 }
                                             }
                                             else{
-                                                throw new Exception('剩余预售数不足');
+                                                throw new Exception('剩余预约数不足');
                                             }
                                         }
                                     }
@@ -246,6 +270,7 @@ class GoodsCrowd extends Common{
                                      ];
                                      $res = $this->addDetail($detail);
                                      
+                                    $ticket_burn = $price * 0.02;
                                      $detail = [
                                         'de_type' => 2,
                                         'zc_type' => 108,
@@ -263,7 +288,7 @@ class GoodsCrowd extends Common{
                                         throw new Exception('购买失败');
                                     }
                                     
-                                    $value = array('status'=>400,'mess'=>'购买成功','data'=>array('status'=>400));
+                                    $value = array('status'=>200,'mess'=>'购买成功','data'=>array('status'=>200));
                                     Db::commit();
                                 }
                                 catch(Exception $e){
@@ -272,7 +297,7 @@ class GoodsCrowd extends Common{
                                 }
                             }
                             else{
-                                $value = array('status'=>400,'mess'=>'积分不足或者门店不足','data'=>array('status'=>400));
+                                $value = array('status'=>400,'mess'=>'积分不足或者门票不足','data'=>array('status'=>400));
                             }
                         }
                         else{
@@ -329,11 +354,11 @@ class GoodsCrowd extends Common{
                         $nftPool = 0;
                         // var_dump($goods);exit;
                         if($goods['cur_qi'] > 1){
-                            $history_data = Db::name('crowd_goods')->alias('a')->field('a.sale_num,a.fictitious_sale_num,a.cate_id,a.id,a.vip_price,a.goods_name,a.thumb_url,a.shop_price,a.min_market_price,a.max_market_price,a.min_price,a.max_price,a.zs_price,a.goods_desc,a.fuwu,a.is_free,a.leixing,a.is_activity,a.shop_id,a.crowd_value,a.cur_crowd_num,a.goods_id,a.crowd_value,a.cur_crowd_num,a.addtime,a.cur_qi,a.status')->join('sp_shops b','a.shop_id = b.id','INNER')->where('a.crowd_mark', $goods['crowd_mark'])->where('a.cur_qi', '<', $goods['cur_qi'])->order('a.cur_qi desc')->select();
+                            $history_data = Db::name('crowd_goods')->alias('a')->field('a.sale_num,a.fictitious_sale_num,a.cate_id,a.id,a.vip_price,a.goods_name,a.thumb_url,a.shop_price,a.min_market_price,a.max_market_price,a.min_price,a.max_price,a.zs_price,a.goods_desc,a.fuwu,a.is_free,a.leixing,a.is_activity,a.shop_id,a.crowd_value,a.cur_crowd_num,a.goods_id,a.crowd_value,a.cur_crowd_num,a.addtime,a.cur_qi,a.status')->join('sp_shops b','a.shop_id = b.id','INNER')->where('a.crowd_mark', $goods['crowd_mark'])->where('a.cur_qi', '<', $goods['cur_qi'])->order('a.cur_qi asc')->select();
                             
                             $total_crowd_value = Db::name('crowd_goods')->where('crowd_mark', $goods['crowd_mark'])->where('cur_qi', '<', $goods['cur_qi'])->sum('crowd_value');
-                            $bonusPool = $total_crowd_value*0.02;
-                            $nftPool = $total_crowd_value*0.02;
+                            $bonusPool = sprintf("%.2f",$total_crowd_value*0.02);
+                            $nftPool = sprintf("%.2f",$total_crowd_value*0.02);
                         }
                         
                         $goodinfores = array(
@@ -417,7 +442,7 @@ class GoodsCrowd extends Common{
                             $value['remark'] = '购买商品赠送';
                         }
                         else if($value['zc_type'] == 100){
-                            $value['remark'] = '预售或购买';
+                            $value['remark'] = '预约或购买';
                         }
                         
                     }
@@ -435,4 +460,5 @@ class GoodsCrowd extends Common{
         }
         return json($value);   
     }
+    
 }

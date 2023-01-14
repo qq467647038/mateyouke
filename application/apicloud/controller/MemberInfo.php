@@ -565,10 +565,10 @@ class MemberInfo extends Common{
                 $rand_num = rand (0, 9).rand (0, 9).rand (0, 9).rand (0, 9).rand (0, 9).rand (0, 9);
 
 
-                $cred = new Credential("AKIDQpAQafdUErNm4EHC0e7SehdQ5c0GMK9q", "brzynU2QflhVHtNiuyrY4QdjgUAh6MTR");
-                $sms = new TecentSms($cred,"ap-guangzhou");
-                $res = $sms->send($phone,$rand_num);
-                if($res){
+                $url  = $url.'?action=send&account=221801&password=jFYcta&mobile='.$phone.'&content='.urlencode('【玛特优客】您的验证码是：').$rand_num.'&extno=10690495&rt=json';
+                $res = json_decode(file_get_contents($url),true);
+
+                if($res['status'] == 0 && $res['list'][0]['result'] == 0){
 //                if(true){
                     $value = array('status'=>200,'mess'=>'发送成功！');
 
@@ -861,7 +861,7 @@ class MemberInfo extends Common{
                 if($result['status'] == 200){
                     $user_id = $result['user_id'];
                     bandPid($user_id,(int)trim(input('post.shareid')));
-                    $members = Db::name('member')->where('id',$user_id)->field('id,user_name,phone,true_name,idcard,password,headimgurl,integral,sex,birth,email,oauth,agent_type,false_agent_type,login_code, emergency_phone, emergency_name, vip_time, reg_enable, qiandan, team_id, jiedian_team_id, checked, zenren_frozen,team_id,jiedian_team_id')->find();
+                    $members = Db::name('member')->where('id',$user_id)->field('id,user_name,phone,true_name,idcard,password,headimgurl,integral,sex,birth,email,oauth,agent_type,false_agent_type,login_code, emergency_phone, emergency_name, vip_time, reg_enable, qiandan, team_id, jiedian_team_id, checked, zenren_frozen,team_id,jiedian_team_id, nick_name')->find();
                     $members['enable_deposit_amount'] = Db::name('config')->where('ename', 'enable_deposit_amount')->value('value');
 // var_dump($member['agent_type']);exit;
                     if($members){
@@ -2848,7 +2848,7 @@ class MemberInfo extends Common{
                         $receive_member = Db::name('member')->where('phone', $data['phone'])->find();
                         $send_member = Db::name('member')->where('id', $user_id)->find();
                         if (is_null($receive_member)){
-                            $value = array('status'=>400,'mess'=>'手机号码不存在','data'=>array('status'=>400));
+                            $value = array('status'=>400,'mess'=>'当前用户异常','data'=>array('status'=>400));
                             return json($value);
                         }
 
@@ -3511,13 +3511,19 @@ class MemberInfo extends Common{
                     $list = Db::name('detail')->where('user_id', $user_id)
                         ->where(function($query){
                         
-                            $query->where('sr_type', 'in', [102,105,101,109,110,25,607,606,605,604,600,601,602,603,102,101,200,201,205])->whereOr('zc_type', 'in', [100,22,25]);
+                            $query->where('sr_type', 'in', [102,105,101,109,110,25,607,606,605,604,600,601,602,603,102,101,200,201,205,1000,1001])->whereOr('zc_type', 'in', [100,22,25]);
                         })->limit($page, $pageSize)->order('id desc')->select();
                         
                     foreach ($list as &$v){
                         $v['time'] = date('Y-m-d H:i:s', $v['time']);
                         if($v['sr_type'] == 102 || $v['sr_type'] == 105 || $v['sr_type'] == 101){
                             $v['remark'] = '退款';
+                        }
+                        else if($v['sr_type'] == 1000){
+                            $v['remark'] = '复购抢购';
+                        }
+                        else if($v['sr_type'] == 1001){
+                            $v['remark'] = '复购预约';
                         }
                         else if($v['sr_type'] == 109){
                             $v['remark'] = '加权';
@@ -3599,7 +3605,7 @@ class MemberInfo extends Common{
                     $list = Db::name('detail')->where('user_id', $user_id)
                         ->where(function($query){
                         
-                            $query->where('sr_type', 'in', [103,26])->whereOr('zc_type', 'in', [33,26]);
+                            $query->where('sr_type', 'in', [103,26])->whereOr('zc_type', 'in', [26]);
                         })->limit($page, $pageSize)->order('id desc')->select();
                         
                     foreach ($list as &$v){

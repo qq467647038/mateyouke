@@ -102,6 +102,100 @@ class Common extends Controller{
 
     }
     
+    public function menpiao(){
+        $post = input();
+        $where = [];
+        if($post['keyword']){
+            $keyword = trim($post['keyword']);
+        }
+        $whereTime=[];
+        if($post['startDate']){
+            $whereTime = [$post['startDate'], $post['endDate']];
+        }
+        else{
+            $whereTime = ['2022-01-01', date('Y-m-d', strtotime('tomorrow'))];
+        }
+        
+                if($post['sr_type']){
+            $where_sr_type = [$post['sr_type']];
+            $post['zc_type'] = '';
+        }else{
+            if($post['zc_type']){
+                $where_zc_type = [$post['zc_type']];
+                $post['sr_type'] = '';
+            }else{
+                $where_zc_type = [27,108];
+                $where_sr_type = [27];
+            }
+        }
+        
+        
+        $list = Db::name('detail')->alias('d')
+                    ->join('member m', 'm.id = d.user_id', 'inner')
+                    ->join('member t', 't.id = d.target_id', 'left')
+                    // ->where('d.user_id', $input['id'])
+                    ->where('d.time', 'between time', $whereTime)
+                    ->where(function ($query) use($keyword){
+                        if($keyword)$query->where('d.id', $keyword)->whereOr('m.true_name', $keyword)->whereOr('m.user_name', $keyword)->whereOr('m.phone', $keyword);
+                    })
+                    ->where(function($query) use($where_zc_type,$where_sr_type){
+                        $query->where('sr_type', 'in',$where_sr_type)->whereOr('zc_type', 'in',$where_zc_type);
+                    })
+                    ->field('d.*, m.user_name m_user_name, m.true_name m_true_name, t.user_name t_user_name, t.true_name t_true_name, m.phone m_phone, t.phone t_phone,m.phone')
+                    ->order('d.id desc')->paginate(25, false, ['query'=>request()->param()])->each(function($item){
+                        switch($item['sr_type']){
+                            case 27:
+                                 $item['remark'] = '后台操作';
+                                 break;
+                        }
+                        
+                        switch($item['zc_type']){
+                            case 27:
+                                $item['remark'] = '后台操作';
+                                break;
+                            case 108:
+                                $item['remark'] = '预售或购买';
+                                break;
+                        }
+                        // $item['time'] = date('Y-m-d H:i:s', $item['time']);
+                        
+                        return $item;
+                    });
+        $count = Db::name('detail')->alias('d')
+                    ->join('member m', 'm.id = d.user_id', 'inner')
+                    ->where('d.time', 'between time', $whereTime)
+                    ->where(function ($query) use($keyword){
+                        if($keyword)$query->where('d.id', $keyword)->whereOr('m.true_name', $keyword)->whereOr('m.user_name', $keyword)->whereOr('m.phone', $keyword);
+                    })
+                    ->where(function($query){
+                        $query->where('sr_type', 'in', $where_sr_type)->whereOr('zc_type', 'in', $where_zc_type);
+                    })
+                    ->count();
+        $page = $list->render();
+        
+        if(input('page')){
+            $pnum = input('page');
+        }else{
+            $pnum = 1;
+        }
+        
+        $this->assign(array(
+            'list'=>$list,
+            'where_time'=>$whereTime,
+            'keyword'=>$keyword,
+            'page'=>$page,
+            'sr_type'=>$post['sr_type'],
+            'zc_type'=>$post['zc_type'],
+            'pnum'=>$pnum,
+            'count'=>$count
+        ));
+        if(request()->isAjax()){
+            return $this->fetch('member/trade_detail_ajaxpage');
+        }else{
+            return $this->fetch('member/trade_detail_lst3');
+        }
+    }
+    
     public function point(){
         $post = input();
         $where = [];
@@ -124,8 +218,8 @@ class Common extends Controller{
                 $where_zc_type = [$post['zc_type']];
                 $post['sr_type'] = '';
             }else{
-                $where_zc_type = [70,1000,1001,110,25,105];
-                $where_sr_type = [121,71,1111,25,500,108];
+                $where_zc_type = [26];
+                $where_sr_type = [103,26];
             }
         }
         
@@ -144,52 +238,17 @@ class Common extends Controller{
                     ->field('d.*, m.user_name m_user_name, m.true_name m_true_name, t.user_name t_user_name, t.true_name t_true_name, m.phone m_phone, t.phone t_phone,m.phone')
                     ->order('d.id desc')->paginate(25, false, ['query'=>request()->param()])->each(function($item){
                         switch($item['sr_type']){
-                            case 121:
-                                 $item['remark'] = '佣金提现积分';
+                            case 103:
+                                 $item['remark'] = '退款';
                                  break;
-                            case 25:
-                                 $item['remark'] = '后台修改';
+                            case 26:
+                                 $item['remark'] = '后台操作';
                                  break;
-                            case 500:
-                                 $item['remark'] = '购买积分商城商品';
-                                 break;
-                            case 71:
-                                $wine_deal_area_id = Db::name('wine_order_record')->where('id', $item['target_id'])->value('wine_deal_area_id');
-                                $desc = Db::name('wine_deal_area')->where('id', $wine_deal_area_id)->value('desc');
-                                $item['remark'] = '普通竞拍'.$desc.'预约金返还';
-                                 break;
-                            case 1111:
-                                $wine_contract_day_id = Db::name('wine_order_record_contract')->where('id', $item['target_id'])->value('wine_contract_day_id');
-                                $day = Db::name('wine_contract_day')->where('id', $wine_contract_day_id)->value('day');
-                                $item['remark'] = '合约竞拍【'.$day.'天】预约金返还';
-                                break;
-                            case 108:
-                                $item['remark'] = '转账：'.($item['t_true_name'] ? $item['t_true_name'] : $item['t_user_name']).'【'.$item['t_phone'].'】 转 '.($item['m_true_name'] ? $item['m_true_name'] : $item['m_user_name']).'【'.$item['m_phone'].'】';
-                                break;
                         }
                         
                         switch($item['zc_type']){
-                            case 25:
-                                 $item['remark'] = '后台修改';
-                                 break;
-                            case 70: 
-                                $wine_deal_area_id = Db::name('wine_order_record')->where('id', $item['target_id'])->value('wine_deal_area_id');
-                                $desc = Db::name('wine_deal_area')->where('id', $wine_deal_area_id)->value('desc');
-                                $item['remark'] = '普通竞拍'.$desc.'预约金';
-                                break;
-                            case 1000:
-                                $wine_contract_day_id = Db::name('wine_order_record_contract')->where('id', $item['target_id'])->value('wine_contract_day_id');
-                                $day = Db::name('wine_contract_day')->where('id', $wine_contract_day_id)->value('day');
-                                $item['remark'] = '合约竞拍【'.$day.'天】预约金';
-                                break;
-                            case 1001:
-                                $item['remark'] = '合约购买';
-                                break;
-                            case 110:
-                                $item['remark'] = '寄售服务费';
-                                break;
-                            case 105:
-                                $item['remark'] = '转账：'.($item['m_true_name'] ? $item['m_true_name'] : $item['m_user_name']).'【'.$item['m_phone'].'】 转 '.($item['t_true_name'] ? $item['t_true_name'] : $item['t_user_name']).'【'.$item['t_phone'].'】';
+                            case 26:
+                                $item['remark'] = '后台操作';
                                 break;
                         }
                         // $item['time'] = date('Y-m-d H:i:s', $item['time']);
@@ -203,7 +262,7 @@ class Common extends Controller{
                         if($keyword)$query->where('d.id', $keyword)->whereOr('m.true_name', $keyword)->whereOr('m.user_name', $keyword)->whereOr('m.phone', $keyword);
                     })
                     ->where(function($query){
-                        $query->where('sr_type', 'in', [121,71,1111,25,500])->whereOr('zc_type', 'in', [70,1000,1001,110,25]);
+                        $query->where('sr_type', 'in', $where_sr_type)->whereOr('zc_type', 'in', $where_zc_type);
                     })
                     ->count();
         $page = $list->render();
@@ -629,8 +688,8 @@ class Common extends Controller{
                 $where_zc_type = [$post['zc_type']];
                 $post['sr_type'] = '';
             }else{
-                $where_zc_type = [120];
-                $where_sr_type = [64,65,80,1154,1155,1180];
+                $where_zc_type = [100,25];
+                $where_sr_type = [102,105,101,1000,1001,109,25,110,604,605,606,607,600,601,602,603,200,201,205];
             }
         }
         $list = Db::name('detail')->alias('d')
@@ -647,29 +706,71 @@ class Common extends Controller{
                     ->field('d.*, m.user_name m_user_name, m.true_name m_true_name, t.user_name t_user_name, t.true_name t_true_name, m.phone')
                     ->order('d.id desc')->paginate(25, false, ['query'=>request()->param()])->each(function($item){
                         switch($item['sr_type']){
-                            case 64:
-                                $item['remark'] = '直推奖';
+                            case 102:
+                                $item['remark'] = '退款';
                                 break;
-                            case 65:
-                                $item['remark'] = '团队奖';
+                            case 105:
+                                $item['remark'] = '退款';
                                 break;
-                            case 80:
-                                $item['remark'] = '管理奖';
+                            case 205:
+                                $item['remark'] = 'v1-v3分润';
                                 break;
-                            case 1154:
-                                $item['remark'] = '合约直推奖';
+                            case 201:
+                                $item['remark'] = '间推';
                                 break;
-                            case 1155:
-                                $item['remark'] = '合约团队奖';
+                            case 200:
+                                $item['remark'] = '直推';
                                 break;
-                            case 1180:
-                                $item['remark'] = '合约管理奖';
+                            case 603:
+                                $item['remark'] = '前三十 三等奖';
+                                break;
+                            case 101:
+                                $item['remark'] = '爆仓退款100%';
+                                break;
+                            case 1000:
+                                $item['remark'] = '复购抢购';
+                                break;
+                            case 1001:
+                                $item['remark'] = '复购预约';
+                                break;
+                            case 109:
+                                $item['remark'] = '加权';
+                                break;
+                            case 25:
+                                $item['remark'] = '后台操作';
+                                break;
+                            case 110:
+                                $item['remark'] = '购买商品赠送';
+                                break;
+                            case 604:
+                                $item['remark'] = '后三十 特等奖';
+                                break;
+                            case 605:
+                                $item['remark'] = '后三十 一等奖';
+                                break;
+                            case 606:
+                                $item['remark'] = '后三十 二等奖';
+                                break;
+                            case 607:
+                                $item['remark'] = '后三十 三等奖';
+                                break;
+                            case 600:
+                                $item['remark'] = '前三十 特等奖';
+                                break;
+                            case 601:
+                                $item['remark'] = '前三十 一等奖';
+                                break;
+                            case 602:
+                                $item['remark'] = '前三十 二等奖';
                                 break;
                         }
                         
                         switch($item['zc_type']){
-                            case 120:
-                                $item['remark'] = '佣金提现';
+                            case 100:
+                                $item['remark'] = '预售或购买';
+                                break;
+                            case 25:
+                                $item['remark'] = '后台操作';
                                 break;
                         }
                         

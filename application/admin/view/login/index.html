@@ -103,9 +103,6 @@
             outline:none;
             background: url("__PUBLIC__/admin/img/z-backstage-c.png")no-repeat;
             background-size: 100% 100%;
-            position: absolute;
-            left: 30px;
-            bottom: 40px;
         }
     </style>
 </head>
@@ -133,15 +130,15 @@ var url = "{:url('index/index')}";
                                 <div class="form-group" style="margin-bottom:5px;">
                                     <input type="password" name="password" class="form-control  backStagei" placeholder="请输入密码" >
                                 </div>
-                                <!--<div class="form-group">-->
-                                <!--    <input style="width:52%;display:inline-block;" type="text" name="phonecode" class="form-control  backStagei" placeholder="请输入验证码" >-->
-                                <!--    <span onclick="sendSms()">发送验证码</span>-->
-                                <!--</div>-->
+                                <div class="form-group">
+                                    <input style="width:52%;display:inline-block;" type="text" name="phonecode" class="form-control  backStagei" placeholder="请输入验证码" >
+                                    <span onclick="sendSms()">发送验证码</span>
+                                </div>
                                 <div class="form-group" style="margin-bottom:5px;">
                                     <input type="text" name="verifyCode" id="verifyCode" value="" style="height: 30px;width: 100px;" />
                                     <img onClick="this.src=this.src+'?'+Math.random()" src="{:captcha_src()}" alt="captcha" style="width: 106px;" />
                                 </div>
-                                <div id="show_token" style="position: absolute;z-index:1;bottom:0;right:0;border:none;">
+                                <div id="show_token" style="position: absolute;z-index:1;bottom:0;right:0;border:none;display:none;">
                                     <input type="text" name="token" class="form-control  " placeholder="" style="border: none;color:#fff;" >
                                 </div>
                                 <button type="submit" id="submitBtn" class="backStagej"></button>

@@ -2340,31 +2340,43 @@ class Goods extends Common
     public function generateCrowd(){
         $input = input();
         
-        if(!$input['id'] || !$input['value']){
-            $value = array('status' => 0, 'mess' => '参数不存在');
+        if (request()->isPost()) {
+            if(!$input['id'] || !$input['value'] || !$input['rate']){
+                $value = array('status' => 0, 'mess' => '请输入完整表单');
+                return json($value);
+            }
+            
+            if($input['rate'] > 17){
+                $value = array('status' => 0, 'mess' => '静态收益不能大于 17%');
+                return json($value);
+            }
+            
+            $goods_info = Db::name('goods')->where('id', $input['id'])->find();
+            if(is_null($goods_info)){
+                $value = array('status' => 0, 'mess' => '商品不存在');
+                return json($value);
+            }
+            
+            $goods_info['goods_id'] = $goods_info['id'];
+            $goods_info['crowd_value'] = $input['value'];
+            $goods_info['static_rate'] = $input['rate'];
+            $goods_info['crowd_mark'] = uniqid().$goods_info['id'];
+            $goods_info['addtime'] = time();
+            unset($goods_info['id']);
+            
+            $res = Db::name('crowd_goods')->insert($goods_info);
+            if(!$res){
+                $value = array('status' => 0, 'mess' => '众筹创建失败');
+            }
+            else{
+                $value = array('status' => 1, 'mess' => '众筹创建成功');
+            }
             return json($value);
-        }
-        
-        $goods_info = Db::name('goods')->where('id', $input['id'])->find();
-        if(is_null($goods_info)){
-            $value = array('status' => 0, 'mess' => '商品不存在');
-            return json($value);
-        }
-        
-        $goods_info['goods_id'] = $goods_info['id'];
-        $goods_info['crowd_value'] = $input['value'];
-        $goods_info['crowd_mark'] = uniqid().$goods_info['id'];
-        $goods_info['addtime'] = time();
-        unset($goods_info['id']);
-        
-        $res = Db::name('crowd_goods')->insert($goods_info);
-        if(!$res){
-            $value = array('status' => 0, 'mess' => '众筹创建失败');
         }
         else{
-            $value = array('status' => 1, 'mess' => '众筹创建成功');
+            $this->assign('id', $input['id']);
+            return $this->fetch();
         }
-        return json($value);
     }
 
 

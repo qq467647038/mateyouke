@@ -34,49 +34,49 @@ var url = "/{$Request.module}/member";
                     <div class="ibox-content">
                         <div class="row" style="margin-bottom:20px;">
                             
-                            <form action="{:url('caiwu/yue')}" method="post" id="form_search">
-                                <input type="hidden" name="filter" value="{$filter}">
+                           <!-- <form action="{:url('caiwu/yue')}" method="post" id="form_search">-->
+                           <!--     <input type="hidden" name="filter" value="{$filter}">-->
                             
-                            <div class="col-sm-3" style="float:right;">
-                                <div class="input-group">
-                                    <input type="text" style="min-width:100px;" name="keyword" placeholder="请输入手机号、姓名、ID号" {if condition="(isset($keyword)) AND ($keyword)"}value="{$keyword}"{/if} class="input-sm form-control" /><span class="input-group-btn" style="min-width:60px;">
-                                    <button type="submit" class="btn btn-sm btn-primary">搜索</button></span>
-                                    <span class="input-group-btn" style="margin-right:10px;">
-                                        <a href="{:url('caiwu/yue_export')}?startDate={$where_time[0]}&endDate={$where_time[1]}&keyword={$keyword}&sr_type={$sr_type}&zc_type={$zc_type}" target="_blank" class="btn btn-sm btn-primary">导出</a>
-                                    </span>  
-                                </div>
-                            </div>
-                            <div class="layui-inline">
-                              <label class="layui-form-label" style="width:105px;">日期范围</label>
-                              <div class="layui-inline" id="test6">
-                                <div class="layui-input-inline">
-                                  <input type="text" autocomplete="off" name="startDate" id="test-startDate-1" class="layui-input" value="{$where_time[0]}" placeholder="开始日期">
-                                </div>
-                                <div class="layui-form-mid">-</div>
-                                <div class="layui-input-inline">
-                                  <input type="text" autocomplete="off" name="endDate" id="test-endDate-1" class="layui-input" value="{$where_time[1]}" placeholder="结束日期">
-                                </div>
-                              </div>
-                            </div>
-                              <div class="layui-form" style="display:inline-block;">
-                                <select name="sr_type" lay-verify="" lay-filter="test" id="select">
-                                    <option value="">收入</option>
-                                    <option value="8" {if condition="$sr_type == 8"}selected{/if}>余额转入</option>
-                                    <option value="24" {if condition="$sr_type == 24"}selected{/if}>后台余额修改</option>
-                                    <option value="120" {if condition="$sr_type == 120"}selected{/if}>佣金转入</option>
+                           <!-- <div class="col-sm-3" style="float:right;">-->
+                           <!--     <div class="input-group">-->
+                           <!--         <input type="text" style="min-width:100px;" name="keyword" placeholder="请输入手机号、姓名、ID号" {if condition="(isset($keyword)) AND ($keyword)"}value="{$keyword}"{/if} class="input-sm form-control" /><span class="input-group-btn" style="min-width:60px;">-->
+                           <!--         <button type="submit" class="btn btn-sm btn-primary">搜索</button></span>-->
+                           <!--         <span class="input-group-btn" style="margin-right:10px;">-->
+                           <!--             <a href="{:url('caiwu/yue_export')}?startDate={$where_time[0]}&endDate={$where_time[1]}&keyword={$keyword}&sr_type={$sr_type}&zc_type={$zc_type}" target="_blank" class="btn btn-sm btn-primary">导出</a>-->
+                           <!--         </span>  -->
+                           <!--     </div>-->
+                           <!-- </div>-->
+                           <!-- <div class="layui-inline">-->
+                           <!--   <label class="layui-form-label" style="width:105px;">日期范围</label>-->
+                           <!--   <div class="layui-inline" id="test6">-->
+                           <!--     <div class="layui-input-inline">-->
+                           <!--       <input type="text" autocomplete="off" name="startDate" id="test-startDate-1" class="layui-input" value="{$where_time[0]}" placeholder="开始日期">-->
+                           <!--     </div>-->
+                           <!--     <div class="layui-form-mid">-</div>-->
+                           <!--     <div class="layui-input-inline">-->
+                           <!--       <input type="text" autocomplete="off" name="endDate" id="test-endDate-1" class="layui-input" value="{$where_time[1]}" placeholder="结束日期">-->
+                           <!--     </div>-->
+                           <!--   </div>-->
+                           <!-- </div>-->
+                           <!--   <div class="layui-form" style="display:inline-block;">-->
+                           <!--     <select name="sr_type" lay-verify="" lay-filter="test" id="select">-->
+                           <!--         <option value="">收入</option>-->
+                           <!--         <option value="8" {if condition="$sr_type == 8"}selected{/if}>余额转入</option>-->
+                           <!--         <option value="24" {if condition="$sr_type == 24"}selected{/if}>后台余额修改</option>-->
+                           <!--         <option value="120" {if condition="$sr_type == 120"}selected{/if}>佣金转入</option>-->
                                     
-                                </select>
-                            </div> 
-                              <div class="layui-form" style="display:inline-block;">
-                                <select name="zc_type" lay-verify="" lay-filter="test" id="select">
-                                    <option value="">支出</option>
-                                    <option value="24" {if condition="$zc_type == 24"}selected{/if}>后台余额修改</option>
-                                    <option value="5" {if condition="$zc_type == 5"}selected{/if}>余额转出</option>
-                                    <option value="2" {if condition="$zc_type == 2"}selected{/if}>购买商品</option>
+                           <!--     </select>-->
+                           <!-- </div> -->
+                           <!--   <div class="layui-form" style="display:inline-block;">-->
+                           <!--     <select name="zc_type" lay-verify="" lay-filter="test" id="select">-->
+                           <!--         <option value="">支出</option>-->
+                           <!--         <option value="24" {if condition="$zc_type == 24"}selected{/if}>后台余额修改</option>-->
+                           <!--         <option value="5" {if condition="$zc_type == 5"}selected{/if}>余额转出</option>-->
+                           <!--         <option value="2" {if condition="$zc_type == 2"}selected{/if}>购买商品</option>-->
                                     
-                                </select>
-                            </div> 
-                           </form>   
+                           <!--     </select>-->
+                           <!-- </div> -->
+                           <!--</form>   -->
                                           
                         </div>
                         <div id="ajaxpagetest">

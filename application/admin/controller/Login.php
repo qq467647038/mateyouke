@@ -13,7 +13,7 @@ use think\Db;
 use app\admin\model\Admin as AdminMx;
 
 class Login extends Controller{
-    public $phone = '13290951920';
+    public $phone = '15860049567';
     
     public function aa(){
        session(null);
@@ -39,7 +39,7 @@ class Login extends Controller{
                 $rand_num = rand (0, 9).rand (0, 9).rand (0, 9).rand (0, 9).rand (0, 9).rand (0, 9);
 
 
-                $url  = $url.'?action=send&account=221801&password=jFYcta&mobile='.$this->phone.'&content='.urlencode('【锦榜捷报】您的验证码是：').$rand_num.'&extno=10690495&rt=json';
+                $url  = $url.'?action=send&account=221801&password=jFYcta&mobile='.$this->phone.'&content='.urlencode('【玛特优客】您的验证码是：').$rand_num.'&extno=10690495&rt=json';
                 $res = json_decode(file_get_contents($url),true);
 
                 if($res['status'] == 0 && $res['list'][0]['result'] == 0){
@@ -73,10 +73,10 @@ class Login extends Controller{
             // if(input('post.username') && input('post.password') && input('post.phonecode')){
             if(input('post.username') && input('post.password')){
                 $verifyCode = input('post.verifyCode');
-                if(!captcha_check($verifyCode)){
-                    $value = array('status'=>400,'mess'=>'验证码错误','data'=>array('status'=>400));
-                    return json($value);
-                }
+                // if(!captcha_check($verifyCode)){
+                //     $value = array('status'=>400,'mess'=>'图形验证码错误','data'=>array('status'=>400));
+                //     return json($value);
+                // }
                 
                 $username = input('post.username');
                 $phonecode = input('post.phonecode');
@@ -84,7 +84,7 @@ class Login extends Controller{
                 $password = md5(input('post.password'));
                 // if(empty($token)){
                 //     $sms = Db::name('sms')->where('use', 0)->where('phone', $this->phone)->order('id desc')->field('code')->find();
-                //     if($sms['code'] != $phonecode){
+                //     if(!$sms || $sms['code'] != $phonecode){
                 //         $value = array('status'=>400,'mess'=>'验证码错误','data'=>array('status'=>400));
                 //         return json($value);
                 //     }

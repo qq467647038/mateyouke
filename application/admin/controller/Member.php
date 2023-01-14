@@ -583,19 +583,19 @@ class Member extends Common{
                     ->join('member t', 't.id = d.target_id', 'left')
                     ->where('d.user_id', $input['id'])
                     ->where(function($query){
-                        $query->where('sr_type', 'in', [8,24,60,63,67,64,65,72,74,75,76,77,71,80,90,100,120,1111,1006,121,25,108,1154,1155,1180])->whereOr('zc_type', 'in', [5,24,17,61,70,110,1003,1000,120,1001,25,105]);
+                        $query->where('sr_type', 'in', [27,103,26,8,120, 24,102,105,101,1000,1001,109,25,110,604,605,606,607,600,601,602,603,200,201,205])->whereOr('zc_type', 'in', [27,108,26,5, 24, 2,100,25]);
                     })
                     ->field('d.*, m.user_name m_user_name, m.true_name m_true_name, t.user_name t_user_name, t.true_name t_true_name, m.phone m_phone, t.phone t_phone')
                     ->order('d.id desc')->paginate(50)->each(function($item){
                         switch($item['sr_type']){
-                            case 25:
-                                 $item['remark'] = '后台修改积分';
+                            case 27:
+                                 $item['remark'] = '门票后台操作';
                                  break;
-                            case 8:
-                                $item['remark'] = '余额转账：'.$item['t_user_name'].'转给姓名:'.($item['m_true_name']?$item['m_true_name']:$item['m_user_name']).' - 手机号:'.$item['m_phone'];
-                                break;
-                            case 1006:
-                                 $item['remark'] = '购买福利场商品奖励';
+                            case 103:
+                                 $item['remark'] = '退款';
+                                 break;
+                            case 26:
+                                 $item['remark'] = '积分信用后台操作';
                                  break;
                             case 24:
                                 $item['remark'] = '后台余额修改';
@@ -603,151 +603,89 @@ class Member extends Common{
                             case 120:
                                 $item['remark'] = '佣金转入';
                                 break;
-                            case 121:
-                                $item['remark'] = '佣金提现积分';
+                            case 8:
+                                $item['remark'] = '余额转账：'.$item['t_true_name'].'转给姓名:'.($item['m_true_name']?$item['m_true_name']:$item['m_user_name']).' - 手机号:'.$item['phone'];
                                 break;
-                            case 60:
-                                $item['remark'] = '转余额';
+                            case 102:
+                                $item['remark'] = '退款';
                                 break;
-                            case 63:
-                                $item['remark'] = '进货转出售增加余额';
+                            case 105:
+                                $item['remark'] = '退款';
+                                break;
+                            case 205:
+                                $item['remark'] = 'v1-v3分润';
+                                break;
+                            case 201:
+                                $item['remark'] = '间推';
+                                break;
+                            case 200:
+                                $item['remark'] = '直推';
+                                break;
+                            case 603:
+                                $item['remark'] = '前三十 三等奖';
+                                break;
+                            case 101:
+                                $item['remark'] = '爆仓退款100%';
+                                break;
+                            case 1000:
+                                $item['remark'] = '复购抢购';
+                                break;
+                            case 1001:
+                                $item['remark'] = '复购预约';
+                                break;
+                            case 109:
+                                $item['remark'] = '加权';
                                 break;
                             case 25:
-                                $item['remark'] = '后台添加';
+                                $item['remark'] = '后台操作';
                                 break;
-                            case 26:
-                                $item['remark'] = '兑换实物获得';
+                            case 110:
+                                $item['remark'] = '购买商品赠送';
                                 break;
-                            case 17:
-                                $item['remark'] = '抢购增加冻结余额';
+                            case 604:
+                                $item['remark'] = '后三十 特等奖';
                                 break;
-                            case 61:
-                                $item['remark'] = '平台寄售增加冻结余额';
+                            case 605:
+                                $item['remark'] = '后三十 一等奖';
                                 break;
-                            case 64:
-                                $item['remark'] = '分享奖励';
+                            case 606:
+                                $item['remark'] = '后三十 二等奖';
                                 break;
-                            case 1154:
-                                $item['remark'] = '合约分享奖励';
+                            case 607:
+                                $item['remark'] = '后三十 三等奖';
                                 break;
-                            case 65:
-                                $item['remark'] = '市场分润';
+                            case 600:
+                                $item['remark'] = '前三十 特等奖';
                                 break;
-                            case 1155:
-                                $item['remark'] = '合约市场分润';
+                            case 601:
+                                $item['remark'] = '前三十 一等奖';
                                 break;
-                            case 66:
-                                $item['remark'] = '分割发货奖励';
-                                break;
-                            case 67:
-                                $item['remark'] = '买家没有付款增加余额';
-                                break;
-                            case 70:
-                                $item['remark'] = '预约增加冻结余额';
-                                break;
-                            case 71:
-                                $wine_deal_area_id = Db::name('wine_order_record')->where('id', $item['target_id'])->value('wine_deal_area_id');
-                                $desc = Db::name('wine_deal_area')->where('id', $wine_deal_area_id)->value('desc');
-                                $item['remark'] = '普通竞拍'.$desc.'预约金返还';
-                                 break;
-                            case 1111:
-                                $wine_deal_area_id = Db::name('wine_order_record_contract')->where('id', $item['target_id'])->value('wine_deal_area_id');
-                                $desc = Db::name('wine_deal_area_contract')->where('id', $wine_deal_area_id)->value('desc');
-                                $item['remark'] = '合约竞拍'.$desc.'预约金返还';
-                                break;
-                            case 72:
-                                $item['remark'] = '抢购预定添加余额';
-                                break;
-                            case 74:
-                                $item['remark'] = '购买成功解冻余额回到余额账户里';
-                                break;
-                            case 75:
-                                $item['remark'] = '购买成功解冻余额回到余额账户里';
-                                break;
-                            case 76:
-                                $item['remark'] = '购买成功解冻余额回到余额账户里';
-                                break;
-                            case 77:
-                                $item['remark'] = '后台强制取消添加余额';
-                                break;
-                            case 80:
-                                $item['remark'] = '管理分润';
-                                break;
-                            case 1180:
-                                $item['remark'] = '合约管理分润';
-                                break;
-                            case 90:
-                                $item['remark'] = '注册保证金';
-                                break;
-                            case 100:
-                                $item['remark'] = 'usdt充值';
-                                break;
-                            case 108:
-                                $item['remark'] = '积分转账：'.($item['t_true_name'] ? $item['t_true_name'] : $item['t_user_name']).'【'.$item['t_phone'].'】 转 '.($item['m_true_name'] ? $item['m_true_name'] : $item['m_user_name']).'【'.$item['m_phone'].'】';
+                            case 602:
+                                $item['remark'] = '前三十 二等奖';
                                 break;
                         }
                         
                         switch ($item['zc_type']) {
-                            case 25:
-                                 $item['remark'] = '后台修改积分';
-                                 break;
+                            case 27:
+                                $item['remark'] = '门票后台操作';
+                                break;
+                            case 108:
+                                $item['remark'] = '预售或购买';
+                                break;
+                            case 26:
+                                $item['remark'] = '积分信用后台操作';
+                                break;
                             case 5:
                                 $item['remark'] = '余额转账：'.$item['m_user_name'].'转给姓名:'.($item['t_true_name']?$item['t_true_name']:$item['t_user_name']).' - 手机号:'.$item['t_phone'];
                                 break;
                             case 24:
                                 $item['remark'] = '后台余额修改';
                                 break;
-                            case 61:
-                                $item['remark'] = '平台寄售余额';
+                            case 100:
+                                $item['remark'] = '预售或购买';
                                 break;
-                            case 60:
-                                $item['remark'] = '转余额';
-                                break;
-                            case 63:
-                                $item['remark'] = '进货转出售扣除冻结余额';
-                                break;
-                            case 67:
-                                $item['remark'] = '未付款扣除冻结余额';
-                                break;
-                            case 120:
-                                $item['remark'] = '佣金提现';
-                                break;
-                            case 110:
-                                $item['remark'] = '寄售服务费';
-                                break;
-                            case 1003:
-                                $item['remark'] = '寄售服务费';
-                                break;
-                            case 70:
-                                $wine_deal_area_id = Db::name('wine_order_record')->where('id', $item['target_id'])->value('wine_deal_area_id');
-                                $desc = Db::name('wine_deal_area')->where('id', $wine_deal_area_id)->value('desc');
-                                $item['remark'] = '普通竞拍'.$desc.'预约金';
-                                break;
-                            case 1000:
-                                $wine_deal_area_id = Db::name('wine_order_record_contract')->where('id', $item['target_id'])->value('wine_deal_area_id');
-                                $desc = Db::name('wine_deal_area_contract')->where('id', $wine_deal_area_id)->value('desc');
-                                $item['remark'] = '合约竞拍'.$desc.'预约金';
-                                break;
-                            case 72:
-                                $item['remark'] = '抢购预定扣除冻结余额';
-                                break;
-                            case 74:
-                                $item['remark'] = '确认转让扣除冻结余额';
-                                break;
-                            case 75:
-                                $item['remark'] = '自动确认转让扣除冻结余额';
-                                break;
-                            case 76:
-                                $item['remark'] = '后台确认转让扣除冻结余额';
-                                break;
-                            case 77:
-                                $item['remark'] = '后台强制取消扣除冻结余额';
-                                break;
-                            case 1001:
-                                $item['remark'] = '合约抢购扣余额';
-                                break;
-                            case 105:
-                                $item['remark'] = '积分转账：'.($item['m_true_name'] ? $item['m_true_name'] : $item['m_user_name']).'【'.$item['m_phone'].'】 转 '.($item['t_true_name'] ? $item['t_true_name'] : $item['t_user_name']).'【'.$item['t_phone'].'】';
+                            case 25:
+                                $item['remark'] = '后台操作';
                                 break;
                         }
                         

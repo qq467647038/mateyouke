@@ -751,12 +751,12 @@ function statistics_count($array){
  * @author qinggege
  */
 function aliyunOSS($file){
-    $accessKeyId = "LTAI5t8JTiqE62xY6KxmHmLB";
-    $accessKeySecret = "hEnk66j0IrLVXwkSevLHahIymBb6mz";
+    $accessKeyId = "LTAI5tDmZzCXac2QBzpF7x5w";
+    $accessKeySecret = "PSjH6EPFql4LfMMcNK3dAYc4Rk2RcP";
     // Endpoint以杭州为例，其它Region请按实际情况填写。
     $endpoint = "oss-cn-hangzhou.aliyuncs.com";
     // 存储空间名称
-    $bucket= "zunyishenghuo";
+    $bucket= "mateyouke";
 //            yxst.oss-cn-beijing.aliyuncs.com
     // <yourObjectName>上传文件到OSS时需要指定包含文件后缀在内的完整路径，例如abc/efg/123.jpg
 
@@ -769,7 +769,7 @@ function aliyunOSS($file){
     try{
         $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
         $ossClient->uploadFile($bucket, $object, $filePath);
-        $data['name'] = "https://zunyishenghuo.oss-cn-hangzhou.aliyuncs.com/".$object;
+        $data['name'] = "https://mateyouke.oss-cn-hangzhou.aliyuncs.com/".$object;
         return $data;
     } catch(OssException $e) {
         printf(__FUNCTION__ . ": FAILED\n");

@@ -1905,13 +1905,14 @@ class Common extends Controller{
             foreach ($list as $info){
                 // $qi_time = $info['cur_qi']*3*24*60*60+$info['addtime'];
                 // $qi_time = 3*24*60*60+$info['addtime'];
-                $end_time = strtotime(date('Y-m-d', $info['addtime']))+34*60*60 + 48*60*60;
+                $count = Db::name('crowd_order')->where('goods_id', $info['id'])->count();
+                $end_time = strtotime(date('Y-m-d', $info['addtime']))+34*60*60 + 48*60*60 + $count*60*60;
                 $time = time();
                 // if($time > $qi_time){
                 if($time > $end_time || $info['cur_crowd_num'] == $info['crowd_value']){
                     Db::startTrans();
                     try{
-                        if($info['cur_crowd_num'] == $info['crowd_value']){
+                        if($info['cur_crowd_num'] >= $info['crowd_value']){
                             // 成功
                             $res = Db::name('crowd_goods')->where('id', $info['id'])->update(['jiesu'=>1]);
                             if(!$res){
@@ -1922,7 +1923,8 @@ class Common extends Controller{
                             $next_data = $info;
                             // $next_data['addtime'] = $qi_time;
                             $next_data['addtime'] = time();
-                            $next_data['crowd_value'] = $info['crowd_value'] + $info['crowd_value']*$value/100;
+                            // $next_data['crowd_value'] = $info['crowd_value'] + $info['crowd_value']*$value/100;
+                            $next_data['crowd_value'] = $info['cur_crowd_num'] + $info['cur_crowd_num']*$value/100;
                             $next_data['cur_qi'] = $info['cur_qi']+1;
                             $next_data['status'] = 0;
                             $next_data['jiesu'] = 0;
@@ -2187,7 +2189,8 @@ class Common extends Controller{
                             
                             // 加权
                             $total_reward = 0;
-                            $total_crowd_value = Db::name('crowd_goods')->where('crowd_mark', $info['crowd_mark'])->where('id', '<>', $info['id'])->sum('crowd_value');
+                            // $total_crowd_value = Db::name('crowd_goods')->where('crowd_mark', $info['crowd_mark'])->where('id', '<>', $info['id'])->sum('crowd_value');
+                            $total_crowd_value = Db::name('crowd_goods')->where('crowd_mark', $info['crowd_mark'])->where('id', '<>', $info['id'])->sum('cur_crowd_num');
                             if($total_crowd_value > 0){
                                 $total_reward = $total_crowd_value*0.02;
                                 $all_crowd_goods_id = Db::name('crowd_goods')->where('crowd_mark', $info['crowd_mark'])->column('id');
@@ -2657,12 +2660,13 @@ class Common extends Controller{
                     $crowd_goods_info = Db::name('crowd_goods')->where('id', $info['goods_id'])->find();
                     $last_crowd_goods_info = Db::name('crowd_goods')->where('crowd_mark', $crowd_goods_info['crowd_mark'])->order('cur_qi desc')->find();
                     
-                    if($last_crowd_goods_info['status'] == 1){
-                        throw new Exception('订单已结束');
-                    }
+                    // if($last_crowd_goods_info['status'] == 1){
+                    //     throw new Exception('订单已结束');
+                    // }
                     
                     $sy_crowd_value = $last_crowd_goods_info['crowd_value'] - $last_crowd_goods_info['cur_crowd_num'];
-                    if($sy_crowd_value >= $info['price']){
+                    // if($sy_crowd_value >= $info['price']){
+                    if(true){
                         $goodsYmd = date('Y-m-d', $last_crowd_goods_info['addtime']);
                         $curYmd = date('Y-m-d');
                         $adjut = 0;
@@ -2692,10 +2696,14 @@ class Common extends Controller{
                                 
                                 if($time>=$adjut){
                                     // 。。。
+                                    $sytui = 0;
                                     if($price>$sy_total_sale){
-                                        throw new Exception('不足');
+                                        // throw new Exception('不足');
+                                        $sytui = $price - $sy_total_sale;
+                                        $price = $sy_total_sale;
                                     }
-                                    else{
+                                    
+                                    if($price > 0){
                                         $buy_data = [
                                             'price' => $price,
                                             'goods_id' => $last_crowd_goods_info['id'],
@@ -2715,41 +2723,109 @@ class Common extends Controller{
                                         if(!$res){
                                             throw new Exception('购买失败');
                                         }
+                                        
+                                        if($sytui > 0){
+                                            $res = Db::name('wallet')->where('user_id', $wallet_info['user_id'])->inc('point_ticket', $sytui)->update();
+                                            if(!$res){
+                                                throw new Exception('抢购失败');
+                                            }
+                                            
+                                            $detal = [
+                                                'de_type' => 1,
+                                                'sr_type' => 1000,
+                                                'before_price'=> $wallet_info['point_ticket'],
+                                                'price' => $sytui,
+                                                'after_price'=> $wallet_info['point_ticket']+$sytui,
+                                                'user_id' => $wallet_info['user_id'],
+                                                'wat_id' => $wallet_info['id'],
+                                                'time' => $time,
+                                                'target_id'=>$info['id']
+                                            ];
+                                            $res = $this->addDetail($detal);
+                                            if(!$res){
+                                                throw new Exception('抢购失败');
+                                            }
+                                        }
                                     }
                                 }
                                 else{
                                     // 预售
                                     if($last_crowd_goods_info['pre_sale'] >= $pre_sale_num){
-                                        throw new Exception('预售数已销售一空');
-                                    }
-                                    else{
-                                        if($price <= $sy_pre_sale){
-                                            if(false){
-                                                throw new Exception('购买只能是100的倍数');
+                                        // throw new Exception('预售数已销售一空');
+                                        if($price > 0){
+                                            $res = Db::name('wallet')->where('user_id', $wallet_info['user_id'])->inc('point_ticket', $price)->update();
+                                            if(!$res){
+                                                throw new Exception('抢购失败');
                                             }
-                                            else{
-                                                $buy_data = [
-                                                    'price' => $price,
-                                                    'goods_id' => $last_crowd_goods_info['id'],
-                                                    'addtime' => time(),
-                                                    'type' => 1,
-                                                    'user_id' => $info['user_id'],
-                                                    'qi'=>$last_crowd_goods_info['cur_qi'],
-                                                    'pid'=>$info['id']
-                                                ];
-                                                $res = Db::name('crowd_order')->insert($buy_data);
-                                                if(!$res){
-                                                    throw new Exception('购买失败');
-                                                }
-
-                                                $res = Db::name('crowd_goods')->where('id', $last_crowd_goods_info['id'])->inc('pre_sale', $price)->inc('cur_crowd_num', $price)->update();
-                                                if(!$res){
-                                                    throw new Exception('购买失败');
-                                                }
+                                            
+                                            $detal = [
+                                                'de_type' => 1,
+                                                'sr_type' => 1001,
+                                                'before_price'=> $wallet_info['point_ticket'],
+                                                'price' => $price,
+                                                'after_price'=> $wallet_info['point_ticket']+$price,
+                                                'user_id' => $wallet_info['user_id'],
+                                                'wat_id' => $wallet_info['id'],
+                                                'time' => $time,
+                                                'target_id'=>$info['id']
+                                            ];
+                                            $res = $this->addDetail($detal);
+                                            if(!$res){
+                                                throw new Exception('抢购失败');
                                             }
                                         }
-                                        else{
-                                            throw new Exception('剩余预售数不足');
+                                    }
+                                    else{
+                                        $sytui = 0;
+                                        if($price>$sy_pre_sale){
+                                            // throw new Exception('不足');
+                                            $sytui = $price - $sy_pre_sale;
+                                            $price = $sy_pre_sale;
+                                        }
+                                    
+                                    
+                                        if($price > 0){
+                                            $buy_data = [
+                                                'price' => $price,
+                                                'goods_id' => $last_crowd_goods_info['id'],
+                                                'addtime' => time(),
+                                                'type' => 1,
+                                                'user_id' => $info['user_id'],
+                                                'qi'=>$last_crowd_goods_info['cur_qi'],
+                                                'pid'=>$info['id']
+                                            ];
+                                            $res = Db::name('crowd_order')->insert($buy_data);
+                                            if(!$res){
+                                                throw new Exception('购买失败');
+                                            }
+
+                                            $res = Db::name('crowd_goods')->where('id', $last_crowd_goods_info['id'])->inc('pre_sale', $price)->inc('cur_crowd_num', $price)->update();
+                                            if(!$res){
+                                                throw new Exception('购买失败');
+                                            }
+                                            
+                                            if($sytui > 0){
+                                                $res = Db::name('wallet')->where('user_id', $wallet_info['user_id'])->inc('point_ticket', $sytui)->update();
+                                                if(!$res){
+                                                    throw new Exception('抢购失败');
+                                                }
+                                                
+                                                $detal = [
+                                                    'de_type' => 1,
+                                                    'sr_type' => 1001,
+                                                    'before_price'=> $wallet_info['point_ticket'],
+                                                    'price' => $sytui,
+                                                    'after_price'=> $wallet_info['point_ticket']+$sytui,
+                                                    'user_id' => $wallet_info['user_id'],
+                                                    'wat_id' => $wallet_info['id'],
+                                                    'time' => $time,
+                                                    'target_id'=>$info['id']
+                                                ];
+                                                $res = $this->addDetail($detal);
+                                                if(!$res){
+                                                    throw new Exception('抢购失败');
+                                                }
+                                            }
                                         }
                                     }
                                 }

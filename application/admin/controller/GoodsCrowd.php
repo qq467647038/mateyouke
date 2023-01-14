@@ -10,7 +10,10 @@ class GoodsCrowd extends Common
     public function lst()
     {
         $shop_id = session('shop_id');
-        $list = Db::name('crowd_goods')->alias('a')->field('a.type,a.id,a.goods_name,a.thumb_url,a.market_price,a.shop_price,a.onsale,b.cate_name,vip_price, a.zkj,a.crowd_value,a.pre_sale,a.cur_qi,a.cur_crowd_num,a.addtime')->join('sp_category b', 'a.cate_id = b.id', 'LEFT')->order('a.id desc')->paginate(25);
+
+        $list = Db::name('crowd_goods')->alias('a')->where('id', function($query){
+            $query->table('sp_crowd_goods')->field('max(id)')->where('crowd_mark', Db::raw('a.crowd_mark'));
+        })->order('a.id desc')->field('a.id,a.goods_name,a.thumb_url,a.sy,a.status,a.cur_crowd_num')->paginate(25);
 
         $page = $list->render();
         $cateres = Db::name('category')->field('id,cate_name,pid')->order('sort asc')->select();
@@ -54,7 +57,42 @@ class GoodsCrowd extends Common
         }
     }
 
-
+    public function recycle()
+    {
+        $id = input('id');
+        $shop_id = session('shop_id');
+        if (!empty($id) && !is_array($id)) {
+            $goods = Db::name('crowd_goods')->where('id', $id)->find();
+            if ($goods) {
+                // 启动事务
+                Db::startTrans();
+                try {
+                    if($goods['cur_crowd_num'] > 0){
+                        throw new \Exception('已有人参与该众筹');
+                    }
+                    
+                    $res = Db::name('crowd_goods')->where('id', $id)->where('cur_crowd_num', 0)->delete();
+                    if(!$res){
+                        throw new \Exception('删除失败');
+                    }
+                    
+                    // 提交事务
+                    Db::commit();
+                    // ys_admin_logs('商品加入回收站', 'goods', $id);
+                    $value = array('status' => 1, 'mess' => '删除成功');
+                } catch (\Exception $e) {
+                    // 回滚事务
+                    Db::rollback();
+                    $value = array('status' => 0, 'mess' => '删除失败');
+                }
+            } else {
+                $value = array('status' => 0, 'mess' => '找不到相关信息');
+            }
+        } else {
+            $value = array('status' => 0, 'mess' => '未选中任何数据');
+        }
+        return json($value);
+    }
 
 
 
