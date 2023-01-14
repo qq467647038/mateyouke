@@ -54,10 +54,8 @@
                                     <td>{$v.sy}</td>   
                                     <td>
                                         {if condition="$v.status == 1"}
-                                        爆仓
-                                        {elseif condition="$v.status == 2"}
-                                        升仓
-                                        {elseif condition="$v.status == 0"}
+                                        已结束
+                                        {else /}
                                         进行中
                                         {/if}
                                     </td>   
