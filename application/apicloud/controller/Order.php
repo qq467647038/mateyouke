@@ -1396,7 +1396,7 @@ class Order extends Common{
                     if(input('post.pur_id')){
                         if(input('post.fangshi') && in_array(input('post.fangshi'), array(1,2))){
                             if(input('post.dz_id')){
-                                if(input('post.zf_type') && in_array(input('post.zf_type'), array(1,2,3,4,5,6,7))){
+                                if(input('post.zf_type') && in_array(input('post.zf_type'), array(1,2,3,4,5,6,7,10,11))){
                                     $zf_type = input('post.zf_type');
                                     $fangshi = input('post.fangshi');
                             

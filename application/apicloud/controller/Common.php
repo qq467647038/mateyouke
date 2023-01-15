@@ -1904,8 +1904,13 @@ class Common extends Controller{
         Db::name('crowd_goods')->where('status', 0)->where('jiesu', 0)->chunk(1000, function($list){
             foreach ($list as $info){
                 // $qi_time = $info['cur_qi']*3*24*60*60+$info['addtime'];
-                // $qi_time = 3*24*60*60+$info['addtime'];
-                $count = Db::name('crowd_order')->where('goods_id', $info['id'])->count();
+                // $qi_time = 3*24*60*60+$info['addtime'];       
+                $caculate_time = strtotime(date('Y-m-d', $info['addtime']))+34*60*60+ 47*3600;
+                $count = Db::name('crowd_order')->where('goods_id', $info['id'])->where('addtime', '>=', $caculate_time)->count();
+                $max_count = Db::name('config')->where('ename', 'delay_max_hour')->value('value');
+                if($count>$max_count){
+                    $count = $max_count;
+                }
                 $end_time = strtotime(date('Y-m-d', $info['addtime']))+34*60*60 + 48*60*60 + $count*60*60;
                 $time = time();
                 // if($time > $qi_time){
@@ -2267,7 +2272,9 @@ class Common extends Controller{
                                     }
                                     
                                     $wallet_info = Db::name('wallet')->where('user_id', $in['user_id'])->find();
-                                    $res = Db::name('wallet')->where('user_id', $in['user_id'])->inc('point_ticket', $in['price']*0.7)->inc('point_credit', $in['price']*0.3)->update();
+                                    $first_three_qi70 = Db::name('config')->where('ename', 'first_three_qi70')->value('value')/100;
+                                    $first_three_qi30 = Db::name('config')->where('ename', 'first_three_qi30')->value('value')/100;
+                                    $res = Db::name('wallet')->where('user_id', $in['user_id'])->inc('point_ticket', $in['price']*$first_three_qi70)->inc('point_credit', $in['price']*$first_three_qi30)->update();
                                     if(!$res){
                                         throw new Exception('抢购失败26');
                                     }
@@ -2276,8 +2283,8 @@ class Common extends Controller{
                                         'de_type' => 1,
                                         'sr_type' => 102,
                                         'before_price'=> $wallet_info['point_ticket'],
-                                        'price' => $in['price']*0.7,
-                                        'after_price'=> $wallet_info['point_ticket']+$in['price']*0.7,
+                                        'price' => $in['price']*$first_three_qi70,
+                                        'after_price'=> $wallet_info['point_ticket']+$in['price']*$first_three_qi70,
                                         'user_id' => $in['user_id'],
                                         'wat_id' => $wallet_info['id'],
                                         'time' => time(),
@@ -2292,8 +2299,8 @@ class Common extends Controller{
                                         'de_type' => 1,
                                         'sr_type' => 103,
                                         'before_price'=> $wallet_info['point_credit'],
-                                        'price' => $in['price']*0.3,
-                                        'after_price'=> $wallet_info['point_credit']+$in['price']*0.3,
+                                        'price' => $in['price']*$first_three_qi30,
+                                        'after_price'=> $wallet_info['point_credit']+$in['price']*$first_three_qi30,
                                         'user_id' => $in['user_id'],
                                         'wat_id' => $wallet_info['id'],
                                         'time' => time(),
@@ -2401,6 +2408,7 @@ class Common extends Controller{
         }
         if(count($one_q30)){
             $one_q30_reward = $total_reward * 0.2;
+            $one_q30_reward = $one_q30_reward/4;
             
             for($j=0; $j<count($one_q30); $j++){
                 $one_q30_wallet = Db::name('wallet')->where('user_id', $one_q30[$j])->find();
@@ -2444,6 +2452,7 @@ class Common extends Controller{
         }
         if(count($two_q30)){
             $two_q30_reward = $total_reward * 0.3;
+            $two_q30_reward = $two_q30_reward/10;
             
             for($j=0; $j<count($two_q30); $j++){
                 $two_q30_wallet = Db::name('wallet')->where('user_id', $two_q30[$j])->find();
@@ -2487,6 +2496,7 @@ class Common extends Controller{
         }
         if(count($three_q30)){
             $three_q30_reward = $total_reward * 0.4;
+            $three_q30_reward = $three_q30_reward/15;
             
             for($j=0; $j<count($three_q30); $j++){
                 $three_q30_wallet = Db::name('wallet')->where('user_id', $three_q30[$j])->find();
@@ -2553,6 +2563,8 @@ class Common extends Controller{
         if(count($one_h30)){
             $user_id_h30 = array_merge($user_id_h30, $one_h30);
             $one_h30_reward = $total_reward * 0.2;
+            $one_h30_reward = $one_h30_reward/4;
+            
             for($j=0; $j<count($one_h30); $j++){
                 $one_h30_wallet = Db::name('wallet')->where('user_id', $one_h30[$j])->find();
                 if($one_h30_wallet){
@@ -2587,6 +2599,7 @@ class Common extends Controller{
         if(count($two_h30)){
             $user_id_h30 = array_merge($user_id_h30, $two_h30);
             $two_h30_reward = $total_reward * 0.3;
+            $two_h30_reward = $two_h30_reward/10;
             
             for($j=0; $j<count($two_h30); $j++){
                 $two_h30_wallet = Db::name('wallet')->where('user_id', $two_h30[$j])->find();
@@ -2622,6 +2635,7 @@ class Common extends Controller{
         if(count($three_h30)){
             $user_id_h30 = array_merge($user_id_h30, $three_h30);
             $three_h30_reward = $total_reward * 0.4;
+            $three_h30_reward = $three_h30_reward/15;
             
             for($j=0; $j<count($three_h30); $j++){
                 $three_h30_wallet = Db::name('wallet')->where('user_id', $three_h30[$j])->find();

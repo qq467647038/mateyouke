@@ -3605,7 +3605,7 @@ class MemberInfo extends Common{
                     $list = Db::name('detail')->where('user_id', $user_id)
                         ->where(function($query){
                         
-                            $query->where('sr_type', 'in', [103,26])->whereOr('zc_type', 'in', [26]);
+                            $query->where('sr_type', 'in', [103,26])->whereOr('zc_type', 'in', [26,33]);
                         })->limit($page, $pageSize)->order('id desc')->select();
                         
                     foreach ($list as &$v){

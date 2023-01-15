@@ -583,7 +583,7 @@ class Member extends Common{
                     ->join('member t', 't.id = d.target_id', 'left')
                     ->where('d.user_id', $input['id'])
                     ->where(function($query){
-                        $query->where('sr_type', 'in', [27,103,26,8,120, 24,102,105,101,1000,1001,109,25,110,604,605,606,607,600,601,602,603,200,201,205])->whereOr('zc_type', 'in', [27,108,26,5, 24, 2,100,25]);
+                        $query->where('sr_type', 'in', [27,103,26,8,120, 24,102,105,101,1000,1001,109,25,110,604,605,606,607,600,601,602,603,200,201,205])->whereOr('zc_type', 'in', [27,108,26,5, 24, 2,100,25,22,33]);
                     })
                     ->field('d.*, m.user_name m_user_name, m.true_name m_true_name, t.user_name t_user_name, t.true_name t_true_name, m.phone m_phone, t.phone t_phone')
                     ->order('d.id desc')->paginate(50)->each(function($item){
@@ -640,7 +640,7 @@ class Member extends Common{
                                 $item['remark'] = '后台操作';
                                 break;
                             case 110:
-                                $item['remark'] = '购买商品赠送';
+                                $item['remark'] = '购买商品赠送积分券';
                                 break;
                             case 604:
                                 $item['remark'] = '后三十 特等奖';
@@ -670,7 +670,7 @@ class Member extends Common{
                                 $item['remark'] = '门票后台操作';
                                 break;
                             case 108:
-                                $item['remark'] = '预售或购买';
+                                $item['remark'] = '门票预售或购买';
                                 break;
                             case 26:
                                 $item['remark'] = '积分信用后台操作';

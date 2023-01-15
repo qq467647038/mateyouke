@@ -187,7 +187,12 @@ class GoodsCrowd extends Common{
                                             throw new Exception('购买只能是100的倍数');
                                         }
                                         else{
-                                            $count = Db::name('crowd_order')->where('goods_id', $goods_id)->count();
+                                            $caculate_time = $adjut + 47*3600;
+                                            $count = Db::name('crowd_order')->where('goods_id', $goods_id)->where('addtime', '>=', $caculate_time)->count();
+                                            $max_count = Db::name('config')->where('ename', 'delay_max_hour')->value('value');
+                                            if($count>$max_count){
+                                                $count = $max_count;
+                                            }
                                             $endtime = $adjut + 172800 + $count*3600;
                                             if($time > $endtime){
                                                 throw new Exception('购买时间已过');
