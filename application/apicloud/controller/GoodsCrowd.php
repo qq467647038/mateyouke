@@ -74,10 +74,10 @@ class GoodsCrowd extends Common{
                     $info = Db::name('crowd_order')->where('user_id', $user_id)->where('status', 3)->where('id', $input['id'])->find();
                     $crowd_goods_info = Db::name('crowd_goods')->where('id', $info['goods_id'])->find();
                     $last_crowd_goods_info = Db::name('crowd_goods')->where('crowd_mark', $crowd_goods_info['crowd_mark'])->order('cur_qi desc')->find();
-                    if($info['receive_time'] < time() && $last_crowd_goods_info['status']!=1){
-                        $value = array('status'=>400,'mess'=>'领取时间已过','data'=>array('status'=>400));
-                        return json($value);
-                    }
+                    // if($info['receive_time'] < time() && $last_crowd_goods_info['status']!=1){
+                    //     $value = array('status'=>400,'mess'=>'领取时间已过','data'=>array('status'=>400));
+                    //     return json($value);
+                    // }
                     
                     if(is_null($info)){
                         $value = array('status'=>400,'mess'=>'领取失败','data'=>array('status'=>400));
@@ -157,6 +157,7 @@ class GoodsCrowd extends Common{
                     }
                     
                     $crowd_goods_info = Db::name('crowd_goods')->where('id', $goods_id)->find();
+                    
                     if(!is_null($crowd_goods_info)){
                         $goodsYmd = date('Y-m-d', $crowd_goods_info['addtime']);
                         $curYmd = date('Y-m-d');
@@ -201,6 +202,12 @@ class GoodsCrowd extends Common{
                                             if($price > $sy_total_sale){
                                                 // throw new Exception('剩余量不足');
                                                 $price = $sy_total_sale;
+                                            }
+                                            
+                                            $yigou = Db::name('crowd_order')->where('goods_id', $goods_id)->where('user_id', $user_id)->where('qi', $crowd_goods_info['cur_qi'])->sum('price');
+                                            if($price > $crowd_goods_info['limit_buy']-$yigou){
+                                                $value = array('status'=>400,'mess'=>'该商品单人最大购买'.$crowd_goods_info['limit_buy'].'，你已购买'.$yigou,'data'=>array('status'=>400));
+                                                return json($value);
                                             }
                                             
                                             $buy_data = [

@@ -609,7 +609,7 @@ class Goods extends Common{
                 
                 if(input('post.goods_id')){
                     $goods_id = input('post.goods_id');
-                    $goods = Db::name('goods')->alias('a')->field('a.sale_num,a.fictitious_sale_num,a.cate_id,a.id,a.vip_price,a.goods_name,a.thumb_url,a.shop_price,a.min_market_price,a.max_market_price,a.min_price,a.max_price,a.zs_price,a.goods_desc,a.fuwu,a.is_free,a.leixing,a.is_activity,a.shop_id')->join('sp_shops b','a.shop_id = b.id','INNER')->where('a.id',$goods_id)->where('a.onsale',1)->where('b.open_status',1)->find();
+                    $goods = Db::name('goods')->alias('a')->field('a.sale_num,a.fictitious_sale_num,a.cate_id,a.id,a.vip_price,a.goods_name,a.thumb_url,a.shop_price,a.min_market_price,a.max_market_price,a.min_price,a.max_price,a.zs_price,a.goods_desc,a.fuwu,a.is_free,a.leixing,a.is_activity,a.shop_id,a.type')->join('sp_shops b','a.shop_id = b.id','INNER')->where('a.id',$goods_id)->where('a.onsale',1)->where('b.open_status',1)->find();
                     if($goods){
                         // if(in_array($goods['cate_id'], $category_id_arr)){
                         //     // 土特产商品
@@ -1109,6 +1109,7 @@ class Goods extends Common{
                             'sale_number'=>$goods['sale_number'],
                             'shop_token'=>$goods['shop_token'],
                             'goods_type'=>$goods['goods_type'],
+                            'type'=>$goods['type'],
                             'commission_one' => $commission_arr['commission_one'],//一级佣金
                             'commission_two' => $commission_arr['commission_two'],//二级佣金
                         );

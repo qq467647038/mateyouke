@@ -176,7 +176,7 @@ class MemberInfo extends Common{
                     $user_id = $result['user_id'];
                     $post = input('post.');
                     
-                    if(!in_array($post['index'], [0,1,2,3])){
+                    if(!in_array($post['index'], [1,2,3])){
                         $value = array('status'=>400,'mess'=>'提现类型错误！','data'=>array('status'=>400));
                         return json($value);
                     }
@@ -186,7 +186,7 @@ class MemberInfo extends Common{
                         $value = array('status'=>400,'mess'=>'提现失败！','data'=>array('status'=>400));
                     }
                     else{
-                        if($wallet_info['price']<$post['num'] || $post['num']<=0){
+                        if($wallet_info['point_ticket']<$post['num'] || $post['num']<=0){
                             $value = array('status'=>400,'mess'=>'提现的金额有误！','data'=>array('status'=>400));
                         }
                         else{
@@ -211,15 +211,15 @@ class MemberInfo extends Common{
                             
                             Db::startTrans();
                             try{
-                                $res = Db::name('wallet')->where('user_id', $user_id)->setDec('price', $post['num']);
+                                $res = Db::name('wallet')->where('user_id', $user_id)->setDec('point_ticket', $post['num']);
                                 if(!$res)throw new Exception('提现申请失败');
                                 
                                  $detail = [
                                     'de_type' => 2,
                                     'zc_type' => 130,
-                                    'before_price'=> $wallet_info['price'],
+                                    'before_price'=> $wallet_info['point_ticket'],
                                     'price' => $post['num'],
-                                    'after_price'=> $wallet_info['price']-$post['num'],
+                                    'after_price'=> $wallet_info['point_ticket']-$post['num'],
                                     'user_id' => $user_id,
                                     'wat_id' => $wallet_info['id'],
                                     'time' => time()
@@ -246,7 +246,7 @@ class MemberInfo extends Common{
                                 Db::commit();
                             }
                             catch(Exception $e){
-                                $value = array('status'=>400,'mess'=>'提现申请失败！'.$e->getMessage(),'data'=>array('status'=>400));
+                                $value = array('status'=>400,'mess'=>'提现申请失败！','data'=>array('status'=>400));
                                 Db::rollback();
                             }
                         }
@@ -373,10 +373,6 @@ class MemberInfo extends Common{
                     $post = input('post.');
                     $num = $post['num'];
                     $memberInfo = Db::name('member')->where('id', $user_id)->find();
-                    if($memberInfo['wash_amount']>=2500){
-                        $value = array('status'=>400,'mess'=>'佣金提现达到上限，需在解锁商品区购买商品再次开启','data'=>array('status'=>400));
-                        return json($value);
-                    }
                     
                     $wallet_info = Db::name('wallet')->where('user_id', $user_id)->find();
     
@@ -385,68 +381,28 @@ class MemberInfo extends Common{
                         return json($value);
                     }
                     
-                    if($num<0 || $num>$wallet_info['commission']){
+                    if($num<0 || $num>$wallet_info['point_ticket']){
                         $value = array('status'=>400,'mess'=>'你输入的提现数量有误','data'=>array('status'=>400));
                     }
                     else{
                         Db::startTrans();
                         try{
-                            
-                            $config = Db::name('config')->where('ename', 'in', ['commission_to_fuel', 'commission_to_point'])->column('ename, value');
-                            $commission_to_fuel = $config['commission_to_fuel'];
-                            $commission_to_point = $config['commission_to_point'];
-                            
-                            $res = Db::name('wallet')->where('user_id', $user_id)->dec('commission', $num)
-                                ->inc('price', $num*$commission_to_fuel/100)
-                                ->inc('point', $num*$commission_to_point/100)->update();
-                            if(!$res)throw new Exception('扣除佣金失败4');
+                            $res = Db::name('wallet')->where('user_id', $user_id)->dec('point_ticket', $num)->update();
+                            if(!$res)throw new Exception('扣除失败4');
                             
                              $detail_commission = [
                                 'de_type' => 2,
                                 'zc_type' => 120,
-                                'before_price'=> $wallet_info['commission'],
+                                'before_price'=> $wallet_info['point_ticket'],
                                 'price' => $num,
-                                'after_price'=> $wallet_info['commission']-$num,
+                                'after_price'=> $wallet_info['point_ticket']-$num,
                                 'user_id' => $user_id,
                                 'wat_id' => $wallet_info['id'],
                                 'time' => time()
                              ];
 
                             $res = $this->addDetail($detail_commission);
-//                             $res = Db::name('detail')->insert($detail_commission);
-                             if(!$res)throw new Exception('扣除佣金失败1');
-                            
-                             $detail_fuel = [
-                                'de_type' => 1,
-                                'sr_type' => 120,
-                                 'before_price'=> $wallet_info['price'],
-                                'price' => $num*$commission_to_fuel/100,
-                                 'after_price'=> $wallet_info['price']+$num*$commission_to_fuel/100,
-                                'user_id' => $user_id,
-                                'wat_id' => $wallet_info['id'],
-                                'time' => time()
-                             ];
-
-                            $res = $this->addDetail($detail_fuel);
-//                             $res = Db::name('detail')->insert($detail_fuel);
-                             if(!$res)throw new Exception('扣除佣金失败2');
-                             
-                             $detail_point = [
-                                'de_type' => 1,
-                                'sr_type' => 121,
-                                 'before_price'=> $wallet_info['point'],
-                                'price' => $num*$commission_to_point/100,
-                                 'after_price'=> $wallet_info['point']+$num*$commission_to_point/100,
-                                'user_id' => $user_id,
-                                'wat_id' => $wallet_info['id'],
-                                'time' => time()
-                             ];
-
-                            $res = $this->addDetail($detail_point);
-//                             $res = Db::name('detail')->insert($detail_point);
-                             if(!$res)throw new Exception('扣除佣金失败3');
-                             
-                             Db::name('member')->where('id', $user_id)->inc('wash_amount', $num)->update();
+                             if(!$res)throw new Exception('扣除失败1');
                             
                             $value = array('status'=>200,'mess'=>'提现成功！','data'=>array('status'=>200));
                             Db::commit();
@@ -3247,23 +3203,20 @@ class MemberInfo extends Common{
                     })->count();
 
                     $list = Db::name('member')->alias('m')
-                                ->where('m.jiedian_team_id', 'like', '%,'.$user_id)->whereOr('m.jiedian_team_id', 'like', '%,'.$user_id.',%')
+                                ->where('m.team_id', 'like', '%,'.$user_id)->whereOr('m.team_id', 'like', '%,'.$user_id.',%')
                                 // ->group('m.id')
                                 ->limit(($post['page']-1)*$pageSize, $pageSize)
                                 // ->field('m.user_name, w.total_stock')
-                                ->field('m.true_name, m.phone,m.regtime,m.reg_enable, m.user_name')
+                                ->field('m.true_name, m.phone,m.regtime,m.reg_enable, m.user_name,m.nick_name,m.id')
                                 ->order('m.regtime desc')
                                 ->select();
                                 
                     if(count($list)){
                         foreach ($list as &$v){
+                            $team_id = Db::name('member')->where('team_id', 'like', '%,'.$v['id'])->whereOr('m.team_id', 'like', '%,'.$v['id'].',%')->column('id');
+                            $v['team_yeji'] = Db::name('crowd_order')->where('user_id', 'in', $team_id)->where('status', 0)->sum('price');
+                            
                             $v['regtime'] = date('Y-m-d H:i', $v['regtime']);
-                            if($v['reg_enable'] == 1){
-                                $v['text'] = '已激活';
-                            }
-                            else{
-                                $v['text'] = '未激活';
-                            }
                         }
                     }
 

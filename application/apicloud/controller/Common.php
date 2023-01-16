@@ -2712,9 +2712,9 @@ class Common extends Controller{
                                     // 。。。
                                     $sytui = 0;
                                     if($price>$sy_total_sale){
-                                        // throw new Exception('不足');
-                                        $sytui = $price - $sy_total_sale;
-                                        $price = $sy_total_sale;
+                                        throw new Exception('不足');
+                                        // $sytui = $price - $sy_total_sale;
+                                        // $price = $sy_total_sale;
                                     }
                                     
                                     if($price > 0){
@@ -2738,63 +2738,63 @@ class Common extends Controller{
                                             throw new Exception('购买失败');
                                         }
                                         
-                                        if($sytui > 0){
-                                            $res = Db::name('wallet')->where('user_id', $wallet_info['user_id'])->inc('point_ticket', $sytui)->update();
-                                            if(!$res){
-                                                throw new Exception('抢购失败');
-                                            }
+                                        // if($sytui > 0){
+                                        //     $res = Db::name('wallet')->where('user_id', $wallet_info['user_id'])->inc('point_ticket', $sytui)->update();
+                                        //     if(!$res){
+                                        //         throw new Exception('抢购失败');
+                                        //     }
                                             
-                                            $detal = [
-                                                'de_type' => 1,
-                                                'sr_type' => 1000,
-                                                'before_price'=> $wallet_info['point_ticket'],
-                                                'price' => $sytui,
-                                                'after_price'=> $wallet_info['point_ticket']+$sytui,
-                                                'user_id' => $wallet_info['user_id'],
-                                                'wat_id' => $wallet_info['id'],
-                                                'time' => $time,
-                                                'target_id'=>$info['id']
-                                            ];
-                                            $res = $this->addDetail($detal);
-                                            if(!$res){
-                                                throw new Exception('抢购失败');
-                                            }
-                                        }
+                                        //     $detal = [
+                                        //         'de_type' => 1,
+                                        //         'sr_type' => 1000,
+                                        //         'before_price'=> $wallet_info['point_ticket'],
+                                        //         'price' => $sytui,
+                                        //         'after_price'=> $wallet_info['point_ticket']+$sytui,
+                                        //         'user_id' => $wallet_info['user_id'],
+                                        //         'wat_id' => $wallet_info['id'],
+                                        //         'time' => $time,
+                                        //         'target_id'=>$info['id']
+                                        //     ];
+                                        //     $res = $this->addDetail($detal);
+                                        //     if(!$res){
+                                        //         throw new Exception('抢购失败');
+                                        //     }
+                                        // }
                                     }
                                 }
                                 else{
                                     // 预售
                                     if($last_crowd_goods_info['pre_sale'] >= $pre_sale_num){
-                                        // throw new Exception('预售数已销售一空');
-                                        if($price > 0){
-                                            $res = Db::name('wallet')->where('user_id', $wallet_info['user_id'])->inc('point_ticket', $price)->update();
-                                            if(!$res){
-                                                throw new Exception('抢购失败');
-                                            }
+                                        throw new Exception('预售数已销售一空');
+                                        // if($price > 0){
+                                        //     $res = Db::name('wallet')->where('user_id', $wallet_info['user_id'])->inc('point_ticket', $price)->update();
+                                        //     if(!$res){
+                                        //         throw new Exception('抢购失败');
+                                        //     }
                                             
-                                            $detal = [
-                                                'de_type' => 1,
-                                                'sr_type' => 1001,
-                                                'before_price'=> $wallet_info['point_ticket'],
-                                                'price' => $price,
-                                                'after_price'=> $wallet_info['point_ticket']+$price,
-                                                'user_id' => $wallet_info['user_id'],
-                                                'wat_id' => $wallet_info['id'],
-                                                'time' => $time,
-                                                'target_id'=>$info['id']
-                                            ];
-                                            $res = $this->addDetail($detal);
-                                            if(!$res){
-                                                throw new Exception('抢购失败');
-                                            }
-                                        }
+                                        //     $detal = [
+                                        //         'de_type' => 1,
+                                        //         'sr_type' => 1001,
+                                        //         'before_price'=> $wallet_info['point_ticket'],
+                                        //         'price' => $price,
+                                        //         'after_price'=> $wallet_info['point_ticket']+$price,
+                                        //         'user_id' => $wallet_info['user_id'],
+                                        //         'wat_id' => $wallet_info['id'],
+                                        //         'time' => $time,
+                                        //         'target_id'=>$info['id']
+                                        //     ];
+                                        //     $res = $this->addDetail($detal);
+                                        //     if(!$res){
+                                        //         throw new Exception('抢购失败');
+                                        //     }
+                                        // }
                                     }
                                     else{
                                         $sytui = 0;
                                         if($price>$sy_pre_sale){
-                                            // throw new Exception('不足');
-                                            $sytui = $price - $sy_pre_sale;
-                                            $price = $sy_pre_sale;
+                                            throw new Exception('不足');
+                                            // $sytui = $price - $sy_pre_sale;
+                                            // $price = $sy_pre_sale;
                                         }
                                     
                                     
@@ -2818,28 +2818,28 @@ class Common extends Controller{
                                                 throw new Exception('购买失败');
                                             }
                                             
-                                            if($sytui > 0){
-                                                $res = Db::name('wallet')->where('user_id', $wallet_info['user_id'])->inc('point_ticket', $sytui)->update();
-                                                if(!$res){
-                                                    throw new Exception('抢购失败');
-                                                }
+                                            // if($sytui > 0){
+                                            //     $res = Db::name('wallet')->where('user_id', $wallet_info['user_id'])->inc('point_ticket', $sytui)->update();
+                                            //     if(!$res){
+                                            //         throw new Exception('抢购失败');
+                                            //     }
                                                 
-                                                $detal = [
-                                                    'de_type' => 1,
-                                                    'sr_type' => 1001,
-                                                    'before_price'=> $wallet_info['point_ticket'],
-                                                    'price' => $sytui,
-                                                    'after_price'=> $wallet_info['point_ticket']+$sytui,
-                                                    'user_id' => $wallet_info['user_id'],
-                                                    'wat_id' => $wallet_info['id'],
-                                                    'time' => $time,
-                                                    'target_id'=>$info['id']
-                                                ];
-                                                $res = $this->addDetail($detal);
-                                                if(!$res){
-                                                    throw new Exception('抢购失败');
-                                                }
-                                            }
+                                            //     $detal = [
+                                            //         'de_type' => 1,
+                                            //         'sr_type' => 1001,
+                                            //         'before_price'=> $wallet_info['point_ticket'],
+                                            //         'price' => $sytui,
+                                            //         'after_price'=> $wallet_info['point_ticket']+$sytui,
+                                            //         'user_id' => $wallet_info['user_id'],
+                                            //         'wat_id' => $wallet_info['id'],
+                                            //         'time' => $time,
+                                            //         'target_id'=>$info['id']
+                                            //     ];
+                                            //     $res = $this->addDetail($detal);
+                                            //     if(!$res){
+                                            //         throw new Exception('抢购失败');
+                                            //     }
+                                            // }
                                         }
                                     }
                                 }
@@ -2929,6 +2929,17 @@ class Common extends Controller{
             }
         });
         echo '====='.time();
+    }
+    
+    public function companyReceiveInfo(){
+        $list = [
+            'bank' => '中国农业银行福祥支行',
+            'account' => '福建玛特优客生态科技有限公司',
+            'card_number' => '13195501040004956'
+        ];
+        
+        $value = array('status'=>200,'mess'=>'获取信息成功','data'=>$list);
+        return json($value);
     }
 
 }

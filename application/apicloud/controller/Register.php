@@ -19,17 +19,17 @@ class Register extends Common{
                     if(true !== $yzresult){
                         $value = array('status'=>400,'mess'=>$yzresult,'data'=>array('status'=>400));
                     }else{
-                        // if(!$data['member_recode']){
-                        //     $value = array('status'=>400,'mess'=>'推荐码不能为空','data'=>array('status'=>400));
-                        //     return json($value);
-                        // }
-                        // else{
-                        //     $member = Db::name('member')->where('member_recode', $data['member_recode'])->find();
-                        //     if(is_null($member)){
-                        //         $value = array('status'=>400,'mess'=>'推荐码错误','data'=>array('status'=>400));
-                        //         return json($value);
-                        //     } 
-                        // }
+                        if(!$data['member_recode']){
+                            $value = array('status'=>400,'mess'=>'推荐码不能为空','data'=>array('status'=>400));
+                            return json($value);
+                        }
+                        else{
+                            $member = Db::name('member')->where('member_recode', $data['member_recode'])->find();
+                            if(is_null($member)){
+                                $value = array('status'=>400,'mess'=>'推荐码错误','data'=>array('status'=>400));
+                                return json($value);
+                            } 
+                        }
                         
                         if ($data['member_recode']) {
                             

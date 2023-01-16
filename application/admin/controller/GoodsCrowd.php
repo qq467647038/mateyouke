@@ -36,7 +36,7 @@ class GoodsCrowd extends Common
 
         $list = Db::name('crowd_goods')->alias('a')->where('id', function($query){
             $query->table('sp_crowd_goods')->field('max(id)')->where('crowd_mark', Db::raw('a.crowd_mark'));
-        })->order('a.id desc')->field('a.id,a.goods_name,a.thumb_url,a.sy,a.status,a.cur_crowd_num')->paginate(25);
+        })->order('a.id desc')->field('a.id,a.goods_name,a.thumb_url,a.sy,a.status,a.cur_crowd_num,a.limit_buy')->paginate(25);
 
         $page = $list->render();
         $cateres = Db::name('category')->field('id,cate_name,pid')->order('sort asc')->select();

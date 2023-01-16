@@ -2360,6 +2360,7 @@ class Goods extends Common
             $goods_info['goods_id'] = $goods_info['id'];
             $goods_info['crowd_value'] = $input['value'];
             $goods_info['static_rate'] = $input['rate'];
+            $goods_info['limit_buy'] = $input['limit_buy'];
             $goods_info['crowd_mark'] = uniqid().$goods_info['id'];
             $goods_info['addtime'] = time();
             unset($goods_info['id']);
