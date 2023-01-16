@@ -190,22 +190,46 @@ class MemberInfo extends Common{
                             $value = array('status'=>400,'mess'=>'提现的金额有误！','data'=>array('status'=>400));
                         }
                         else{
-                            if($post['index']==0){
-                                if(!$post['address']){
-                                    $value = array('status'=>400,'mess'=>'请填写完整表单！','data'=>array('status'=>400));
+                            if($post['index']==1){
+                                $ss = Db::name('zfb_card')->where('user_id', $user_id)->find();
+                                if(is_null($ss)){
+                                    $value = array('status'=>400,'mess'=>'请先绑定支付宝','data'=>array('status'=>400));
                                     return json($value);
                                 }
+                                else{
+                                    $qrcode = $ss['qrcode'];
+                                    $telephone = $ss['telephone'];
+                                    $name = $ss['name'];
+                                    $card_number = '';
+                                    $bank_name = '';
+                                }
                             }
-                            else if($post['index']==1 || $post['index']==2){
-                                if(!$post['qrcode']){
-                                    $value = array('status'=>400,'mess'=>'请填写完整表单！','data'=>array('status'=>400));
+                            else if($post['index']==2){
+                                $ss = Db::name('wx_card')->where('user_id', $user_id)->find();
+                                if(is_null($ss)){
+                                    $value = array('status'=>400,'mess'=>'请先绑定微信','data'=>array('status'=>400));
                                     return json($value);
+                                }
+                                else{
+                                    $qrcode = $ss['qrcode'];
+                                    $telephone = $ss['telephone'];
+                                    $name = $ss['name'];
+                                    $card_number = '';
+                                    $bank_name = '';
                                 }
                             }
                             else if($post['index']==3){
-                                if(!$post['name'] || !$post['bank_name'] || !$post['card_number'] || !$post['phone']){
-                                    $value = array('status'=>400,'mess'=>'请填写完整表单！','data'=>array('status'=>400));
+                                $ss = Db::name('bank_card')->where('user_id', $user_id)->find();
+                                if(is_null($ss)){
+                                    $value = array('status'=>400,'mess'=>'请先绑定银行卡','data'=>array('status'=>400));
                                     return json($value);
+                                }
+                                else{
+                                    $qrcode = '';
+                                    $telephone = $ss['telephone'];
+                                    $name = $ss['name'];
+                                    $card_number = $ss['card_number'];
+                                    $bank_name = $ss['bank_name'];
                                 }
                             }
                             
@@ -229,13 +253,13 @@ class MemberInfo extends Common{
                                  if(!$res)throw new Exception('提现申请失败');
                                  
                                  $insertData = [
-                                    'address' => isset($post['address']) ? $post['address'] : '',
+                                    'address' => '',
                                     'num' => isset($post['num']) ? $post['num'] : 0,
-                                    'qrcode' => isset($post['qrcode']) ? $post['qrcode'] : '',
-                                    'name' => isset($post['name']) ? $post['name'] : '',
-                                    'bank_name' => isset($post['bank_name']) ? $post['bank_name'] : '',
-                                    'card_number' => isset($post['card_number']) ? $post['card_number'] : '',
-                                    'phone' => isset($post['phone']) ? $post['phone'] : '',
+                                    'qrcode' => $qrcode,
+                                    'name' => $name,
+                                    'bank_name' => $bank_name,
+                                    'card_number' => $card_number,
+                                    'phone' => $telephone,
                                     'addtime' => time(),
                                     'type'=>$post['index']
                                  ];
