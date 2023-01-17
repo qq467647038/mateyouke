@@ -95,7 +95,7 @@ class Register extends Common{
                                     
                                     if(!$rxs && !$recodeinfos){
                                         $cout = Db::name('member')->where('phone', $data['phone'])->count();
-                                        if($cout >=5){
+                                        if($cout >5){
                                             $value = array('status'=>400,'mess'=>'一个手机号最多只能注册五个号码','data'=>array('status'=>400));
                                             return json($value);
                                         }

@@ -158,14 +158,14 @@ class Share extends Common{
 
                 $name = 'user_' . $user_id . '.png';
 
-                $res['user'] = Db::name('member')->where('id',$user_id)->field('headimgurl,user_name,recode,member_recode')->find();
+                $res['user'] = Db::name('member')->where('id',$user_id)->field('headimgurl,phone as user_name,recode,member_recode')->find();
                 // var_dump($res['user']);exit;
                 $path = $this->webconfig['weburl'].'portal/pages/register/register?member_recode='.$res['user']['member_recode'];
                 // var_dump($this->webconfig['weburl']);exit;
 
                 $logo = './static/images/logo.png';
                 $res['code'] = $this->h5_code_water_logo($name,$path,$logo);
-
+                $res['user']['user_name'] = substr_replace($res['user']['user_name'],'****',3,4);
                 if(!$res['user']['headimgurl']){
                     $res['user']['headimgurl'] = $this->webconfig['weburl'].'static/images/empty_headurl.png';
                 }
