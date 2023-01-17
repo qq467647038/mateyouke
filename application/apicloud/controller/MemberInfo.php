@@ -852,6 +852,7 @@ class MemberInfo extends Common{
                         $members['total_stock'] = $wallets['total_stock'];
                         $members['manager_reward'] = $wallets['manager_reward'];
                         $members['commission'] = $wallets['commission'];
+                        $members['phone'] = substr($members['phone'], 0, 3).'****'.substr($members['phone'], 7);
                         $members['klg'] = $wallets['klg'];
                         $members['brand'] = $wallets['brand'];
                         $members['price'] = $wallets['price'];
@@ -3237,7 +3238,7 @@ class MemberInfo extends Common{
                                 
                     if(count($list)){
                         foreach ($list as &$v){
-                            $team_id = Db::name('member')->where('team_id', 'like', '%,'.$v['id'])->whereOr('m.team_id', 'like', '%,'.$v['id'].',%')->column('id');
+                            $team_id = Db::name('member')->where('team_id', 'like', '%,'.$v['id'])->whereOr('team_id', 'like', '%,'.$v['id'].',%')->column('id');
                             $v['team_yeji'] = Db::name('crowd_order')->where('user_id', 'in', $team_id)->where('status', 0)->sum('price');
                             
                             $v['regtime'] = date('Y-m-d H:i', $v['regtime']);
