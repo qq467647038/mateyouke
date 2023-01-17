@@ -22,7 +22,7 @@
 </head>
 <script>
     var url = "{:url('member/lst')}";
-    var updateUrl = "{:url('member/bobi')}";
+    var updateUrl = "{:url('member/set_level')}";
     var checkUsername = "{:url('member/checkUsername')}";
     var checkPhone = "{:url('member/checkPhone')}";
 </script>
@@ -42,9 +42,6 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>编辑用户信息</h5>
-                </div>
                 <div class="ibox-content">
                     <form method="post" class="form-horizontal" id="form">
                         <div class="form-group">
@@ -54,58 +51,19 @@
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">余额</label>
-                            <div class="col-sm-6">
-                                {$wallet.price}
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">绿色积分</label>
-                            <div class="col-sm-6">
-                                {$wallet.point_ticket}
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">	贡献值</label>
-                            <div class="col-sm-6">
-                                {$wallet.point_credit}
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">	燃料</label>
-                            <div class="col-sm-6">
-                                {$wallet.ticket_burn}
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
                         
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">拨币类型：</label>
+                            <label class="col-sm-2 control-label">等级：</label>
                             <div class="col-sm-6">
-                                <select name="type" id="type">
+                                <select name="level" id="level">
                                     <option value="0">请选择</option>
-                                    <option value="24">余额</option>
-                                    <option value="25">积分券</option>
-                                    <option value="26">积分信用</option>
-                                    <option value="27">门票</option>
+                                    <option value="1">等级1</option>
+                                    <option value="2">等级2</option>
+                                    <option value="3">等级3</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">增减</label>
-                            <div class="col-sm-6">
-                                <input type="number" name="price" class="form-control">
-                            </div>
-                        </div>
+                        
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">密码</label>

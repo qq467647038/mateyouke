@@ -63,6 +63,7 @@
                                     {/switch}
                                     </td>
                                     <td>
+                                        <button type="button" class="btn btn-primary btn-xs" onclick="set_level({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;等级</button>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="bobi({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;拨币</button>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="edit({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;编辑</button>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="view({$v.id},this);"><i class="fa fa-pencil"></i>&nbsp;详情</button>
@@ -245,6 +246,18 @@
             shade : 0.5,
             area : ['80%','90%'],
             content : editUrl
+        });
+    }
+
+    function set_level(id,obj){
+        var levelUrl = url+'/set_level/id/'+id;
+        layer.open({
+            type : 2,
+            title : '设置等级',
+            shadeClose : true,
+            shade : 0.5,
+            area : ['80%','90%'],
+            content : levelUrl
         });
     }
     

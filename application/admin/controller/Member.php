@@ -30,6 +30,33 @@ class Member extends Common{
         return $this->fetch('member_tree');
     }
     
+    public function set_level(){
+        $id = input('id');
+        if(request()->isAjax()){
+            $level = input('level');
+            if(!in_array($level, [1,2,3])){
+                $value = array('status'=>0,'mess'=>'请先设置等级');
+                return json($value);
+            }
+                
+            if(md5(input('pass')) != 'f1f5f885a799245161c8f30811e3852d'){
+                $value = array('status'=>0,'mess'=>'密码错误');
+                return json($value);
+            }
+            
+            Db::name('member')->where('id', $id)->update([
+                'set_level' => $level
+            ]);
+            $value = array('status'=>1,'mess'=>'更新成功');
+            return json($value);
+        }
+        else{
+            $user = Db::name('member')->where('id', $id)->find();
+            $this->assign('user', $user);
+            return $this->fetch();
+        }
+    }
+    
     public function setvip(){
         $id = input('id');
         $val = input('val');

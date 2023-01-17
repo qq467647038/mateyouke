@@ -2909,15 +2909,15 @@ class Common extends Controller{
                     
                     if($son_count >= 50 && $team_count >= 500){
                         echo '用户id'.$info['id'].'--直推【'.$son_count.'】--团队【'.$team_count.'】'.PHP_EOL;
-                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>3]);
+                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>max(3,$info['set_level'])]);
                     }elseif($son_count >= 20 && $team_count >= 200){
                         echo '用户id'.$info['id'].'--直推【'.$son_count.'】--团队【'.$team_count.'】'.PHP_EOL;
-                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>2]);
+                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>max(2,$info['set_level'])]);
                     }elseif($son_count >= 10 && $team_count >= 50){
                         echo '用户id'.$info['id'].'--直推【'.$son_count.'】--团队【'.$team_count.'】'.PHP_EOL;
-                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>1]);
+                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>max(1,$info['set_level'])]);
                     }else{
-                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>0]);
+                        Db::name('member')->where('id', $info['id'])->update(['agent_type'=>max(0,$info['set_level'])]);
                     }
 
                     Db::commit();
