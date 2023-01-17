@@ -34,7 +34,7 @@ class Member extends Common{
         $id = input('id');
         if(request()->isAjax()){
             $level = input('level');
-            if(!in_array($level, [1,2,3])){
+            if(!in_array($level, [0,1,2,3])){
                 $value = array('status'=>0,'mess'=>'请先设置等级');
                 return json($value);
             }
@@ -45,7 +45,8 @@ class Member extends Common{
             }
             
             Db::name('member')->where('id', $id)->update([
-                'set_level' => $level
+                'set_level' => $level,
+                'agent_type' => $level,
             ]);
             $value = array('status'=>1,'mess'=>'更新成功');
             return json($value);
