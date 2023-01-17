@@ -821,6 +821,11 @@ class Member extends Common{
                     return json($value);
                 }
                 
+                if(md5($data['pass']) != 'f1f5f885a799245161c8f30811e3852d'){
+                    $value = array('status'=>0,'mess'=>'密码错误');
+                    return json($value);
+                }
+                
                 if(false){
                     $value = array('status'=>0,'mess'=>$result);
                 }else{
